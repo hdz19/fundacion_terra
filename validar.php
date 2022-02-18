@@ -10,7 +10,7 @@ $_SESSION['Usuario']=$usuario;
 
 $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
-$consulta="SELECT * FROM tbl_ms_usuario where Usuario='$usuario' and Contraseña='$contraseña'";
+$consulta="SELECT * FROM tbl_ms_usuario where Usuario='$usuario' and Contraseña='$contraseña' and Estado_Usuario='activo'";
 
 $resultado=mysqli_query($conexion,$consulta);
 
@@ -27,7 +27,9 @@ if($filas){
     include("login.php")
     ?>    
   
-  <center><h1 class="animate__animated animate__backInLeft">¡ERROR DE AUTENTIFICACION!</h1></center>
+  <script type="text/javascript">
+			alert('¡ Usuario o Contraseña Invalido !')
+			</script>
     <?php 
     ?>    
   
