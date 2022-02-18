@@ -11,6 +11,9 @@
         <title>Login </title>  
         <link rel="stylesheet" href="css/cabecera1.css" />   
         <link href="css/styles.css" rel="stylesheet" > 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <center>   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"></center>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
@@ -18,6 +21,16 @@
               tecla=(document.all) ? e.keyCode : e.which;
               if(tecla==32) return false;
             }
+            function mostrarPassword(){
+		var cambio = document.getElementById("inputPassword");
+		if(cambio.type == "password"){
+			cambio.type = "text";
+			$('.icon').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+		}else{
+			cambio.type = "password";
+			$('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+		}
+	} 
             </script>      
     </head>
     <body class="bg-primary">
@@ -28,35 +41,33 @@
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-lg-5">
-                                <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Acceso</h3></div>
+                                <div class="card shadow-lg border-0 rounded-lg mt-4">
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-1">Acceso</h3></div>
                                     <div class="card-body">
-                                        <form action="validar.php" method="post" >  
-                                      <center>  <h1 class="animate__animated animate__backInLeft">¡ Bienvenido !</h1></center>
-                                        <br>
-                                     <center>   <img src="IMG/logo-fundacion.png" ></center>
-                                        </br>
-                                            <div class="form-floating mb-3">
-                                              <input class="form-control" id="inputEmail" style="text-transform:uppercase" name="Usuario" type="usuario"
-                                               placeholder="Por ejemplo juan" onkeypress="return pulsar(event)" minlength="5" maxlength="15" required />
-                                                 <label for="inputEmail">Usuario</label>
+                                        <form action="validar.php" method="post">  
+                                            <center><h1 class="animate__animated animate__backInLeft">¡ Bienvenido !</h1></center> </br>
+                                            <center><img src="IMG/logo-fundacion.png" ></center> </br> </br>
+
+                                            <div class="form-floating mb-4">
+                                                <input class="form-control" style="width: 410px" id="inputEmail" style="text-transform:uppercase" name="Usuario" type="usuario"
+                                                placeholder="Por ejemplo juan" onkeypress="return pulsar(event)" minlength="5" maxlength="15" required pattern="[a-zA-Z]+" />
+                                                <label for="inputEmail">Usuario</label>
                                             </div>
-                                            <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputPassword" name="Contraseña" type="password" placeholder="Contraseña" 
-                                                onkeypress="return pulsar(event)" minlength="5" maxlength="256" required />
+                                            <div class="form-floating d-flex align-items-center justify-content-between mt-4 mb-0">
+                                                <input class="form-control" style="width: 350px" id="inputPassword" name="Contraseña" type="password" placeholder="Contraseña" 
+                                                onkeypress="return pulsar(event)" minlength="5" maxlength="256" required pattern="[A-Za-z0-9]+"/>
                                                 <label for="inputPassword">Contraseña</label>
-                                               
-                                            </div>
-                                            <div class="form-check mb-3">
-                                              
+                                                <button class="btn btn-primary" type="button" onclick="mostrarPassword()"><span class="fa fa-eye-slash icon"></span></button>
+                                                </div> 
+                                            <div class="form-check mb-4">   
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                <a class="small" href="password.php">¿Has olvidado tu contraseña?</a>
+                                                <a class="small" href="password.php">¿Has olvidado tu contraseña?</a> 
                                                 <button class="btn btn-primary" >Acceso</button>
                                             </div>
                                         </form>
                                     </div>
-                                    <div class="card-footer text-center py-3">
+                                    <div class="card-footer text-center py-2">
                                         <div class="small"><a href="register.php">¿Necesito una cuenta? ¡Inscribirse!</a></div>
                                     </div>
                                 </div>
@@ -64,16 +75,16 @@
                         </div>
                     </div>
                 </main>
-            </div>
-            <div id="layoutAuthentication_footer">
+            </div> <br>
+            <div id="layoutAuthentication_footer ">
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                        <div class="d-flex align-items-center justify-content-between small ">
+                            <div class="text-muted">Copyright &copy; Tu Sitio Web 2021</div>
                             <div>
-                                <a href="#">Privacy Policy</a>
+                                <a href="#">Política de privacidad</a>
                                 &middot;
-                                <a href="#">Terms &amp; Conditions</a>
+                                <a href="#"> Términos &amp; Condiciones </a>
                             </div>
                         </div>
                     </div>
