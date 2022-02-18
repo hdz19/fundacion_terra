@@ -42,7 +42,7 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-5">
                                 <div class="card shadow-lg border-0 rounded-lg mt-4">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-1">ACCESO</h3></div>
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-1">Acceso</h3></div>
                                     <div class="card-body">
                                         <form action="validar.php" method="post">  
                                             <center><h1 class="animate__animated animate__backInLeft">¡ Bienvenido !</h1></center> </br>
@@ -50,12 +50,12 @@
 
                                             <div class="form-floating mb-4">
                                                 <input class="form-control" style="width: 410px" id="inputEmail" style="text-transform:uppercase" name="Usuario" type="usuario"
-                                                placeholder="Por ejemplo juan" onkeypress="return pulsar(event)" minlength="5" maxlength="15" required pattern="[a-zA-Z]+" />
+                                                placeholder="Por ejemplo juan" onkeypress="return pulsar(event)"  maxlength="15" required pattern="[a-zA-Z]+" />
                                                 <label for="inputEmail">Usuario</label>
                                             </div>
                                             <div class="form-floating d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 <input class="form-control" style="width: 350px" id="inputPassword" name="Contraseña" type="password" placeholder="Contraseña" 
-                                                onkeypress="return pulsar(event)" minlength="5" maxlength="256"/>
+                                                onkeypress="return pulsar(event)"  maxlength="256"/>
                                                 <label for="inputPassword">Contraseña</label>
                                                 <button class="btn btn-primary" type="button" onclick="mostrarPassword()"><span class="fa fa-eye-slash icon"></span></button>
                                                 </div> 
