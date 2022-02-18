@@ -55,7 +55,7 @@
                                             </div>
                                             <div class="form-floating d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 <input class="form-control" style="width: 350px" id="inputPassword" name="Contraseña" type="password" placeholder="Contraseña" 
-                                                onkeypress="return pulsar(event)" minlength="5" maxlength="256" required pattern="[A-Za-z0-9]+"/>
+                                                onkeypress="return pulsar(event)" minlength="5" maxlength="256"/>
                                                 <label for="inputPassword">Contraseña</label>
                                                 <button class="btn btn-primary" type="button" onclick="mostrarPassword()"><span class="fa fa-eye-slash icon"></span></button>
                                                 </div> 
