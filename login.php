@@ -42,7 +42,7 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-5">
                                 <div class="card shadow-lg border-0 rounded-lg mt-4">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-1">Acceso</h3></div>
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-1">ACCESO</h3></div>
                                     <div class="card-body">
                                         <form action="validar.php" method="post">  
                                             <center><h1 class="animate__animated animate__backInLeft">¡ Bienvenido !</h1></center> </br>
