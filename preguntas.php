@@ -1,3 +1,25 @@
+
+<?php
+
+
+$usuario=$_POST['Usuario'];
+
+
+$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
+
+$consulta="Select up.Respuesta, p.Pregunta from tbl_ms_preguntas_usuario up
+ inner join tbl_ms_usuario u on up.id_usuario=u.id_usuario 
+ inner join tbl_preguntas p on up.id_pregunta=p.id_pregunta
+ WHERE u.Usuario='$usuario'";
+
+$resultado=mysqli_query($conexion,$consulta);
+
+$filas=mysqli_fetch_array($resultado);
+
+if($filas){
+  
+?>
+
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -6,13 +28,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Recuperación de contraseña</title>
-        <link rel="stylesheet" href="css/cabecera1.css" />   
-        <link href="css/styles.css" rel="stylesheet" > 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <center><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"></center>
+        <title>Preguntas secretas</title>
+        <link href="css/styles.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
             function SoloLetras(e)
@@ -36,7 +53,6 @@
                 }
 
             }
-            
             </script>
     </head>
     <body class="bg-primary">
@@ -47,35 +63,33 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-5">
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Recuperación de contraseña</h3></div>
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Preguntas secretas</h3></div>
                                     <div class="card-body">
                                     <br>
                                      <center>   <img src="IMG/logo-fundacion.png" ></center>
                                         </br>
                                         <div class="small mb-3 text-muted">Ingrese su usuario y le enviaremos un correo para restablecer su contraseña.</div>
-                                        <form action="preguntas.php" method="post">
-                                                                                 
+                                        <form>
+                                      
                                             <div class="form-floating mb-3">
-                                            <input class="form-control" id="inputEmail"  name="Usuario" type="usuario"
-                                                placeholder="Por ejemplo juan" onkeypress="return  SoloLetras(event)" onKeyUP="this.value=this.value.toUpperCase();"
-                                                maxlength="15" required  />
-                                                <label for="inputEmail">Nombre de usuario</label>
+                                                <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" />
+                                                <label for="inputEmail">Pregunta 1</label>
+                                                <label><?php print_r($filas); ?> </label>
                                             </div>
-
                                             
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 
-                                                <button class="btn btn-primary" type="button">Enviar por correo</button>
-                                                <button class="btn btn-primary">Preguntas secretas</button>
+                                                <a class="btn btn-primary">Enviar contraseña por correo</a>
+                                                &nbsp;
+                                                <button class="btn btn-primary" type="button">Recuperar vía preguntas secretas</button>
                                                 
                                             </div>
                                            
-
                                         </form>
                                     </div>
                                     <div class="card-footer text-center py-3">
                                         <div class="small">
-                                        <a  href="login.php">Volver a iniciar sesión</a>
+                                        <a class="small" href="login.php">Volver a iniciar sesión</a>
                                         &nbsp;
                                         <a href="register.php">¿Necesita una cuenta? ¡Regístrese!</a>
                                         </div>
@@ -105,3 +119,26 @@
         <script src="js/scripts.js"></script>
     </body>
 </html>
+
+<?php
+}else{
+    ?>
+      <?php
+      
+      header("location:password.php");
+      ?>    
+    
+    <script type="text/javascript">
+          
+              </script>
+      <?php 
+      ?>    
+    
+    <?php 
+    
+  }
+  
+  
+  mysqli_free_result($resultado);
+  mysqli_close($conexion);
+  ?>
