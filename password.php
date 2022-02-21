@@ -66,7 +66,7 @@
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 
                                                 <button class="btn btn-primary" type="button">Enviar por correo</button>
-                                                <button class="btn btn-primary">Preguntas secretas</button>
+                                                <button class="btn btn-primary" href="preguntas.php">Preguntas secretas</button>
                                                 
                                             </div>
                                            

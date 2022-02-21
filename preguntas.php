@@ -29,8 +29,10 @@ if($filas){
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>Preguntas secretas</title>
+        <link href="css/styleslistbox.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+        <center>   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"></center>
         <script type="text/javascript">
             function SoloLetras(e)
             {
@@ -63,19 +65,67 @@ if($filas){
                         <div class="row justify-content-center">
                             <div class="col-lg-5">
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Preguntas secretas</h3></div>
+                                    <div class="card-header"><center><h3 class="animate__animated animate__backInLeft">Preguntas secretas</h3><center/></div>
+                                   
                                     <div class="card-body">
                                     <br>
                                      <center>   <img src="IMG/logo-fundacion.png" ></center>
                                         </br>
-                                        <div class="small mb-3 text-muted">Ingrese su usuario y le enviaremos un correo para restablecer su contraseña.</div>
-                                        <form>
-                                      
-                                            <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" />
-                                                <label for="inputEmail">Pregunta 1</label>
-                                                <label><?php print_r($filas); ?> </label>
+                                       
+                                        <br></br>
+                                        <div class="small mb-3 text-muted">A continuación se le presenta una serie de preguntas, deberá seleccionar una de ellas para responder y cumplir con el proceso de 
+                                            recuperación de su contraseña de usuario.
+                                        </div>
+                                       
+                                        <form >
+                                            <!--LISTBOX-->
+
+                                            <div class="container">
+                                            <center><h2 class="animate__animated animate__backInLeft">¡ Bienvenido !</h2></center> </br>
+
+                                                <div class="select-box">
+                                                    <div class="options-container">
+                                                        <div class="option">
+                                                            <input
+                                                            type="radio"
+                                                            class="radio"
+                                                            id="automobiles"
+                                                            name="category"
+                                                            />
+                                                            <label for="automobiles">¿Color Favorito?</label>
+                                                        </div>
+
+                                                        <div class="option">
+                                                            <input type="radio" class="radio" id="film" name="category" />
+                                                            <label for="film">¿Lugar de nacimiento?</label>
+                                                        </div>
+
+                                                        <div class="option">
+                                                            <input type="radio" class="radio" id="science" name="category" />
+                                                            <label for="science">¿Nombre de su primera mascota?</label>
+                                                        </div>
+
+                                                       
+
+                                                        </div>
+
+                                                        <div class="selected">
+                                                            Seleccione su pregunta
+                                                        </div>
+                                                </div>
                                             </div>
+
+                                            <div class="form-floating mb-4">      
+                                                <input class="form-control" id="inputEmail"  name="Pregunta" type="pregunta"
+                                                placeholder="Ingrese la respuesta a su pregunta... !!! " onKeyUP="this.value=this.value.toUpperCase();" required  />
+                                                <label for="inputEmail">Ingrese su respuesta: </label>
+                                            </div>
+
+                                            <script src="main.js"></script>
+
+
+
+
                                             
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 
@@ -86,6 +136,7 @@ if($filas){
                                             </div>
                                            
                                         </form>
+
                                     </div>
                                     <div class="card-footer text-center py-3">
                                         <div class="small">
@@ -125,7 +176,7 @@ if($filas){
     ?>
       <?php
       
-      header("location:password.php");
+      header("location:login.php");
       ?>    
     
     <script type="text/javascript">
