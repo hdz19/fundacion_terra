@@ -59,7 +59,7 @@
                                             <input class="form-control" id="inputEmail"  name="Usuario" type="usuario"
                                                 placeholder="Por ejemplo juan" onkeypress="return  SoloLetras(event)" onKeyUP="this.value=this.value.toUpperCase();"
                                                 maxlength="15" required  />
-                                                <label for="inputEmail">Nombre de usuario</label>
+                                                <label for="inputEmail">Ingrese el usuario</label>
                                             </div>
 
                                             

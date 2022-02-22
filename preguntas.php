@@ -121,6 +121,18 @@ if($filas){
                                                 <label for="inputEmail">Ingrese su respuesta: </label>
                                             </div>
 
+                                            <div class="form-floating mb-4">      
+                                                <input class="form-control" id="inputEmail"  name="Pregunta" type="pregunta"
+                                                placeholder="Ingrese la respuesta a su pregunta... !!! " required  />
+                                                <label for="inputEmail">Ingrese su nueva contraseña: </label>
+                                            </div>
+
+                                            
+                                            <div class="form-floating mb-4">      
+                                                <input class="form-control" id="inputEmail"  name="Pregunta" type="pregunta"
+                                                placeholder="Ingrese la respuesta a su pregunta... !!! " required  />
+                                                <label for="inputEmail">Confirmar contraseña: </label>
+
                                             <script src="main.js"></script>
 
 
@@ -129,9 +141,9 @@ if($filas){
                                             
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 
-                                                <a class="btn btn-primary">Enviar contraseña por correo</a>
+                                            <center><a class="btn btn-primary">Aceptar</a></center>
                                                 &nbsp;
-                                                <button class="btn btn-primary" type="button">Recuperar vía preguntas secretas</button>
+                                                
                                                 
                                             </div>
                                            
