@@ -1,4 +1,6 @@
 <?php
-    mail("michellochoa997@gmail.com", "subject", "body", "From: michellochoa99@gmail.com");
+    mail("marioelsurdo19@gmail.com", "Prueba#2", "body", "From: fundacio.terra22@gmail.com");
+ 
+ 
  ?>
  
