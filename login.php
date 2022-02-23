@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -16,7 +17,7 @@
         <center>   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"></center>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
-            //funcion para solo permitir letras
+            //Funcion Solo Letras
             function SoloLetras(e)
             {
                 key=e.keyCode || e.which;
@@ -39,13 +40,10 @@
 
             }
 
-             //no permitir espacios en blanco 
             function pulsar(e) {
               tecla=(document.all) ? e.keyCode : e.which;
               if(tecla==32) return false;
             }
-
-            //mostrar contraseña 
             function mostrarPassword(){
 		var cambio = document.getElementById("inputPassword");
 		if(cambio.type == "password"){
@@ -56,7 +54,6 @@
 			$('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
 		}
 	} 
-    
             </script>      
     </head>
     <body class="bg-primary">
@@ -83,7 +80,7 @@
                                             
                                             <div class="form-floating d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 <input class="form-control" style="width: 350px" id="inputPassword" name="Contraseña" type="password" placeholder="Contraseña" 
-                                                onkeypress="return pulsar(event)"  maxlength="256" minlength="5" required />
+                                                onkeypress="return pulsar(event)"  maxlength="256" required />
                                                 <label for="inputPassword">Contraseña</label>
                                                 <button class="btn btn-primary" type="button" onclick="mostrarPassword()"><span class="fa fa-eye-slash icon"></span></button>
                                                 </div> 
@@ -96,7 +93,7 @@
                                         </form>
                                     </div>
                                     <div class="card-footer text-center py-2">
-                                        <div class="small"><a href="register.php">¿Necesito una cuenta? ¡Inscribirse!</a></div>
+                                        <div class="small"><a href="usuario.php">¿Necesito una cuenta? ¡Inscribirse!</a></div>
                                     </div>
                                 </div>
                             </div>
@@ -112,7 +109,6 @@
                             <div>
                                 <a href="#">Política de privacidad</a>
                                 &middot;
-                                
                                 <a href="#"> Términos &amp; Condiciones </a>
                             </div>
                         </div>

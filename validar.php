@@ -3,14 +3,16 @@
 
 
 $usuario=$_POST['Usuario'];
-$contraseña=$_POST['Contraseña'];
+$contraseña=md5($_POST['Contraseña']);
+
 session_start();
 $_SESSION['Usuario']=$usuario;
 
 
 $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
-$consulta="SELECT * FROM tbl_ms_usuario where Usuario='$usuario' and Contraseña='$contraseña' and Estado_Usuario='activo'";
+$consulta="SELECT * FROM tbl_ms_usuario where Usuario='$usuario' and Contraseña='$contraseña' and Id_Estado_Usuario=1 ";
+
 
 $resultado=mysqli_query($conexion,$consulta);
 
@@ -24,13 +26,12 @@ if($filas){
   ?>
     <?php
     
-     include("login.php")
+    include("login.php")
     ?>    
   
-    <script type="text/javascript">
+  <script type="text/javascript">
 			alert('¡ Usuario o Contraseña Invalido !')
-		</script>
-    
+			</script>
     <?php 
     ?>    
   
