@@ -33,11 +33,19 @@ if (isset($_POST['crear_cuenta'])) {
 
 
          if(mysqli_num_rows($verificar_usuario) > 0){
+         
             ?> 
 	    	<script type="text/javascript">
                       alert('¡ Este Usuario ya esta registrado, Intenta con otro diferente !')
                       </script>
+                      <?php
+    
+    include("login.php")
+    ?> 
+                      
            <?php
+          
+           
             exit();
          }
 
