@@ -54,7 +54,7 @@
                                     <br>
                                      <center>   <img src="IMG/logo-fundacion.png" ></center>
                                         </br>
-                                        <div class="small mb-3 text-muted">Ingrese su usuario y le enviaremos un correo para restablecer su contraseña.</div>
+                                        <div class="small mb-3 text-muted">Ingrese su usuario y escoja un metodo para restablecer su contraseña.</div>
                                         <form action="preguntas.php" method="post">
                                                                                  
                                             <div class="form-floating mb-3">
@@ -67,7 +67,7 @@
                                             
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 
-                                                <button class="btn btn-primary" type="button">Enviar por correo</button>
+                                                <button class="btn btn-primary" type="button" href="RecuperacionContrasenia.php">Enviar por correo</button>
                                                 <button class="btn btn-primary" href="preguntas.php">Preguntas secretas</button>
                                                 
                                             </div>
