@@ -55,7 +55,7 @@
                                      <center>   <img src="IMG/logo-fundacion.png" ></center>
                                         </br>
                                         <div class="small mb-3 text-muted">Ingrese su usuario y escoja un metodo para restablecer su contraseña.</div>
-                                        <form action="preguntas.php" method="post">
+                                        <form action="preguntas.php" method="post"> <!--  PENDIENTE AGREGAR action PARA EL OTRO BOTON  -->
                                                                                  
                                             <div class="form-floating mb-3">
                                             <input class="form-control" id="inputEmail"  name="Usuario" type="usuario"

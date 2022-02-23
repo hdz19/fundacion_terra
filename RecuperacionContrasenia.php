@@ -54,7 +54,7 @@
                                             <div class="form-floating d-flex align-items-center justify-content-between mt-4 mb-0">      
                                                 <input class="form-control" id="inputPassword"  name="Contraseña" type="password"
                                                 placeholder="Ingrese su nueva contraseña... !!! minlength="5" maxlength="10" " style="width: 350px" required  />
-                                                <label for="inputEmail">Ingrese su Contraseña autogenerada: </label>
+                                                <label for="inputEmail">Ingrese su Contraseña anterior: </label>
                                                 <button class="btn btn-primary" type="button" onclick="mostrarPassword()"><span class="fa fa-eye-slash icon"></span></button>
                                             </div>
 
