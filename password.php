@@ -15,6 +15,7 @@
         <center><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"></center>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
+            //Funcion para que solo me permita ingresar letras en el campo del usuario
             function SoloLetras(e)
             {
                 key=e.keyCode || e.which;
@@ -38,6 +39,7 @@
             }
             
             </script>
+            
     </head>
     <body class="bg-primary">
         <div id="layoutAuthentication">

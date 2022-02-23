@@ -31,31 +31,25 @@ if($filas){
         <title>Preguntas secretas</title>
         <link href="css/styleslistbox.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
         <center>   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"></center>
         <script type="text/javascript">
-            function SoloLetras(e)
-            {
-                key=e.keyCode || e.which;
-                tecla=String.fromCharCode(key).toString();
-                letras ="{ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz}";
+           
 
-                especiales = [8,13]
-                tecla_especial =false
-                for(var i in especiales){
-                    if(key ==especiales[i]){
-                        tecla_especial = true;
-                        break;
-                    }
-                }
-                if(letras.indexOf(tecla) == -1 && !tecla_especial)
-                {
-                    alert("Ingrese Solo Letras");
-                    return false
-                }
+            //mostrar contraseña 
+            function mostrarPassword(){
+		    var cambio = document.getElementById("inputPassword");
+		    if(cambio.type == "password"){
+			cambio.type = "text";
+			$('.icon').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+		    }else{
+			cambio.type = "password";
+			$('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+		    }
+	        } 
 
-            }
-            </script>
+        </script>
     </head>
     <body class="bg-primary">
         <div id="layoutAuthentication">
@@ -121,17 +115,20 @@ if($filas){
                                                 <label for="inputEmail">Ingrese su respuesta: </label>
                                             </div>
 
-                                            <div class="form-floating mb-4">      
-                                                <input class="form-control" id="inputEmail"  name="Pregunta" type="pregunta"
-                                                placeholder="Ingrese la respuesta a su pregunta... !!! " required  />
+                                            <div class="form-floating d-flex align-items-center justify-content-between mt-4 mb-0">      
+                                                <input class="form-control" id="inputPassword"  name="Contraseña" type="password"
+                                                placeholder="Ingrese su nueva contraseña... !!! minlength="5" maxlength="10" " style="width: 350px" required  />
                                                 <label for="inputEmail">Ingrese su nueva contraseña: </label>
+                                                <button class="btn btn-primary" type="button" onclick="mostrarPassword()"><span class="fa fa-eye-slash icon"></span></button>
                                             </div>
 
                                             
-                                            <div class="form-floating mb-4">      
-                                                <input class="form-control" id="inputEmail"  name="Pregunta" type="pregunta"
-                                                placeholder="Ingrese la respuesta a su pregunta... !!! " required  />
+                                            <div class="form-floating d-flex align-items-center justify-content-between mt-4 mb-0">      
+                                                <input class="form-control" id="inputPassword"  name="Contraseña" type="password"
+                                                placeholder="Confirme su contraseña... !!! " minlength="5" maxlength="10" style="width: 350px" required  />
                                                 <label for="inputEmail">Confirmar contraseña: </label>
+                                                <button class="btn btn-primary" type="button" onclick="mostrarPassword()"><span class="fa fa-eye-slash icon"></span></button>
+                                            </div>
 
                                             <script src="main.js"></script>
 
@@ -141,10 +138,8 @@ if($filas){
                                             
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 
-                                            <center><a class="btn btn-primary">Aceptar</a></center>
-                                                &nbsp;
-                                                
-                                                
+                                                <button class="btn btn-primary">Aceptar</button>
+                                                 
                                             </div>
                                            
                                         </form>
@@ -186,16 +181,17 @@ if($filas){
 <?php
 }else{
     ?>
+
+       
+      
       <?php
       
-      header("location:login.php");
+        header("location:password.php");
       ?>    
     
-    <script type="text/javascript">
-          
-              </script>
-      <?php 
-      ?>    
+        <script type="text/javascript">
+          alert('¡ Usuario no encontrado !');
+        </script>
     
     <?php 
     

@@ -38,11 +38,13 @@
                 }
 
             }
+
              //no permitir espacios en blanco 
             function pulsar(e) {
               tecla=(document.all) ? e.keyCode : e.which;
               if(tecla==32) return false;
             }
+
             //mostrar contraseña 
             function mostrarPassword(){
 		var cambio = document.getElementById("inputPassword");
@@ -54,6 +56,7 @@
 			$('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
 		}
 	} 
+    
             </script>      
     </head>
     <body class="bg-primary">
@@ -80,7 +83,7 @@
                                             
                                             <div class="form-floating d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 <input class="form-control" style="width: 350px" id="inputPassword" name="Contraseña" type="password" placeholder="Contraseña" 
-                                                onkeypress="return pulsar(event)"  maxlength="256" required />
+                                                onkeypress="return pulsar(event)"  maxlength="256" minlength="5" required />
                                                 <label for="inputPassword">Contraseña</label>
                                                 <button class="btn btn-primary" type="button" onclick="mostrarPassword()"><span class="fa fa-eye-slash icon"></span></button>
                                                 </div> 
