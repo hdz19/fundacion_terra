@@ -147,7 +147,7 @@ if($filas){
                                     </div>
                                     <div class="card-footer text-center py-3">
                                         <div class="small">
-                                        <a class="small" href="login.php">Volver a iniciar sesión</a>
+                                        <a  href="login.php">Volver a iniciar sesión</a>
                                         &nbsp;
                                         <a href="register.php">¿Necesita una cuenta? ¡Regístrese!</a>
                                         </div>

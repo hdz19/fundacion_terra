@@ -156,7 +156,7 @@
                                         </form>
                                     </div>
                                     <div class="card-footer text-center py-3">
-                                        <div class="small"><a href="login.php">¿Tener una cuenta? Ir a iniciar sesión</a></div>
+                                        <div class="small"><a href="login.php">¿Tienes una cuenta? Inicia sesión</a></div>
                                     </div>
                                 </div>
                             </div>
@@ -168,7 +168,7 @@
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                            <div class="text-muted">Copyright &copy; Your Website 2022</div>
                             <div>
                                 <a href="#">Privacy Policy</a>
                                 &middot;

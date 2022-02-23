@@ -16,6 +16,12 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
             //Funcion para que solo me permita ingresar letras en el campo del usuario
+            function EnviarCorreo (){
+                var usuario=document.getElementById('usuario').value;
+                fetch( 'EnviarCorreo.php?Usuario='+usuario)
+                .then( response => {alert('Correo Enviado Exitosamente'); window.location.href='login.php';} )
+
+            }
             function SoloLetras(e)
             {
                 key=e.keyCode || e.which;
@@ -58,7 +64,7 @@
                                         <form action="preguntas.php" method="post">
                                                                                  
                                             <div class="form-floating mb-3">
-                                            <input class="form-control" id="inputEmail"  name="Usuario" type="usuario"
+                                            <input class="form-control" id="usuario"  name="Usuario" type="usuario"
                                                 placeholder="Por ejemplo juan" onkeypress="return  SoloLetras(event)" onKeyUP="this.value=this.value.toUpperCase();"
                                                 maxlength="15" required  />
                                                 <label for="inputEmail">Ingrese el usuario</label>
@@ -67,7 +73,7 @@
                                             
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 
-                                                <button class="btn btn-primary" type="button" href="RecuperacionContrasenia.php">Enviar por correo</button>
+                                                <button class="btn btn-primary" type="button" onclick="EnviarCorreo()">Enviar por correo</button>
                                                 <button class="btn btn-primary" href="preguntas.php">Preguntas secretas</button>
                                                 
                                             </div>
