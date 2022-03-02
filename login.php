@@ -92,9 +92,7 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <div class="card-footer text-center py-2">
-                                        <div class="small"><a href="usuario.php">¿Necesito una cuenta? ¡Inscribirse!</a></div>
-                                    </div>
+                                  
                                 </div>
                             </div>
                         </div>

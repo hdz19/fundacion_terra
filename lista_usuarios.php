@@ -1,11 +1,10 @@
 <?php 
-/*
+
 	session_start();
-	if($_SESSION['Id_Rol'] != 1)
+	if($_SESSION['Id_Rol'] !=1)
 	{
-		header("location: ./");
-	}
-*/	
+		header("location: index.php");
+    }
 	$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
  ?>
@@ -174,7 +173,7 @@
                                         </tr>
 										<?php 
 			//Paginador
-			$sql_registe = mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM tbl_ms_usuario WHERE Id_Estado_Usuario = 1 ");
+			$sql_registe = mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM tbl_ms_usuario  ");
 			$result_register = mysqli_fetch_array($sql_registe);
 			$total_registro = $result_register['total_registro'];
 
@@ -194,7 +193,7 @@
 			u.Fecha_Ultima_Conexion, u.Preguntas_Contestadas, u.Primer_Ingreso, u.Fecha_Vencimiento,
 		 u.Correo_Electronico, u.Creado_Por, u.Fecha_Creacion, u.Modificado_Por,u.Fecha_Modificacion, 
 		 u.Id_Estado_Usuario FROM tbl_ms_usuario u INNER JOIN tbl_ms_roles r 
-			ON u.Id_Rol = r.Id_rol WHERE Id_Estado_Usuario = 1 ORDER BY u.Id_Usuario ASC LIMIT $desde,$por_pagina 
+			ON u.Id_Rol = r.Id_rol  ORDER BY u.Id_Usuario ASC LIMIT $desde,$por_pagina 
 				");
 
 			mysqli_close($conexion);

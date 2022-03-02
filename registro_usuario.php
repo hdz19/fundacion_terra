@@ -2,11 +2,11 @@
 
 
 session_start();
-/*if($_SESSION['Id_Rol'] != 1)
+if($_SESSION['Id_Rol'] != 1)
 	{
-		header("location: ./");
+		header("location: index.php");
 	}
-	*/
+	
 
 //CONEXION A LA BASE DE DATOS
 $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
@@ -73,11 +73,11 @@ if (isset($_POST['crear_cuenta'])) {
 	    	?> 
 	    	<script type="text/javascript">
                       alert('¡ Exito, Inscrito Correctamente !')
-
+                      
                       </script>
                            <?php
-    
     header('Location: lista_usuarios.php');
+    
     ?> 
            <?php
 	    } else {
@@ -86,6 +86,10 @@ if (isset($_POST['crear_cuenta'])) {
             <script type="text/javascript">
                       alert('¡ Usuario o Contraseña Invalido, Intentalo de nuevo !')
                       </script>
+                      <?php
+    header('Location: registro_usuario.php');
+    
+    ?> 
               <?php           
 	    }
 
@@ -232,17 +236,26 @@ if (isset($_POST['crear_cuenta'])) {
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Usuario
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="registro_usuario.php">Nuevo Usuario</a>
-                                            <a class="nav-link" href="lista_usuarios.php">Lista de Usuarios</a>
-                                           
-                                        </nav>
-                                    </div>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                    <?php 
+				if($_SESSION['Id_Rol'] == 1){
+			 ?>
+				<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+
+					Usuarios
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+					
+                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                    
+                      <nav class="sb-sidenav-menu-nested nav">
+						<li><a class="nav-link" href="registro_usuario.php">Nuevo Usuario</a></li>
+						<li><a class="nav-link" href="lista_usuarios.php">Lista de Usuarios</a></li>
+                </nav>
+                </div>
+					
+				
+			<?php } ?>
 
 
 
@@ -330,8 +343,9 @@ if (isset($_POST['crear_cuenta'])) {
                                         <label for="Preguntas_Contestadas">Preguntas Contestadas</label>
 				<input type="int" name="Preguntas_Contestadas" id="Preguntas_Contestadas" placeholder="Cantidad ">
 
-				<label for="Primer_Ingreso">Primer Ingreso</label>
-				<input type="int" name="Primer_Ingreso" id="Primer_Ingreso" placeholder="Cantidad ">
+				
+				<input type="hidden" name="Primer_Ingreso" id="Primer_Ingreso" placeholder="Cantidad ">
+               
 
                 <label for="Fecha_Ultima_Conexion">Fecha de Ultima Conexión</label>
 				<input type="date" name="Fecha_Ultima_Conexion" id="Fecha_Ultima_Conexion" placeholder="Y/m/d">

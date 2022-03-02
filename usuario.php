@@ -20,6 +20,12 @@ if (isset($_POST['crear_cuenta'])) {
 	    
 	    //Campos TBL_MS_USUARIO
         $usuario = trim($_POST['Usuario']);
+        if(preg_match('/(.)\1{2}/i', $usuario)){
+
+       echo"<h1 style = 'color: red;' >¡Usuario no puede tener tres letras iguales consecutivas</h1!>";
+          exit();  
+
+        }
 	    $nombre_usuario = trim($_POST['Nombre_Usuario']);
        
         $contraseña  = ($_POST['Contraseña']);

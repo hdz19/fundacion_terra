@@ -92,7 +92,7 @@
                                         <div class="small">
                                         <a class="small" href="login.php">Volver a iniciar sesión</a>
                                         &nbsp;
-                                        <a href="usuario.php">¿Necesita una cuenta? ¡Regístrese!</a>
+                                   
                                         </div>
                                     </div>
                                 </div>

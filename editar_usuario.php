@@ -2,11 +2,11 @@
 //include "../conexion.php";
 
 session_start();
-/*if($_SESSION['Id_Rol'] != 1)
+if($_SESSION['Id_Rol']!= 1)
 	{
-		header("location: ./");
+		header("location: index.php");
 	}
-	*/
+    $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
 
  if(!empty($_POST))
@@ -298,17 +298,27 @@ if($result_sql == 0){
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Usuario
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="registro_usuario.php">Nuevo Usuario</a>
-                                            <a class="nav-link" href="lista_usuarios.php">Lista de Usuarios</a>
-                                           
-                                        </nav>
-                                    </div>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                    <?php 
+				if($_SESSION['Id_Rol'] == 1){
+			 ?>
+				<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+
+					Usuarios
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+					
+                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                    
+                      <nav class="sb-sidenav-menu-nested nav">
+						<li><a class="nav-link" href="registro_usuario.php">Nuevo Usuario</a></li>
+						<li><a class="nav-link" href="lista_usuarios.php">Lista de Usuarios</a></li>
+                </nav>
+                </div>
+					
+				
+			<?php } ?>
+
 
 
 

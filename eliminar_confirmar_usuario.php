@@ -1,10 +1,10 @@
 <?php 
 	session_start();
-	/*if($_SESSION['Id_Rol'] != 1)
+	if($_SESSION['Id_Rol'] != 1)
 	{
-		header("location: ./");
+		header("location: index.php");
 	}
-	*/
+	
 	$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
 	if(!empty($_POST))
