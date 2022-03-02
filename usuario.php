@@ -12,9 +12,14 @@ $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
 if (isset($_POST['crear_cuenta'])) {
     if (strlen($_POST['Usuario']) >= 1 && strlen($_POST['Nombre_Usuario']) >= 1 && 
-     strlen($_POST['Contraseña']) >= 1  &&   strlen($_POST['Id_Rol']) >= 1 &&   strlen($_POST['Id_Tipo_Persona']) >= 1
-     &&   strlen($_POST['Preguntas_Contestadas']) >= 1 &&   strlen($_POST['Primer_Ingreso']) >= 1  
-     && strlen($_POST['Correo_Electronico']) >= 1  &&  strlen($_POST['Creado_Por']) >= 1  &&  strlen($_POST['Modificado_Por']) >= 1 && 
+     strlen($_POST['Contraseña']) >= 1  &&   strlen($_POST['Id_Rol']) >= 1 &&   
+     strlen($_POST['Id_Tipo_Persona']) >= 1 && 
+     strlen($_POST['Id_Estado_Usuario']) >= 1  &&  
+      strlen($_POST['Preguntas_Contestadas']) >= 1 &&  
+       strlen($_POST['Primer_Ingreso']) >= 1  
+     && strlen($_POST['Correo_Electronico']) >= 1 
+      &&  strlen($_POST['Creado_Por']) >= 1 
+       &&  strlen($_POST['Modificado_Por']) >= 1 && 
      strlen($_POST['Id_Estado_Usuario']) >= 1 )
     {
 	    
@@ -27,7 +32,13 @@ if (isset($_POST['crear_cuenta'])) {
 
         }
 	    $nombre_usuario = trim($_POST['Nombre_Usuario']);
-       
+
+        $contraseña = ($_POST['Contraseña']);    
+        $id_rol = ($_POST['Id_Rol']);
+        $id_tipo_persona = ($_POST['Id_Tipo_Persona']);
+        $correo_electronico = ($_POST['Correo_Electronico']);
+	    $fecha_creacion = date('Y/m/d');
+        $id_estado_usuario = ($_POST['Id_Estado_Usuario']);
         $contraseña  = ($_POST['Contraseña']);
 			$id_rol  = $_POST['Id_Rol'];
 			$id_personas  = $_POST['Id_Tipo_Persona'];
@@ -41,14 +52,18 @@ if (isset($_POST['crear_cuenta'])) {
 			$modificado_por  = $_POST['Modificado_Por'];
 			$fecha_modificacion  = date('Y/m/d');
 			$id_estado_usuario  = $_POST['Id_Estado_Usuario'];
-
-        
+ 
+       
          //PROCESO DE INSERT DE LA TABLA: tbl_ms_usuario
 	    $consulta="INSERT INTO tbl_ms_usuario (Usuario,Nombre_Usuario,Contraseña,Id_Rol,Id_Tipo_Persona,
-        Fecha_Ultima_Conexion,Preguntas_Contestadas,Primer_Ingreso,Fecha_Vencimiento,
-        Correo_Electronico,Creado_Por,Fecha_Creacion,Modificado_Por,Fecha_Modificacion,Id_Estado_Usuario)
-         VALUES ('$usuario','$nombre_usuario','$contraseña','$id_rol','$id_personas','$fecha_ultima_conexion','$preguntas_contestadas','$primer_ingreso',
-			'$fecha_vencimiento','$correo_electronico','$creado_por','$fecha_creacion','$modificado_por','$fecha_modificacion','$id_estado_usuario')";
+        Correo_Electronico,Fecha_Creacion,Id_Estado_Usuario)
+         VALUES ('$usuario','$nombre_usuario','$contraseña','$id_rol','$id_tipo_persona','$correo_electronico',
+         '$fecha_creacion','$id_estado_usuario')";
+
+        //Fecha_Ultima_Conexion,Preguntas_Contestadas,Primer_Ingreso,Fecha_Vencimiento,
+        //Correo_Electronico,Creado_Por,Fecha_Creacion,Modificado_Por,Fecha_Modificacion,Id_Estado_Usuario)
+         //VALUES ('$usuario','$nombre_usuario','$contraseña','$id_rol','$id_personas','$fecha_ultima_conexion','$preguntas_contestadas','$primer_ingreso',
+		//	'$fecha_vencimiento','$correo_electronico','$creado_por','$fecha_creacion','$modificado_por','$fecha_modificacion','$id_estado_usuario')";
 
 
          //VERIFICAR QUE EL USUARIO NO SE REPITA EN LA BASE DE DATOS
@@ -56,6 +71,27 @@ if (isset($_POST['crear_cuenta'])) {
 
 
          if(mysqli_num_rows($verificar_usuario) > 0){
+        
+
+            ?>
+
+            <script type="text/javascript">
+
+                      alert('¡ Este Usuario ya esta registrado, Intenta con otro diferente !')
+
+                      </script>
+
+                      <?php
+
+   
+
+    include("login.php")
+
+    ?>
+
+           <?php
+
+
          
             ?> 
 	            <script type="text/javascript">
@@ -77,7 +113,16 @@ if (isset($_POST['crear_cuenta'])) {
 
       //PASO PARA SABER SI SE GUARDARON O NO LOS DATOS   
          $resultado=mysqli_query($conexion,$consulta);   
+
 	    if ($resultado) {
+            mail ($correo_electronico, "Bienvenid@", "Estimado (a) $usuario ,
+    Estamos felices de que formes parte de nuestro sistema.
+    Para ingresar favor utiliza tu usuario y contraseña.
+    
+    Favor no contestar. 
+    Generado automaticamente."
+   ,
+    "From: fundacio.terra22@gmail.com");
 	    	?> 
 	    	<script type="text/javascript">
                       alert('¡ Exito, Inscrito Correctamente !')
@@ -92,14 +137,17 @@ if (isset($_POST['crear_cuenta'])) {
               <?php           
 	    }
 
+    }   //else {
+
+
     }   else {
         ?>    
   
-        <script type="text/javascript">
+        <!-- <script type="text/javascript">
                   alert('¡ Por favor completa los campos!')
-                  </script>
+                  </script> -->
           <?php      
-    }
+    //}
 }
 ?>
 
@@ -115,6 +163,22 @@ if (isset($_POST['crear_cuenta'])) {
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
+
+           function ValidarPassword(p){
+               
+                    let pattern = new RegExp("^(?=(.*[a-zA-Z]){1,})(?=(.*[0-9]){2,}).{8,}$"); //Regex: At least 8 characters with at least 2 numericals
+            let inputToListen = document.getElementById(p); // Get Input where psw is write
+            let valide = document.getElementsByClassName('indicator')[0]; //little indicator of validity of psw
+            console.log(inputToListen.value);
+            inputToListen.addEventListener('input', function () { // Add event listener on input
+                if(pattern.test(inputToListen.value)){
+                    valide.innerHTML = 'ok';
+                }else{
+                    valide.innerHTML = 'not ok'
+                }
+            });
+           }
+
 
 
             //Funcion Solo Letras
@@ -160,9 +224,11 @@ if (isset($_POST['crear_cuenta'])) {
                 }
 
             }
-            function pulsar(e) {
+            function pulsar(e,a) {
               tecla=(document.all) ? e.keyCode : e.which;
               if(tecla==32) return false;
+              console.log(a);
+              ValidarPassword('inputPassword');
             }
             //Funcion Mostrar Contraseña
             function mostrarPassword(){
@@ -241,7 +307,8 @@ if (isset($_POST['crear_cuenta'])) {
                                             <div class="col-md-7">
                                             <div class="form-floating d-flex align-items-center justify-content-between mt-0 mb-2">
                                                 <input class="form-control" style="width: 450px" id="inputPassword" name="Contraseña" type="password" placeholder="Contraseña" 
-                                                onkeypress="return pulsar(event)"  maxlength="256"  />
+                                                onkeypress="return pulsar(event,this.value)"  maxlength="256"  />
+                                                <span class="indicator"></span>
                                                 <label for="inputPassword">Contraseña</label>
                                                 <button class="btn btn-primary" type="button" onclick="mostrarPassword()"><span class="fa fa-eye-slash icon"></span></button>
                                                 </div> 
@@ -280,8 +347,7 @@ if (isset($_POST['crear_cuenta'])) {
                                                          $consulta="SELECT * FROM tbl_ms_roles ";
                                                          $resultado=mysqli_query($conexion,$consulta);
                                                          while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Rol']."'>".$fila['Rol']."</option
-                                                             >";
+                                                             echo "<option value='".$fila['Id_Rol']."'>".$fila['Rol']."</option>";
                                                          }
                                                          ?>
                                                          </select>
@@ -293,8 +359,12 @@ if (isset($_POST['crear_cuenta'])) {
                                                          $consulta="SELECT * FROM tbl_tipo_persona ";
                                                          $resultado=mysqli_query($conexion,$consulta);
                                                          while($fila=$resultado->fetch_array()){
+<<<<<<< HEAD
+                                                             echo "<option value='".$fila['Id_Tipo_Persona']."'>".$fila['Tipo_Persona']."</option>";
+=======
                                                              echo "<option value='".$fila['Id_Tipo_Persona']."'>".$fila['Tipo_Persona']."</option
                                                              >";
+>>>>>>> 281f8dbb8987aa7cd218fbb863d5ec442b366dcb
                                                         }
                                                         ?>
                                                 </select>
@@ -306,8 +376,7 @@ if (isset($_POST['crear_cuenta'])) {
                                                         $consulta="SELECT * FROM tbl_ms_estado_usuario ";
                                                         $resultado=mysqli_query($conexion,$consulta);
                                                          while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Estado_Usuario']."'>".$fila['Estado_Usuario']."</option
-                                                             >";
+                                                             echo "<option value='".$fila['Id_Estado_Usuario']."'>".$fila['Estado_Usuario']."</option>";
                                                         }
                                                         ?>
                                                 </select>

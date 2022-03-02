@@ -17,6 +17,33 @@
         <center>   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"></center>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
+            
+            function TresLetras(a){
+                console.log(a);
+                var str = a; //document.getElementById("inputPassword");
+                let re =/([ab])\1{3,}/gm; //new RegExp('([ab])\2{3,}');
+                var myArray = str;//.match(re);
+                if (myArray!=null){
+                    console.log(myArray);
+                }
+                
+            }
+            function ValidarPassword(p){
+               
+               let pattern = new RegExp("([ab])\1{2,}");
+                
+       let inputToListen = document.getElementById(p); // Get Input where psw is write
+       let valide = document.getElementsByClassName('indicator')[0]; //little indicator of validity of psw
+       console.log(inputToListen.value);
+       inputToListen.addEventListener('input', function () { // Add event listener on input
+           if(pattern.test(inputToListen.value)){
+               valide.innerHTML = 'ok';
+           }else{
+               valide.innerHTML = 'not ok'
+           }
+       });
+      }
+            
             //Funcion Solo Letras
             function SoloLetras(e)
             {
@@ -29,7 +56,9 @@
                 for(var i in especiales){
                     if(key ==especiales[i]){
                         tecla_especial = true;
+                        
                         break;
+                        
                     }
                 }
                 if(letras.indexOf(tecla) == -1 && !tecla_especial)
@@ -37,12 +66,17 @@
                     alert("Ingrese Solo Letras");
                     return false
                 }
+               
+            
+                
 
             }
 
             function pulsar(e) {
               tecla=(document.all) ? e.keyCode : e.which;
               if(tecla==32) return false;
+              ValidarPassword('inputPassword');
+              //console.log(e);
             }
             function mostrarPassword(){
 		var cambio = document.getElementById("inputPassword");
@@ -56,7 +90,7 @@
 	} 
             </script>      
     </head>
-    <body class="bg-primary">
+    <body class="bg-primary" oncopy="return false" oncut="return false" onpaste="return false" oncontextmenu="return false;">
    
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
@@ -72,8 +106,8 @@
                                             <center><img src="IMG/logo-fundacion.png" ></center> </br> </br>
 
                                             <div class="form-floating mb-4">      
-                                                <input class="form-control" id="inputEmail"  name="Usuario" type="usuario"
-                                                placeholder="Por ejemplo juan" onkeypress="return  SoloLetras(event)" onKeyUP="this.value=this.value.toUpperCase();"
+                                                <input class="form-control" id="inputEmail"  name="Usuario" type="text"
+                                                placeholder="Por ejemplo juan" onkeydown="return TresLetras(this.value)" onkeypress="return  SoloLetras(event)" onKeyUP="this.value=this.value.toUpperCase();"
                                                 maxlength="15" required  />
                                                 <label for="inputEmail">Usuario</label>
                                             </div>
@@ -82,6 +116,7 @@
                                                 <input class="form-control" style="width: 350px" id="inputPassword" name="Contraseña" type="password" placeholder="Contraseña" 
                                                 onkeypress="return pulsar(event)"  maxlength="256" required />
                                                 <label for="inputPassword">Contraseña</label>
+                                                <span class="indicator"></span>
                                                 <button class="btn btn-primary" type="button" onclick="mostrarPassword()"><span class="fa fa-eye-slash icon"></span></button>
                                                 </div> 
                                             <div class="form-check mb-4">   

@@ -5,7 +5,7 @@
  $usuario=$_GET['Usuario'];
  $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
- $consulta="SELECT Id_Usuario, Correo_Electronico FROM tbl_ms_usuario where Usuario='$usuario' and Id_Estado_Usuario= '1'";
+ $consulta="SELECT Id_Usuario, Correo_Electronico FROM tbl_ms_usuario where Usuario='$usuario' and Id_Estado_Usuario='1'";
  
  $resultado=mysqli_query($conexion,$consulta);
  

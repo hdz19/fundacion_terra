@@ -18,12 +18,35 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
             //Funcion para que solo me permita ingresar letras en el campo del usuario
+            
             function EnviarCorreo (){
                 var usuario=document.getElementById('usuario').value;
-                fetch( 'EnviarCorreo.php?Usuario='+usuario)
-                .then( response => {alert('Correo Enviado Exitosamente'); window.location.href='login.php';} )
+                var usuariolen=document.getElementById('usuario').value.length;
+                if(usuariolen>0){
 
+                    fetch( 'validarGet.php?Usuario='+usuario)
+                .then( response => {
+                    if(response.status == 200) {
+                        alert("Correo enviado exitosamente")
+      return response.text();
+    } else {
+    alert("Usuario no encontrado")
+    }
+                   
+                } )
+          .then((body) => {
+            console.log(body);
+            
+            fetch( 'EnviarCorreo.php?Usuario='+usuario)
+                    .then( response =>{window.location.href='login.php';} )
+            });
             }
+
+            else{
+                alert("Ingrese un Usuario.");
+            }
+            }
+ 
             function SoloLetras(e)
             {
                 key=e.keyCode || e.which;
@@ -49,7 +72,7 @@
             </script>
             
     </head>
-    <body class="bg-primary">
+    <body class="bg-primary" oncopy="return false" oncut="return false" onpaste="return false" oncontextmenu="return false;">
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
                 <main>
@@ -76,7 +99,7 @@
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 
                                                 <button class="btn btn-primary" type="button" onclick="EnviarCorreo()">Enviar por correo</button>
-                                                <button class="btn btn-primary" href="preguntas.php">Preguntas secretas</button>
+                                                <button class="btn btn-primary" >Preguntas secretas</button>
                                                 
                                             </div>
                                            

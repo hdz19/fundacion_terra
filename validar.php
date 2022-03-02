@@ -11,17 +11,17 @@ $_SESSION['Usuario']=$usuario;
 
 $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
-$consulta="SELECT * FROM tbl_ms_usuario where Usuario='$usuario' and Contraseña='$contraseña' and Id_Estado_Usuario=1 ";
+$consulta="SELECT Id_Usuario FROM tbl_ms_usuario where Usuario='$usuario' and Contraseña='$contraseña' and Id_Estado_Usuario=1 ";
 
 
 $resultado=mysqli_query($conexion,$consulta);
 
 $filas=mysqli_num_rows($resultado);
 
-if($filas){
+if($filas>0){
   
     header("location:index.php");
-
+    
 }else{
   ?>
        

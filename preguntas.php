@@ -13,10 +13,10 @@ $consulta="Select up.Respuesta, p.Pregunta from tbl_ms_preguntas_usuario up
  WHERE u.Usuario='$usuario'";
 
 $resultado=mysqli_query($conexion,$consulta);
-
-$filas=mysqli_fetch_array($resultado);
-
-if($filas){
+//$filas=$resultado->fetch_array();
+//$filas=($resultado);
+//print_r($resultado);
+if($resultado->num_rows>0){
   
 ?>
 
@@ -79,29 +79,22 @@ if($filas){
 
                                                 <div class="select-box">
                                                     <div class="options-container">
-                                                        <div class="option">
+                                                    <?php
+                                                        while($filas=$resultado->fetch_array()){
+                                                            ?>
+                                                            <div class="option">
                                                             <input
                                                             type="radio"
                                                             class="radio"
                                                             id="automobiles"
                                                             name="category"
                                                             />
-                                                            <label for="automobiles">¿Color Favorito?</label>
+                                                            <label for="automobiles"><?php echo  $filas['Pregunta'];?></label>
                                                         </div>
-
-                                                        <div class="option">
-                                                            <input type="radio" class="radio" id="film" name="category" />
-                                                            <label for="film">¿Lugar de nacimiento?</label>
-                                                        </div>
-
-                                                        <div class="option">
-                                                            <input type="radio" class="radio" id="science" name="category" />
-                                                            <label for="science">¿Nombre de su primera mascota?</label>
-                                                        </div>
-
-                                                       
-
-                                                        </div>
+                                                        <?php //echo "<option value='".$fila['Id_Rol']."'>".$fila['Rol']."</option>";
+                                                        }
+                                                         ?>
+                                       </div>
 
                                                         <div class="selected">
                                                             Seleccione su pregunta

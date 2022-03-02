@@ -70,6 +70,14 @@ if (isset($_POST['crear_cuenta'])) {
       //PASO PARA SABER SI SE GUARDARON O NO LOS DATOS   
          $resultado=mysqli_query($conexion,$consulta);   
 	    if ($resultado) {
+            mail ($correo_electronico, "Bienvenid@", "Estimado (a) $usuario ,
+            Estamos felices de que formes parte de nuestro sistema.
+            Para ingresar favor utiliza tu usuario y contraseña.
+            
+            Favor no contestar. 
+            Generado automaticamente."
+           ,
+            "From: fundacio.terra22@gmail.com");
 	    	?> 
 	    	<script type="text/javascript">
                       alert('¡ Exito, Inscrito Correctamente !')
@@ -124,7 +132,20 @@ if (isset($_POST['crear_cuenta'])) {
        
         <script type="text/javascript">
 
-
+            function ValidarPassword(p){
+                        
+                        let pattern = new RegExp("^(?=(.*[a-zA-Z]){1,})(?=(.*[0-9]){2,}).{8,}$"); //Regex: At least 8 characters with at least 2 numericals
+                let inputToListen = document.getElementById(p); // Get Input where psw is write
+                let valide = document.getElementsByClassName('indicator')[0]; //little indicator of validity of psw
+                console.log(inputToListen.value);
+                inputToListen.addEventListener('input', function () { // Add event listener on input
+                    if(pattern.test(inputToListen.value)){
+                        valide.innerHTML = 'ok';
+                    }else{
+                        valide.innerHTML = 'not ok'
+                    }
+                });
+                }
             //Funcion Solo Letras
             function SoloLetras(e)
             {
@@ -171,6 +192,7 @@ if (isset($_POST['crear_cuenta'])) {
             function pulsar(e) {
               tecla=(document.all) ? e.keyCode : e.which;
               if(tecla==32) return false;
+              ValidarPassword('inputPassword');
             }
             //Funcion Mostrar Contraseña
             function mostrarPassword(){
@@ -327,7 +349,7 @@ if (isset($_POST['crear_cuenta'])) {
 				<label for="Nombre_Usuario">Nombre</label>
 				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Nombre_Usuario" id="Nombre_Usuario" placeholder="Nombre completo"
                 onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
-				
+                <span class="indicator"></span>
 				<label for="Contraseña">Contraseña</label>
                 <input class="form-control" style="width: 450px" id="inputPassword" name="Contraseña" type="password" placeholder="Contraseña" 
                                                 onkeypress="return pulsar(event)"  maxlength="256"  />
