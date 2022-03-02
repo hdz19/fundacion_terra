@@ -1,40 +1,71 @@
 <?php 
+
+
+session_start();
+if($_SESSION['Id_Rol'] != 1)
+	{
+		header("location: ./");
+	}
+
 //CONEXION A LA BASE DE DATOS
 $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
-session_start();
-
 if (isset($_POST['crear_cuenta'])) {
     if (strlen($_POST['Usuario']) >= 1 && strlen($_POST['Nombre_Usuario']) >= 1 && 
-     strlen($_POST['Contraseña']) >= 1  &&   strlen($_POST['Id_Rol']) >= 1 &&   strlen($_POST['Id_Tipo_Persona']) >= 1
-     &&   strlen($_POST['Correo_Electronico']) >= 1  &&   strlen($_POST['Id_Estado_Usuario']) >= 1 )
+     strlen($_POST['Contraseña']) >= 1  &&   strlen($_POST['Id_Rol']) >= 1 &&   
+     strlen($_POST['Id_Tipo_Persona']) >= 1 && 
+     strlen($_POST['Id_Estado_Usuario']) >= 1  &&  
+      strlen($_POST['Preguntas_Contestadas']) >= 1 &&  
+       strlen($_POST['Primer_Ingreso']) >= 1  
+     && strlen($_POST['Correo_Electronico']) >= 1 
+      &&  strlen($_POST['Creado_Por']) >= 1 
+       &&  strlen($_POST['Modificado_Por']) >= 1 && 
+     strlen($_POST['Id_Estado_Usuario']) >= 1 )
     {
 	    
 	    //Campos TBL_MS_USUARIO
         $usuario = trim($_POST['Usuario']);
 	    $nombre_usuario = trim($_POST['Nombre_Usuario']);
-       
+
         $contraseña = ($_POST['Contraseña']);    
         $id_rol = ($_POST['Id_Rol']);
         $id_tipo_persona = ($_POST['Id_Tipo_Persona']);
         $correo_electronico = ($_POST['Correo_Electronico']);
 	    $fecha_creacion = date('Y/m/d');
         $id_estado_usuario = ($_POST['Id_Estado_Usuario']);
-
-        
+        $contraseña  = ($_POST['Contraseña']);
+			$id_rol  = $_POST['Id_Rol'];
+			$id_personas  = $_POST['Id_Tipo_Persona'];
+			$fecha_ultima_conexion  = date('Y/m/d');
+			$preguntas_contestadas  = $_POST['Preguntas_Contestadas'];
+			$primer_ingreso  = $_POST['Primer_Ingreso'];
+			$fecha_vencimiento  = date('Y/m/d');
+			$correo_electronico  = $_POST['Correo_Electronico'];
+			$creado_por  = $_POST['Creado_Por'];
+			$fecha_creacion  = date('Y/m/d');
+			$modificado_por  = $_POST['Modificado_Por'];
+			$fecha_modificacion  = date('Y/m/d');
+			$id_estado_usuario  = $_POST['Id_Estado_Usuario'];
+ 
+       
          //PROCESO DE INSERT DE LA TABLA: tbl_ms_usuario
 	    $consulta="INSERT INTO tbl_ms_usuario (Usuario,Nombre_Usuario,Contraseña,Id_Rol,Id_Tipo_Persona,
         Correo_Electronico,Fecha_Creacion,Id_Estado_Usuario)
          VALUES ('$usuario','$nombre_usuario','$contraseña','$id_rol','$id_tipo_persona','$correo_electronico',
          '$fecha_creacion','$id_estado_usuario')";
 
+        //Fecha_Ultima_Conexion,Preguntas_Contestadas,Primer_Ingreso,Fecha_Vencimiento,
+        //Correo_Electronico,Creado_Por,Fecha_Creacion,Modificado_Por,Fecha_Modificacion,Id_Estado_Usuario)
+         //VALUES ('$usuario','$nombre_usuario','$contraseña','$id_rol','$id_personas','$fecha_ultima_conexion','$preguntas_contestadas','$primer_ingreso',
+		//	'$fecha_vencimiento','$correo_electronico','$creado_por','$fecha_creacion','$modificado_por','$fecha_modificacion','$id_estado_usuario')";
+
+
          //VERIFICAR QUE EL USUARIO NO SE REPITA EN LA BASE DE DATOS
-         $verificar_usuario=mysqli_query($conexion, "SELECT * FROM tbl_ms_usuario WHERE Usuario='$usuario'");
+         $verificar_usuario=mysqli_query($conexion, "SELECT * FROM tbl_ms_usuario WHERE Usuario='$usuario' OR Correo_Electronico = '$correo_electronico'");
 
 
          if(mysqli_num_rows($verificar_usuario) > 0){
-
-         
+        
 
             ?>
 
@@ -54,6 +85,23 @@ if (isset($_POST['crear_cuenta'])) {
 
            <?php
 
+
+         
+            ?> 
+	            <script type="text/javascript">
+                    
+                    alert('¡ Este Usuario ya esta registrado, Intenta con otro diferente !')
+                    
+                </script>
+                
+                <?php
+    
+                    include("login.php")
+
+                ?>           
+            <?php
+          
+           
             exit();
          }
 
@@ -82,7 +130,11 @@ if (isset($_POST['crear_cuenta'])) {
                       </script>
               <?php           
 	    }
+
     }   //else {
+
+
+    }   else {
         ?>    
   
         <!-- <script type="text/javascript">
@@ -266,6 +318,21 @@ if (isset($_POST['crear_cuenta'])) {
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <label for="Preguntas_Contestadas">Preguntas Contestadas</label>
+				<input type="int" name="Preguntas_Contestadas" id="Preguntas_Contestadas" placeholder="Cantidad ">
+
+				<label for="Primer_Ingreso">Primer Ingreso</label>
+				<input type="int" name="Primer_Ingreso" id="Primer_Ingreso" placeholder="Cantidad ">
+                <label for="Modificado_Por">Modificado Por </label>
+				<input type="text" name="Modificado_Por" id="Modificado_Por" placeholder= "Modificado Por">
+
+			
+
+				<label for="Creado_Por">Creado Por </label>
+				<input type="text" name="Creado_Por" id="Creado_Por" placeholder= "Creado Por">
+
+
                                         <div class ="row mb-4">
                                             <div class="col-md-4">
                                                 <label> Selecione su rol</label>
@@ -286,7 +353,12 @@ if (isset($_POST['crear_cuenta'])) {
                                                          $consulta="SELECT * FROM tbl_tipo_persona ";
                                                          $resultado=mysqli_query($conexion,$consulta);
                                                          while($fila=$resultado->fetch_array()){
+<<<<<<< HEAD
                                                              echo "<option value='".$fila['Id_Tipo_Persona']."'>".$fila['Tipo_Persona']."</option>";
+=======
+                                                             echo "<option value='".$fila['Id_Tipo_Persona']."'>".$fila['Tipo_Persona']."</option
+                                                             >";
+>>>>>>> 281f8dbb8987aa7cd218fbb863d5ec442b366dcb
                                                         }
                                                         ?>
                                                 </select>
@@ -309,7 +381,7 @@ if (isset($_POST['crear_cuenta'])) {
                                         <center> <div class="col-md-2" >    
                                                 <div class="mt-4 mb-0">
                                                     <div class="d-grid">
-                                                    <button type="submit" name="crear_cuenta" class="btn btn-primary btn-block" >Crear Cuenta</button></div>
+                                                    <button type="submit" name="crear_cuenta" class="btn_save" >Crear Cuenta</button></div>
                                                     </div>  
                                                 </div> 
                                             </div> </center>     

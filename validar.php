@@ -24,12 +24,12 @@ if($filas>0){
     
 }else{
   ?>
-    <?php
+       
+  <?php
     
     include("login.php")
-    ?>    
-  
-  <script type="text/javascript">
+    ?> 
+       <script type="text/javascript">
 			alert('¡ Usuario o Contraseña Invalido !')
 			</script>
     <?php 
