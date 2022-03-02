@@ -3,7 +3,7 @@
 
 
 $usuario=$_POST['Usuario'];
-$contraseña=md5($_POST['Contraseña']);
+$contraseña=($_POST['Contraseña']);
 
 session_start();
 $_SESSION['Usuario']=$usuario;
