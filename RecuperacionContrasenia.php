@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Preguntas secretas</title>
+        <title>Actualizacion de contrseña</title>
         <link href="css/styleslistbox.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -38,7 +38,7 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-5">
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><center><h3 class="animate__animated animate__backInLeft">Recuperacion de contraseña</h3><center/></div>
+                                    <div class="card-header"><center><h3 class="animate__animated animate__backInLeft">Actualización de contraseña</h3><center/></div>
                                    
                                     <div class="card-body">
                                     <br>
