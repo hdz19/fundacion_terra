@@ -14,7 +14,7 @@ if($_SESSION['Id_Rol']!= 1)
      $alert='';
     if (empty($_POST['Usuario']) >= 1 && empty($_POST['Nombre_Usuario']) >= 1 && 
     empty($_POST['Contraseña']) >= 1  &&   empty($_POST['Id_Rol']) >= 1 &&   empty($_POST['Id_Tipo_Persona']) >= 1 
-    &&   empty($_POST['Preguntas_Contestadas']) >= 1 &&   empty($_POST['Primer_Ingreso']) >= 1  
+     
     && empty($_POST['Correo_Electronico']) >= 1  &&  empty($_POST['Creado_Por']) >= 1  &&  empty($_POST['Modificado_Por']) >= 1  && 
     empty($_POST['Id_Estado_Usuario']) >= 1 )
    {
@@ -31,8 +31,8 @@ if($_SESSION['Id_Rol']!= 1)
            $id_rol  = $_POST['Id_Rol'];
            $id_personas  = $_POST['Id_Tipo_Persona'];
            $fecha_ultima_conexion  = $_POST['Fecha_Ultima_Conexion'];
-           $preguntas_contestadas  = $_POST['Preguntas_Contestadas'];
-           $primer_ingreso  = $_POST['Primer_Ingreso'];
+           $preguntas_contestadas  = 1;
+			$primer_ingreso  =1;
            $fecha_vencimiento  = $_POST['Fecha_Vencimiento'];
            $correo_electronico  = $_POST['Correo_Electronico'];
            $creado_por  = $_POST['Creado_Por'];
@@ -408,11 +408,11 @@ if($result_sql == 0){
                                                     name="Correo_Electronico" placeholder="example@gmail.com" value="<?php echo $correo_electronico; ?>"
                                                     onkeypress="return pulsar(event)" maxlength="50"/>
 
-                                        <label for="Preguntas_Contestadas">Preguntas Contestadas</label>
-				<input type="int" name="Preguntas_Contestadas" style="width: 450px" id="Preguntas_Contestadas" placeholder="Cantidad "value="<?php echo $preguntas_contestadas; ?>">
+                                       
+				<input type="hidden" name="Preguntas_Contestadas" style="width: 450px" id="Preguntas_Contestadas" placeholder="Cantidad "value="<?php echo $preguntas_contestadas; ?>">
 
-				<label for="Primer_Ingreso">Primer Ingreso</label>
-				<input type="int" style="width: 450px" name="Primer_Ingreso" id="Primer_Ingreso" placeholder="Cantidad "value="<?php echo $primer_ingreso; ?>">
+				
+				<input type="hidden" style="width: 450px" name="Primer_Ingreso" id="Primer_Ingreso" placeholder="Cantidad "value="<?php echo $primer_ingreso; ?>">
 
                 <label for="Fecha_Ultima_Conexion">Fecha de Ultima Conexión</label>
 				<input type="date" style="width: 450px" name="Fecha_Ultima_Conexion" id="Fecha_Ultima_Conexion" placeholder="Y/m/d" value="<?php echo $fecha_ultima_conexion; ?>">

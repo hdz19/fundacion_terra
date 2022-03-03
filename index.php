@@ -1,7 +1,6 @@
 <?php
 session_start();
 if( isset($_SESSION['Usuario']))
-
 {
     ?>
 
@@ -66,7 +65,7 @@ if( isset($_SESSION['Usuario']))
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Paginas
+                                Gestiones
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
@@ -93,10 +92,6 @@ if( isset($_SESSION['Usuario']))
 					
 				
 			<?php } ?>
-
-
-
-
                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                         Autentificacion
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -173,7 +168,7 @@ if( isset($_SESSION['Usuario']))
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
-
+       
 
     </body>
 </html>

@@ -14,7 +14,7 @@ $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 if (isset($_POST['crear_cuenta'])) {
     if (strlen($_POST['Usuario']) >= 1 && strlen($_POST['Nombre_Usuario']) >= 1 && 
      strlen($_POST['Contraseña']) >= 1  &&   strlen($_POST['Id_Rol']) >= 1 &&   strlen($_POST['Id_Tipo_Persona']) >= 1  
-     &&   strlen($_POST['Preguntas_Contestadas']) >= 1  
+       
      && strlen($_POST['Correo_Electronico']) >= 1  &&  strlen($_POST['Creado_Por']) >= 1  &&  strlen($_POST['Modificado_Por']) >= 1 
     && strlen($_POST['Id_Estado_Usuario']) >= 1 )
     {
@@ -24,10 +24,11 @@ if (isset($_POST['crear_cuenta'])) {
 	    $nombre_usuario = trim($_POST['Nombre_Usuario']);
        
         $contraseña  = ($_POST['Contraseña']);
+        
 			$id_rol  = $_POST['Id_Rol'];
 			$id_personas  = $_POST['Id_Tipo_Persona'];
 			$fecha_ultima_conexion  = $_POST['Fecha_Ultima_Conexion'];
-			$preguntas_contestadas  = $_POST['Preguntas_Contestadas'];
+			$preguntas_contestadas  = 1;
 			$primer_ingreso  =1;
 			$fecha_vencimiento  = $_POST['Fecha_Vencimiento'];
 			$correo_electronico  = $_POST['Correo_Electronico'];
@@ -70,6 +71,14 @@ if (isset($_POST['crear_cuenta'])) {
       //PASO PARA SABER SI SE GUARDARON O NO LOS DATOS   
          $resultado=mysqli_query($conexion,$consulta);   
 	    if ($resultado) {
+            mail ($correo_electronico, "Bienvenida al sistema", "Estimad@ ".$usuario.",
+            Estamos  felices de que formes parte de nuestro sistema.
+            Para ingresar favor utiliza tu usuario y contraseña.
+
+            Favor no contestar.
+            Generado automaticamente."
+           ,
+            "From: fundacio.terra22@gmail.com");
 	    	?> 
 	    	<script type="text/javascript">
                       alert('¡ Exito, Inscrito Correctamente !')
@@ -340,8 +349,8 @@ if (isset($_POST['crear_cuenta'])) {
                                                     name="Correo_Electronico" placeholder="example@gmail.com" 
                                                     onkeypress="return pulsar(event)" maxlength="50"/>
 
-                                        <label for="Preguntas_Contestadas">Preguntas Contestadas</label>
-				<input type="int" name="Preguntas_Contestadas" id="Preguntas_Contestadas" placeholder="Cantidad ">
+                                       
+				<input type="hidden" name="Preguntas_Contestadas" id="Preguntas_Contestadas" placeholder="Cantidad ">
 
 			
 				<input type="hidden" name="Primer_Ingreso" id="Primer_Ingreso" placeholder="Cantidad ">

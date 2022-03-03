@@ -42,7 +42,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#!">Ajustes</a></li>
                        
-                        <li><a class="dropdown-item" href="#!">Cerrar Sesion</a></li>
+                        <li><a class="dropdown-item" href="login.php">Cerrar Sesion</a></li>
                     </ul>
                 </li>
             </ul>
