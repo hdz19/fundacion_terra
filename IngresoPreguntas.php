@@ -42,13 +42,14 @@
                                    
                                     <div class="card-body">
                                     <br>
-                                     <center>   <img src="IMG/logo-fundacion.png" ></center>
-                                        </br>
+                                      <center>   <img src="IMG/logo-fundacion.png" ></center>
+                                    </br>
                                        
-                                        <br></br>
-                                        <div class="small mb-3 text-muted">A continuación se le presenta un formulario, deberá llenar los campos solicitados con las preguntas secretas que considere adecuadas,
-                                            para que posteriormente sirvan como metodo de recuperación de su contraseña, en caso de la llegara a olvidar.
-                                        </div>
+                                    <br></br>
+                                    
+                                    <div class="small mb-3 text-muted">A continuación se le presenta un formulario, deberá llenar los campos solicitados con las preguntas secretas que considere adecuadas,
+                                        para que posteriormente sirvan como metodo de recuperación de su contraseña, en caso de la llegara a olvidar.
+                                    </div>
                                        
                                         <form >
                                             

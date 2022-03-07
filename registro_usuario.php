@@ -2,10 +2,11 @@
 
 
 session_start();
-if($_SESSION['Id_Rol'] != 1)
-	{
-		header("location: index.php");
-	}
+if($_SESSION['Id_Rol'] != 1){
+
+	header("location: index.php");
+
+}
 	
 
 //CONEXION A LA BASE DE DATOS
