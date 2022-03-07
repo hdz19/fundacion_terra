@@ -19,18 +19,20 @@
         <script type="text/javascript">
             
             function TresLetras(a){
-                console.log(a);
+                //console.log(a);
                 var str = a; //document.getElementById("inputPassword");
-                let re =/([ab])\1{3,}/gm; //new RegExp('([ab])\2{3,}');
-                var myArray = str;//.match(re);
+                let re =/(.)\1{1}/i;
+                //([ab])\1{3,}/gm; //new RegExp('([ab])\2{3,}');
+                var myArray = str.match(re);
                 if (myArray!=null){
                     console.log(myArray);
+                    alert('No se permite el ingreso de 3 letras iguales consecutivas');
                 }
-                
+               // valida3letras(); 
             }
             function ValidarPassword(p){
                
-               let pattern = new RegExp("([ab])\1{2,}");
+               let pattern = new RegExp('/(.)\1{3}/i');//"([ab])\1{2,}");
                 
        let inputToListen = document.getElementById(p); // Get Input where psw is write
        let valide = document.getElementsByClassName('indicator')[0]; //little indicator of validity of psw
@@ -75,7 +77,8 @@
             function pulsar(e) {
               tecla=(document.all) ? e.keyCode : e.which;
               if(tecla==32) return false;
-              ValidarPassword('inputPassword');
+              //valida3letras();
+              //ValidarPassword('inputPassword');
               //console.log(e);
             }
             function mostrarPassword(){
@@ -88,6 +91,22 @@
 			$('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
 		}
 	} 
+
+     function valida3letras(){
+            var usuariolen=document.getElementById('inputEmail').value.length;
+            var usuariotxt=document.getElementById('inputEmail').value;
+            console.log(usuariolen);
+            console.log(usuariotxt);
+            if(usuariolen>0){
+                fetch( 'valida3letras.php?Usuario='+usuariotxt)
+                .then( response => {
+                    if(response.status == 200) {
+                        alert("Usuario no debe tener 3 letras iguales.")
+                        return response.text();
+                        } 
+                    }); }
+            }
+
             </script>      
     </head>
     <body class="bg-primary" oncopy="return false" oncut="return false" onpaste="return false" oncontextmenu="return false;">
@@ -116,7 +135,7 @@
                                                 <input class="form-control" style="width: 350px" id="inputPassword" name="Contraseña" type="password" placeholder="Contraseña" 
                                                 onkeypress="return pulsar(event)"  maxlength="256" required />
                                                 <label for="inputPassword">Contraseña</label>
-                                                <span class="indicator"></span>
+                                          <span class="indicator2"></span>
                                                 <button class="btn btn-primary" type="button" onclick="mostrarPassword()"><span class="fa fa-eye-slash icon"></span></button>
                                                 </div> 
                                             <div class="form-check mb-4">   

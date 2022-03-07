@@ -131,7 +131,7 @@ if($resultado->num_rows>0){
                                             
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 
-                                                <button class="btn btn-primary">Aceptar</button>
+                                               <button class="btn btn-primary">Aceptar</button>
                                                  
                                             </div>
                                            
@@ -141,8 +141,7 @@ if($resultado->num_rows>0){
                                     <div class="card-footer text-center py-3">
                                         <div class="small">
                                         <a  href="login.php">Volver a iniciar sesión</a>
-                                        &nbsp;
-                                        <a href="register.php">¿Necesita una cuenta? ¡Regístrese!</a>
+                                        
                                         </div>
                                     </div>
                                 </div>
