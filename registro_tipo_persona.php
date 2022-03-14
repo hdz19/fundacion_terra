@@ -12,9 +12,15 @@ if($_SESSION['Id_Rol'] != 1){
 //CONEXION A LA BASE DE DATOS
 $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
-if (isset($_POST['crear_tipo_persona'])) {
-    if ( strlen($_POST['Tipo_Persona']) >= 1)
-    {
+if(!empty($_POST))
+	{
+		$alert='';
+		if(empty($_POST['Tipo_Persona']) 
+        )
+		{$alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
+		}else{
+			
+
 	    
 	    //Campos TBL_DIVISION_EMPRESA
         $tipo_persona = trim($_POST['Tipo_Persona']);
@@ -22,11 +28,17 @@ if (isset($_POST['crear_tipo_persona'])) {
 
         
         //PROCESO DE INSERT DE LA TABLA: division_empresa 
-	    $consulta="INSERT INTO tbl_tipo_persona (Tipo_Persona)
-        VALUES ('$tipo_persona')";
+        $query_insert = mysqli_query($conexion,"INSERT INTO tbl_tipo_persona (Tipo_Persona)
+        VALUES ('$tipo_persona')");
+        	if($query_insert){
+                $alert='<p class="msg_save"> Solicitud Ingresado correctamente.</p>';
+                header('Location: registro_personas.php');
+            }else{
+                $alert='<p class="msg_error">Error al Ingresar la asolicitud.</p>';
+            }
 
 
-        //VERIFICAR QUE EL USUARIO NO SE REPITA EN LA BASE DE DATOS
+        //VERIFICAR QUE EL TIPO DE PERSONA NO SE REPITA EN LA BASE DE DATOS
         $verificar_div=mysqli_query($conexion, "SELECT * FROM tbl_tipo_persona WHERE Tipo_Persona='$tipo_persona'");
 
 
@@ -34,7 +46,7 @@ if (isset($_POST['crear_tipo_persona'])) {
          
             ?> 
 	            <script type="text/javascript">
-                    alert('¡ Esta division de departamento ya ha sido registrada, Intenta con otra diferente !')
+                    alert('¡ Este tipo de persona  ya ha sido registrada, Intenta con otra diferente !')
                 </script>
 
             <?php
@@ -260,10 +272,10 @@ if (isset($_POST['crear_tipo_persona'])) {
                 </main>
                                    
                                     <form action="" method="post">
-                                                                   
+                                    <div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div> 
                                    <center> <h1>Crear Nuevo Tipo persona</h1></center>
-                 <label for="Usuario">Nombre del tipo de persona</label>
-                <input class="form-control" type="text" name="div_empresa" id="Div_Empresa" onKeyUP="this.value=this.value.toUpperCase();" placeholder="Nombre tipo persona"
+                 <label for="Tipo_Persona">Nombre del tipo de persona</label>
+                <input class="form-control" type="text" name="Tipo_Persona" id="Tipo_Persona" onKeyUP="this.value=this.value.toUpperCase();" placeholder="Nombre tipo persona"
                 onkeypress="return  SoloLetras(event)" maxlength="20" >
 
 				

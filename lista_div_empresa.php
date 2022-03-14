@@ -175,7 +175,7 @@
 			$desde = ($pagina-1) * $por_pagina;
 			$total_paginas = ceil($total_registro / $por_pagina);
 
-			$query = mysqli_query($conexion,"SELECT u.Id_Division_Empresa, u.Division_Empresa FROM tbl_division_empresa ORDER BY u.Id_Division_Empresa ASC LIMIT $desde,$por_pagina");
+			$query = mysqli_query($conexion,"SELECT Id_Division_Empresa, Division_Empresa FROM tbl_division_empresa ORDER BY Id_Division_Empresa ASC LIMIT $desde,$por_pagina");
 
 			mysqli_close($conexion);
 
@@ -192,11 +192,11 @@
 					
 
 					<td>
-						<a class="link_edit" href="editar_usuario.php?id=<?php echo $data["Id_Division_Empresa"]; ?>">Editar</a> // Falta crear pagina de editar
+						<a class="link_edit" href="editar_division.php?id=<?php echo $data["Id_Division_Empresa"]; ?>">Editar</a> // Falta crear pagina de editar
 
 					<?php if($data["Id_Division_Empresa"] != 1){ ?>
 						|
-						<a class="link_delete" href="eliminar_confirmar_usuario.php?id=<?php echo $data["Id_Division_Empresa"]; ?>">Eliminar</a> // Falta crear pagina de eliminar 
+						<a class="link_delete" href="eliminar_confirmar_division.php?id=<?php echo $data["Id_Division_Empresa"]; ?>">Eliminar</a> // Falta crear pagina de eliminar 
 					<?php } ?>
 						
 					</td>

@@ -12,45 +12,35 @@ if($_SESSION['Id_Rol'] != 1){
 //CONEXION A LA BASE DE DATOS
 $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
-if (isset($_POST['crear_div_emp'])) {
-    if ( strlen($_POST['Division_Empresa']) >= 1)
-    {
-	    
-	    //Campos TBL_DIVISION_EMPRESA
-        $division_empresa = trim($_POST['Division_Empresa']);
-	   
+if(!empty($_POST))
+	{
+		$alert='';
+		if(empty($_POST['Division_Empresa']) 
+        )
+		{$alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
+		}else{
+			
 
-        
-        //PROCESO DE INSERT DE LA TABLA: division_empresa 
-	    $consulta="INSERT INTO tbl_division_empresa (Division_Empresa)
-        VALUES ('$division_empresa')";
-
-
-        //VERIFICAR QUE EL USUARIO NO SE REPITA EN LA BASE DE DATOS
-        $verificar_div=mysqli_query($conexion, "SELECT * FROM tbl_division_empresa WHERE Division_Empresa='$division_empresa'");
-
-
-        if(mysqli_num_rows($verificar_div) > 0){
-         
-            ?> 
-	            <script type="text/javascript">
-                    alert('¡ Esta division de departamento ya ha sido registrada, Intenta con otra diferente !')
-                </script>
-
-            <?php
-    
-            header('Location: lista_div_empresa.php');
-    
+			$div_empresa = $_POST['Division_Empresa'];
           
-           
-            exit();
-        }
+			
 
-      
 
-    }   
+		
 
-}
+				$query_insert = mysqli_query($conexion,"INSERT INTO tbl_division_empresa (Division_Empresa)
+                VALUES ('$div_empresa')");
+				if($query_insert){
+					$alert='<p class="msg_save"> Solicitud Ingresado correctamente.</p>';
+                    header('Location: registro_tipo_personas.php');
+				}else{
+					$alert='<p class="msg_error">Error al Ingresar la asolicitud.</p>';
+				}
+
+			}
+
+
+		}
 ?>
 
 <!DOCTYPE html>
@@ -260,10 +250,10 @@ if (isset($_POST['crear_div_emp'])) {
                 </main>
                                    
                                     <form action="" method="post">
-                                                                   
+                                    <div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div>                     
                                    <center> <h1>Crear Nueva Division De empresa</h1></center>
-                 <label for="Usuario">Nombre de la division de empresa</label>
-                <input class="form-control" type="text" name="div_empresa" id="Div_Empresa" onKeyUP="this.value=this.value.toUpperCase();" placeholder="Nombre de división"
+                 <label for="Division_Empresa">Nombre de la division de empresa</label>
+                <input class="form-control" type="text" name="Division_Empresa" id="Division_Empresa" onKeyUP="this.value=this.value.toUpperCase();" placeholder="Nombre de división"
                 onkeypress="return  SoloLetras(event)" maxlength="20" >
 
 				
