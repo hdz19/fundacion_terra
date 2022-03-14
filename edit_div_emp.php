@@ -1,76 +1,107 @@
 <?php 
-
+//include "../conexion.php";
 
 session_start();
-if($_SESSION['Id_Rol'] != 1){
+if($_SESSION['Id_Rol']!= 1)
+	{
+		header("location: index.php");
+	}
+    $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
-	header("location: index.php");
 
+ if(!empty($_POST))
+ {
+     $alert='';
+    if (empty($_POST['Division_Empresa']) >= 1)
+   {
+       $alert='<p class="msg_error">Campo obligatorio.</p>';
+   }else{
+
+ 
+    //Campos TBL_MS_USUARIO
+    $id_division_empresa = ($_POST['Id_Division_Empresa']);
+    $division_empresa = trim($_POST['Division_Empresa']);
+       
+    //CONEXION A LA BASE DE DATOS
+    $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
+
+$query = mysqli_query($conexion,"SELECT * FROM tbl_division_empresa 
+													   WHERE Division_Empresa = '$division_empresa' AND Id_Division_Empresa != $id_division_empresa");
+
+			$result = mysqli_fetch_array($query);
+
+			if($result > 0){
+				$alert='<p class="msg_error">La division de empresa ya existe.</p>';
+			}else{
+
+				
+                    //$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
+                    $sql_update = mysqli_query($conexion,"UPDATE tbl_division_empresa SET Id_Division_Empresa='$id_division_empres',Division_Empresa='$id_division_empresa',
+                     WHERE Id_Division_Empresa='$id_division_empresa'");
+
+
+                if($sql_update){
+                    
+					$alert='<p class="msg_save">Division actualizada correctamente.</p>';
+                    
+                    ?> 
+                    <script type="text/javascript">
+                              alert('¡ Division actualizada correctamente !')
+        
+                              </script>
+                                   <?php
+            
+            header('Location: lista_div_empresa.php');
+            ?> 
+                   <?php
+				}else{
+					$alert='<p class="msg_error">Error al actualizar la division.</p>';
+				}
+
+                                             
+            
+            }
+        }
+                                            
+ }                                       
+//Mostrar Datos
+if(empty($_REQUEST['id']))
+{
+	header('Location: lista_div_empresa.php');
+	mysqli_close($conexion);
 }
-	
+$iduser = $_REQUEST['id'];
 
-//CONEXION A LA BASE DE DATOS
 $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
-if (isset($_POST['crear_div_emp'])) {
-    if ( strlen($_POST['Division_Empresa']) >= 1)
-    {
-	    
-	    //Campos TBL_DIVISION_EMPRESA
-        $division_empresa = trim($_POST['Division_Empresa']);
-	   
+$sql= mysqli_query($conexion,"SELECT Id_Division_Empresa,Division_Empresa
+WHERE Id_Division_Empresa= $id_division_empresa ");
 
-        
-        //PROCESO DE INSERT DE LA TABLA: division_empresa 
-	    $consulta="INSERT INTO tbl_division_empresa (Division_Empresa)
-        VALUES ('$division_empresa')";
+mysqli_close($conexion);
+$result_sql = mysqli_num_rows($sql);
 
 
-        //VERIFICAR QUE EL USUARIO NO SE REPITA EN LA BASE DE DATOS
-        $verificar_div=mysqli_query($conexion, "SELECT * FROM tbl_division_empresa WHERE Division_Empresa='$division_empresa'");
 
-
-        if(mysqli_num_rows($verificar_div) > 0){
-         
-            ?> 
-	            <script type="text/javascript">
-                    alert('¡ Esta division de departamento ya ha sido registrada, Intenta con otra diferente !')
-                </script>
-
-            <?php
-    
-            header('Location: lista_div_empresa.php');
-    
-          
-           
-            exit();
-        }
-
-      
-
-    }   
-
-}
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
     <head>
-    <meta charset="utf-8" />
+        <meta charset="utf-8" />
+		
+	
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Registro de Division Empresa</title>
+        <title>Registro de Usuario</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-        <link href="css/styles.css" rel="stylesheet" />
-		<link href="css/nuevo.css" rel="stylesheet" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
-	
-    
-    
-        
        
+        <link href="css/nuevo.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet" />
+
+		
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
 
 
@@ -123,14 +154,15 @@ if (isset($_POST['crear_div_emp'])) {
               if(tecla==32) return false;
             }
 
-
-
+             
     </script> 
     </head>
     <body class="bg-primary">
-    
-        <div id="container">
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+	
+                <main>
+				
+	                  <section id="container">
+                      <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="index.php">Sistema de Solicitudes </a>
             <!-- Sidebar Toggle-->
@@ -203,6 +235,7 @@ if (isset($_POST['crear_div_emp'])) {
 
 
 
+
                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                         Autentificacion
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -247,40 +280,48 @@ if (isset($_POST['crear_div_emp'])) {
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Fundacion Terra</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Panel de Control</li>
-                        </ol>
-                    
-                           
-                            
+                        
                        
-                            
+                    
+                                
                         
                 </main>
-                                   
-                                    <form action="" method="post">
-                                                                   
-                                   <center> <h1>Crear Nueva Division De empresa</h1></center>
-                 <label for="Usuario">Nombre de la division de empresa</label>
-                <input class="form-control" type="text" name="div_empresa" id="Div_Empresa" onKeyUP="this.value=this.value.toUpperCase();" placeholder="Nombre de división"
-                onkeypress="return  SoloLetras(event)" maxlength="20" >
+		
+		                  <div class="form_register">
+						 
+			<hr>
+			<div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div>
+            <section id="container">
+            <center>  <form  action="" method="post">
+
+                                               
+									<input type="hidden" name="Id_Usuario" value="<?php echo $id_division_empresa; ?>">
+                                    <center> <h1>Editar division de empresa</h1></center>
+
+                               
+                                    <label for="Division_Empresa">Division Empresa</label>
+                <input width: 50px; class="form-control" type="text" style="width: 450px" name="division_empresa" id="division_empresa" onKeyUP="this.value=this.value.toUpperCase();" placeholder="Div Empresa" value="<?php echo $division_empresa; ?>"
+                 maxlength="50"  >
+
 
 				
-                                        
-                                        <center> 
-                                                    <button type="submit" name="crear_div_emp" class="btn_save" >Crear División</button></div>
-                                                    
-                                             </center>     
+                            
+                                        <div class="mt-4 mb-0">
+                                                    <div class="d-grid">
+                                                    <button type="submit" name="Actualizar division" class="btn_save" >Actualizar Usuario</button></div>
+                                                    </div>  
+                                                </div> 
+                                            </div> </center>     
                                     </form><p>
-                                    
+                                    </center>
+                                       
+                                    </section >
                                 </div>
                             </div>
                         </div>
                     </div>
                 </main>
             </div> <br>
-            
             <div id="layoutAuthentication_footer">
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
@@ -298,6 +339,6 @@ if (isset($_POST['crear_div_emp'])) {
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
-        
+		
     </body>
 </html>
