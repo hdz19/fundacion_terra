@@ -192,11 +192,11 @@
 					
 
 					<td>
-						<a class="link_edit" href="editar_division.php?id=<?php echo $data["Id_Division_Empresa"]; ?>">Editar</a> // Falta crear pagina de editar
+						<a class="link_edit" href="edit_div_emp.php?id=<?php echo $data["Id_Division_Empresa"]; ?>">Editar</a> 
 
 					<?php if($data["Id_Division_Empresa"] != 1){ ?>
 						|
-						<a class="link_delete" href="eliminar_confirmar_division.php?id=<?php echo $data["Id_Division_Empresa"]; ?>">Eliminar</a> // Falta crear pagina de eliminar 
+						<a class="link_delete" href="eliminar_confirmar_division.php?id=<?php echo $data["Id_Division_Empresa"]; ?>">Eliminar</a> 
 					<?php } ?>
 						
 					</td>

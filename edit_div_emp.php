@@ -20,7 +20,7 @@ if($_SESSION['Id_Rol']!= 1)
  
     //Campos TBL_MS_USUARIO
     $id_division_empresa = ($_POST['Id_Division_Empresa']);
-    $division_empresa = trim($_POST['Division_Empresa']);
+    $division_empresa = ($_POST['Division_Empresa']);
        
     //CONEXION A LA BASE DE DATOS
     $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
@@ -36,7 +36,7 @@ $query = mysqli_query($conexion,"SELECT * FROM tbl_division_empresa
 
 				
                     //$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
-                    $sql_update = mysqli_query($conexion,"UPDATE tbl_division_empresa SET Id_Division_Empresa='$id_division_empres',Division_Empresa='$id_division_empresa',
+                    $sql_update = mysqli_query($conexion,"UPDATE tbl_division_empresa SET Id_Division_Empresa='$id_division_empresa',Division_Empresa='$division_empresa',
                      WHERE Id_Division_Empresa='$id_division_empresa'");
 
 
@@ -70,11 +70,11 @@ if(empty($_REQUEST['id']))
 	header('Location: lista_div_empresa.php');
 	mysqli_close($conexion);
 }
-$iduser = $_REQUEST['id'];
+$id_division_empresa = $_REQUEST['id'];
 
 $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
-$sql= mysqli_query($conexion,"SELECT Id_Division_Empresa,Division_Empresa
+$sql= mysqli_query($conexion,"SELECT Id_Division_Empresa, Division_Empresa FROM tbl_division_empresa
 WHERE Id_Division_Empresa= $id_division_empresa ");
 
 mysqli_close($conexion);
@@ -295,12 +295,12 @@ $result_sql = mysqli_num_rows($sql);
             <center>  <form  action="" method="post">
 
                                                
-									<input type="hidden" name="Id_Usuario" value="<?php echo $id_division_empresa; ?>">
+									<input type="hidden" name="Id_Division_Empresa" value="<?php echo $id_division_empresa; ?>">
                                     <center> <h1>Editar division de empresa</h1></center>
 
                                
                                     <label for="Division_Empresa">Division Empresa</label>
-                <input width: 50px; class="form-control" type="text" style="width: 450px" name="division_empresa" id="division_empresa" onKeyUP="this.value=this.value.toUpperCase();" placeholder="Div Empresa" value="<?php echo $division_empresa; ?>"
+                <input width: 50px; class="form-control" type="text" style="width: 450px" name="Division Empresa" id="Division Empresa" onKeyUP="this.value=this.value.toUpperCase();" placeholder="Div Empresa" value="<?php echo $division_empresa; ?>"
                  maxlength="50"  >
 
 
@@ -308,7 +308,7 @@ $result_sql = mysqli_num_rows($sql);
                             
                                         <div class="mt-4 mb-0">
                                                     <div class="d-grid">
-                                                    <button type="submit" name="Actualizar division" class="btn_save" >Actualizar Usuario</button></div>
+                                                    <button type="submit" name="Actualizar division" class="btn_save" >Actualizar Division</button></div>
                                                     </div>  
                                                 </div> 
                                             </div> </center>     
