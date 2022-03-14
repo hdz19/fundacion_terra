@@ -12,105 +12,64 @@ if($_SESSION['Id_Rol'] != 1){
 //CONEXION A LA BASE DE DATOS
 $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
-if (isset($_POST['crear_cuenta'])) {
-    if (strlen($_POST['Usuario']) >= 1 && strlen($_POST['Nombre_Usuario']) >= 1 && 
-     strlen($_POST['Contraseña']) >= 1  &&   strlen($_POST['Id_Rol']) >= 1 &&   strlen($_POST['Id_Tipo_Persona']) >= 1  
+if (isset($_POST['crear_persona'])) {
+    if (strlen($_POST['Id_Tipo_Persona']) >= 1 && strlen($_POST['Id_Division_Empresa']) >= 1 && 
+     strlen($_POST['Nombre_Completo']) >= 1  &&   strlen($_POST['Identidad']) >= 1 &&   strlen($_POST['Genero']) >= 1  
        
-     && strlen($_POST['Correo_Electronico']) >= 1  &&  strlen($_POST['Creado_Por']) >= 1  &&  strlen($_POST['Modificado_Por']) >= 1 
-    && strlen($_POST['Id_Estado_Usuario']) >= 1 )
+     &&  strlen($_POST['Creado_Por']) >= 1  &&  strlen($_POST['Modificado_Por']) >= 1  )
     {
 	    
-	    //Campos TBL_MS_USUARIO
-        $usuario = trim($_POST['Usuario']);
-	    $nombre_usuario = trim($_POST['Nombre_Usuario']);
-       
-        $contraseña  = ($_POST['Contraseña']);
-        
-			$id_rol  = $_POST['Id_Rol'];
-			$id_personas  = $_POST['Id_Tipo_Persona'];
-			$fecha_ultima_conexion  = $_POST['Fecha_Ultima_Conexion'];
-			$preguntas_contestadas  = 1;
-			$primer_ingreso  =1;
-			$fecha_vencimiento  = $_POST['Fecha_Vencimiento'];
-			$correo_electronico  = $_POST['Correo_Electronico'];
-			$creado_por  = $_POST['Creado_Por'];
-			$fecha_creacion  = date('Y/m/d');
-			$modificado_por  = $_POST['Modificado_Por'];
-			$fecha_modificacion  = $_POST['Fecha_Modificacion'];
-			$id_estado_usuario  = $_POST['Id_Estado_Usuario'];
+	    //Campos TBL_PERSONAS
+        $id_tipo_persona     = trim($_POST['Id_Tipo_Persona']);
+	    $id_division_empresa = trim($_POST['Id_Division_Empresa']);
+        $nombre_completo     = ($_POST['Nombre_Completo']); 
+		$identidad           = $_POST['Identidad'];
+		$genero              = $_POST['Genero'];
+		$fecha_nac           = $_POST['Fecha_Nac'];
+		$creado_por          = $_POST['Creado_Por'];
+		$fecha_creacion      = date('Y/m/d');
+		$modificado_por      = $_POST['Modificado_Por'];
+		$fecha_mod           = $_POST['Fecha_Mod'];
+		
 
         
-         //PROCESO DE INSERT DE LA TABLA: tbl_ms_usuario
-	    $consulta="INSERT INTO tbl_ms_usuario (Usuario,Nombre_Usuario,Contraseña,Id_Rol,Id_Tipo_Persona,
-        Fecha_Ultima_Conexion,Preguntas_Contestadas,Primer_Ingreso,Fecha_Vencimiento,
-        Correo_Electronico,Creado_Por,Fecha_Creacion,Modificado_Por,Fecha_Modificacion,Id_Estado_Usuario)
-         VALUES ('$usuario','$nombre_usuario','$contraseña','$id_rol','$id_personas','$fecha_ultima_conexion','$preguntas_contestadas','$primer_ingreso',
-			'$fecha_vencimiento','$correo_electronico','$creado_por','$fecha_creacion','$modificado_por','$fecha_modificacion','$id_estado_usuario')";
+        //PROCESO DE INSERT DE LA TABLA: tbl_ms_usuario
+	    $consulta="INSERT INTO tbl_personas (Id_Tipo_Persona,Id_Division_Empresa,Nombre_Completo,Identidad,	Genero,
+        Fecha_Nac,Creado_Por,Fecha_Creacion,Modificado_Por,Fecha_Mod)
+        VALUES ('$id_tipo_persona','$id_division_empresa','$nombre_completo','$identidad','$genero','$fecha_nac',
+	    '$creado_por','$fecha_creacion','$modificado_por','$fecha_mod')";
 
 
-         //VERIFICAR QUE EL USUARIO NO SE REPITA EN LA BASE DE DATOS
-         $verificar_usuario=mysqli_query($conexion, "SELECT * FROM tbl_ms_usuario WHERE Usuario='$usuario' OR Correo_Electronico = '$correo_electronico'");
+        //VERIFICAR QUE EL USUARIO NO SE REPITA EN LA BASE DE DATOS
+        $verificar_personas=mysqli_query($conexion, "SELECT * FROM tbl_personas WHERE Identidad='$identidad'");
 
 
-         if(mysqli_num_rows($verificar_usuario) > 0){
+        if(mysqli_num_rows($verificar_personas) > 0){
          
             ?> 
 	    	<script type="text/javascript">
-                      alert('¡ Este Usuario ya esta registrado, Intenta con otro diferente !')
-                      </script>
-                      <?php
+                alert('¡ Esta persona ya esta registrada, Intenta con otra diferente !')
+            </script>
+            
+            <?php
     
-    header('Location: lista_usuarios.php');
-    ?> 
+            //header('Location: lista_usuarios.php'); falta crear lista_personas.php
+            
+            ?> 
                       
-           <?php
+           
           
            
-            exit();
-         }
+          exit();
+        }
 
-      //PASO PARA SABER SI SE GUARDARON O NO LOS DATOS   
-         $resultado=mysqli_query($conexion,$consulta);   
-	    if ($resultado) {
-            mail ($correo_electronico, "Bienvenida al sistema", "Estimad@ ".$usuario.",
-            Estamos  felices de que formes parte de nuestro sistema.
-            Para ingresar favor utiliza tu usuario y contraseña.
-
-            Favor no contestar.
-            Generado automaticamente."
-           ,
-            "From: fundacio.terra22@gmail.com");
-	    	?> 
-	    	<script type="text/javascript">
-                
-                alert('¡ Exito, Inscrito Correctamente !')
-                      
-            </script>
-
-            <?php
-
-                header('Location: lista_usuarios.php');
+      
     
-            ?> 
-
+     
         <?php
-	    } else {
-        ?>    
-  
-            <script type="text/javascript">
-                alert('¡ Usuario o Contraseña Invalido, Intentalo de nuevo !')
-            </script>
-            
-            <?php
+	} 
 
-                header('Location: registro_usuario.php');
-
-            ?> 
-            
-            <?php           
-	    }
-
-    }else {
+    }   else {
         ?>    
   
         <script type="text/javascript">
@@ -118,7 +77,10 @@ if (isset($_POST['crear_cuenta'])) {
                   </script>
           <?php      
     }
-}
+} //TIRA ERROR SI LO QUITO
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -185,21 +147,13 @@ if (isset($_POST['crear_cuenta'])) {
                 }
 
             }
+
             function pulsar(e) {
               tecla=(document.all) ? e.keyCode : e.which;
               if(tecla==32) return false;
             }
-            //Funcion Mostrar Contraseña
-            function mostrarPassword(){
-		var cambio = document.getElementById("inputPassword");
-		if(cambio.type == "password"){
-			cambio.type = "text";
-			$('.icon').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
-		}else{
-			cambio.type = "password";
-			$('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
-		}
-	} 
+           
+            
     </script> 
     </head>
     <body class="bg-primary">
@@ -254,6 +208,7 @@ if (isset($_POST['crear_cuenta'])) {
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                    
                                     <?php 
 				if($_SESSION['Id_Rol'] == 1){
 			 ?>
@@ -266,8 +221,8 @@ if (isset($_POST['crear_cuenta'])) {
                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                     
                       <nav class="sb-sidenav-menu-nested nav">
-						<li><a class="nav-link" href="registro_usuario.php">Nuevo Usuario</a></li>
-						<li><a class="nav-link" href="lista_usuarios.php">Lista de Usuarios</a></li>
+						<li><a class="nav-link" href="registro_personas.php">Nueva Persona</a></li>
+						<li><a class="nav-link" href="lista_usuarios.php">Lista de Personas</a></li>
                 </nav>
                 </div>
 					
@@ -336,78 +291,37 @@ if (isset($_POST['crear_cuenta'])) {
                                    
                                     <form action="" method="post">
                                                                    
-                                   <center> <h1>Crear Usuario</h1></center>
-                 <label for="Usuario">Usuario</label>
-                <input class="form-control" type="text" name="Usuario" id="Usuario" onKeyUP="this.value=this.value.toUpperCase();" placeholder="Usuario"
-                onkeypress="return  SoloLetras(event)" maxlength="15"  >
-
-				<label for="Nombre_Usuario">Nombre</label>
-				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Nombre_Usuario" id="Nombre_Usuario" placeholder="Nombre completo"
-                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
-				
-				<label for="Contraseña">Contraseña</label>
-                <input class="form-control" style="width: 450px" id="inputPassword" name="Contraseña" type="password" placeholder="Contraseña" 
-                                                onkeypress="return pulsar(event)"  maxlength="256"  />
-                                                
-                                                <button class="btn btn-primary" type="button" onclick="mostrarPassword()"><span class="fa fa-eye-slash icon"></span></button>
-                                               
-
-				<label for="Correo_Electronico">Correo electrónico</label>
-				<input class="form-control" id="inputPasswordConfirm" type="email"
-                                                    name="Correo_Electronico" placeholder="example@gmail.com" 
-                                                    onkeypress="return pulsar(event)" maxlength="50"/>
-
-                                       
-				<input type="hidden" name="Preguntas_Contestadas" id="Preguntas_Contestadas" placeholder="Cantidad ">
-
-			
-				<input type="hidden" name="Primer_Ingreso" id="Primer_Ingreso" placeholder="Cantidad ">
-
-                <label for="Fecha_Ultima_Conexion">Fecha de Ultima Conexión</label>
-				<input type="date" name="Fecha_Ultima_Conexion" id="Fecha_Ultima_Conexion" placeholder="Y/m/d">
-
-                <label for="Fecha_Vencimiento">Fecha de Vencimiento</label>
-				<input type="date" name="Fecha_Vencimiento" id="Fecha_Vencimiento" placeholder="Y/m/d">
-
-                <label for="Fecha_Modificacion">Fecha de Modificación</label>
-				<input type="date" name="Fecha_Modificacion" id="Fecha_Modificacion" placeholder="Y/m/d">
-
-                <label for="Modificado_Por">Modificado Por </label>
-				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Modificado_Por" id="Modificado_Por" placeholder= "Modificado Por" 
-                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
+                                   <center> <h1>Crear Persona</h1></center>
 
 
-			
-
-				<label for="Creado_Por">Creado Por </label>
-				<input class="form-control"  type="text"onKeyUP="this.value=this.value.toUpperCase();" name="Creado_Por" id="Creado_Por" placeholder= "Creado Por"
-                onkeypress="return  SoloLetras(event)" maxlength="15">
 
 
-                                        <div class ="row mb-4">
+                                   <div class ="row mb-4">
                                             <div class="col-md-8">
-                                                <label> Selecione su Rol</label>
-                                                <select class="form-select" aria-label="Default select example" name="Id_Rol">
+                                                <label> Selecione su ID de tipo persona</label>
+                                                <select class="form-select" aria-label="Default select example" name="Id_Tipo_Persona">
                                                          <?php
-                                                         $consulta="SELECT * FROM tbl_ms_roles ";
+                                                         $consulta="SELECT * FROM tbl_tipo_persona ";
                                                          $resultado=mysqli_query($conexion,$consulta);
                                                          while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Rol']."'>".$fila['Rol']."</option
+                                                             echo "<option value='".$fila['Id_Tipo_Persona']."'>".$fila['Tipo_Persona']."</option
                                                              >";
                                                          }
                                                          ?>
                                                          </select>
                                             </div>
                                             </div>
+
+                                            
                                             <div class ="row mb-4">
                                             <div class="col-md-8">
-                                                    <label> Selecione tipo de persona </label>
-                                                    <select name="Id_Tipo_Persona" class="form-select" aria-label="Default select example">
+                                                    <label> Selecione su division en la empresa </label>
+                                                    <select name="Id_Division_Empresa" class="form-select" aria-label="Default select example">
                                                         <?php
-                                                         $consulta="SELECT * FROM tbl_tipo_persona ";
+                                                         $consulta="SELECT * FROM tbl_division_empresa ";
                                                          $resultado=mysqli_query($conexion,$consulta);
                                                          while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Tipo_Persona']."'>".$fila['Tipo_Persona']."</option
+                                                             echo "<option value='".$fila['Id_Division_Empresa']."'>".$fila['Division_Empresa']."</option
                                                              >";
                                                         }
                                                         ?>
@@ -415,27 +329,46 @@ if (isset($_POST['crear_cuenta'])) {
                                             </div>
                                             </div>
 
-                                            <div class ="row mb-4">
-                                            <div class="col-md-8">
-                                                <label> Selecione estado de usuario </label> 
-                                                <select name="Id_Estado_Usuario" class="form-select" aria-label="Default select example">
-                                                        <?php
-                                                        $consulta="SELECT * FROM tbl_ms_estado_usuario ";
-                                                        $resultado=mysqli_query($conexion,$consulta);
-                                                         while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Estado_Usuario']."'>".$fila['Estado_Usuario']."</option
-                                                             >";
-                                                        }
-                                                        ?>
-                                                </select>
-                                            </div>
-                                        </div>  
-                                         
+
+
+
+				<label for="Nombre_Completo">Nombre Completo</label>
+				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Nombre_Completo" id="nombre_completo" placeholder="Nombre completo"
+                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
+				
+				<label for="identidad">Identidad</label>
+				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Identidad" id="identidad" placeholder="ID"
+                maxlength="20" >
+
+                <label for="genero">Genero</label>
+				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Genero" id="genero" placeholder="Genero"
+                maxlength="1" >
+
+
+                <label for="Fecha_Nac">Fecha Nacimiento</label>
+				<input type="date" name="Fecha_Nac" id="fecha_nac" placeholder="Y/m/d">
+
+                
+				<label for="Creado_Por">Creado Por </label>
+				<input class="form-control"  type="text"onKeyUP="this.value=this.value.toUpperCase();" name="Creado_Por" id="Creado_Por" placeholder= "Creado Por"
+                onkeypress="return  SoloLetras(event)" maxlength="15">
+
+                <label for="Fecha_creacion">Fecha de Creacion</label>
+				<input type="date" name="Fecha_Creacion" id="fecha_creacion" placeholder="Y/m/d">
+
+                <label for="Fecha_Modificacion">Fecha de Modificación</label>
+				<input type="date" name="Fecha_Mod" id="Fecha_Modificacion" placeholder="Y/m/d">
+
+                <label for="Modificado_Por">Modificado Por </label>
+				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Modificado_Por" id="Modificado_Por" placeholder= "Modificado Por" 
+                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
+
                                         
                                         <center> 
-                                                    <button type="submit" name="crear_cuenta" class="btn_save" >Crear Cuenta</button></div>
+
+                                            <button type="submit" name="crear_persona" class="btn_save" >Crear Persona</button></div>
                                                     
-                                             </center>     
+                                        </center>     
                                     </form><p>
                                     
                                 </div>
