@@ -38,7 +38,7 @@
 			$busqueda = strtolower($_REQUEST['busqueda']);
 			if(empty($busqueda))
 			{
-				header("location: lista_usuarios.php");
+				header("location: lista_solicitud.php");
 				mysqli_close($conexion);
 			}
 
@@ -130,7 +130,7 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Lista de Usuarios</h1>
+                        <h1 class="mt-4">Lista de Solicitudes</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.php">Panel de Control</a></li>
 							
@@ -145,13 +145,13 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                Lista Usuarios
+                                Lista Solicitudes
                             </div>
-							<div class="col-md-6"> <a href="registro_usuario.php" class="btn_new">Crear Usuario</a>
+							<div class="col-md-6"> <a href="solicitud.php" class="btn_new">Crear Solicitud</a>
 
 
 </div>
-							<right>     <form action="buscar_usuario.php" method="get" class="form_search">
+							<right>     <form action="buscar_solicitud.php" method="get" class="form_search">
 			<input type="text" name="busqueda" id="busqueda" placeholder="Buscar">
 			<input type="submit" value="Buscar" class="btn_search">
 
@@ -162,24 +162,16 @@
 								<tbody>
                                     <thead>
 									
-                                        <tr>
-										<th>Id Usuario</th>
-				                        <th>Usuario</th>
-			                          	<th>Nombre Usuario</th>
-			                         	<th>Contraseña</th>
-				                        <th>Id Rol</th>
-			                         	<th>Id Personas</th>
-				                        <th>Fecha de Ultima Conexion</th>
-				                        <th>Preguntas Contestadas</th>
-				                        <th>Primer Ingreso</th>
-				                        <th>Fecha Vencimiento</th>
-				                        <th>Correo Electrónico</th>
-				                        <th>Creado Por</th>
-				                        <th>Fecha Creacion</th>
-				                       <th>Modificado Por</th>
-				                       <th>Fecha_Modificacion Por</th>
-				                       <th>Estado Usuario</th>
-				                       <th>Acciones</th>
+                                    <tr>
+										<th>Id Solicitud </th>		                        
+                                        <th>Enlace</th>	    
+			                         	<th>Nombre Completo</th>
+				                        <th>Tipo de Solicitud</th>
+				                        <th>Estado</th>
+				                        <th>Nombre Proyecto</th>
+				                        <th>Motivo</th>
+				                        <th>Fecha de Registro </th>
+                                        <th>Acciones</th>
                                         </tr>
 										<?php 
 			//Paginador
@@ -198,13 +190,12 @@
 			}
 
 
-			$sql_registe = mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM tbl_ms_usuario 
-																WHERE ( Id_Usuario LIKE '%$busqueda%' OR 
-																Usuario LIKE '%$busqueda%' OR 
-																Nombre_Usuario LIKE '%$busqueda%' OR 
-																Correo_Electronico LIKE '%$busqueda%' 
-																		$rol  ) 
-																AND Id_Estado_Usuario = 1  ");
+			$sql_registe = mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM tbl_solicitud 
+																WHERE ( Id_Solicitud LIKE '%$busqueda%' OR 
+																Nombre_Proyecto LIKE '%$busqueda%' OR 
+																Motivo LIKE '%$busqueda%' 
+																
+																		$rol  )");
 
 			$result_register = mysqli_fetch_array($sql_registe);
 			$total_registro = $result_register['total_registro'];
@@ -221,22 +212,41 @@
 			$desde = ($pagina-1) * $por_pagina;
 			$total_paginas = ceil($total_registro / $por_pagina);
 
-			$query = mysqli_query($conexion,"SELECT u.Id_Usuario, u.Usuario, u.Nombre_Usuario, u.Contraseña, u.Correo_Electronico,r.Rol ,
-			u.Id_Tipo_Persona,u.Fecha_Ultima_Conexion,u.Preguntas_Contestadas,u.Primer_Ingreso,
-			u.Fecha_Vencimiento,u.Correo_Electronico,u.Creado_Por,u.Fecha_Creacion,u.Modificado_Por,u.Fecha_Modificacion,u.Id_Estado_Usuario FROM tbl_ms_usuario u INNER JOIN tbl_ms_roles r ON u.Id_Rol = r.Id_Rol 
+			$query = mysqli_query($conexion,"SELECT s.Id_Solicitud, 
+            s.Id_Solicitud_Adjunto, 
+            s.Id_Personas, 
+            s.Id_Tipo_Solicitud, 
+            s.Id_Estado,
+            s.Nombre_Proyecto, 
+            s.Motivo,
+            s.Fecha_Registro_Solicitud,
+            a.enlace,
+            p.Nombre_Completo,
+            t.Tipo_Solicitud,
+            e.Estado FROM tbl_solicitud s 
+             INNER JOIN tbl_solicitud_adjunto a
+			ON s.Id_Solicitud_Adjunto = a.Id_Solicitud_Adjunto 
+            INNER JOIN tbl_personas p
+			ON s.Id_Personas = p.Id_Personas
+            INNER JOIN tbl_tipo_solicitud t
+			ON s.Id_Tipo_Solicitud = t.Id_Tipo_Solicitud
+            INNER JOIN tbl_estado e
+			ON s.Id_Estado = e.Id_Estado 
 										WHERE 
-										( u.Id_Usuario LIKE '%$busqueda%' OR 
-											u.Usuario LIKE '%$busqueda%' OR 
-											u.Nombre_Usuario LIKE '%$busqueda%' OR 
-											u.Correo_Electronico LIKE '%$busqueda%' OR 	
-											u.Preguntas_Contestadas LIKE '%$busqueda%' OR 
-											u.Primer_Ingreso LIKE '%$busqueda%' OR
-											u.Creado_Por LIKE '%$busqueda%' OR 	
-											u.Modificado_Por LIKE '%$busqueda%' OR 	  
-											u.Id_Tipo_Persona LIKE '%$busqueda%' OR
-											r.Rol    LIKE  '%$busqueda%') 
-										AND
-										Id_Estado_Usuario = 1 ORDER BY u.Id_Usuario ASC LIMIT $desde,$por_pagina 
+										( s.Id_Solicitud LIKE '%$busqueda%' OR 
+                                        s.Id_Solicitud_Adjunto LIKE '%$busqueda%' OR 
+                                        s.Id_Personas LIKE '%$busqueda%' OR 
+                                        s.Id_Tipo_Solicitud LIKE '%$busqueda%' OR 	
+                                        s.Id_Estado LIKE '%$busqueda%' OR 
+                                        s.Nombre_Proyecto LIKE '%$busqueda%' OR
+                                        s.Motivo LIKE '%$busqueda%' OR 	
+                                        s.Fecha_Registro_Solicitud LIKE '%$busqueda%' OR 	
+                                        a.enlace LIKE '%$busqueda%' OR 	  
+                                        p.Nombre_Completo LIKE '%$busqueda%' OR
+                                        t.Tipo_Solicitud    LIKE  '%$busqueda%' OR 
+                                        e.Estado LIKE '%$busqueda%') 
+									
+										 ORDER BY s.Id_Solicitud ASC LIMIT $desde,$por_pagina 
 				");
 			mysqli_close($conexion);
 			$result = mysqli_num_rows($query);
@@ -247,30 +257,23 @@
 			?>
 								
 				<tr>
-					<td><?php echo $data["Id_Usuario"]; ?></td>
-					<td><?php echo $data["Usuario"]; ?></td>
-					<td><?php echo $data["Nombre_Usuario"]; ?></td>
-					<td><?php echo $data["Contraseña"]; ?></td>
-					<td><?php echo $data["Rol"]; ?></td>
-					<td><?php echo $data["Id_Tipo_Persona"] ?></td>
-					<td><?php echo $data["Fecha_Ultima_Conexion"] ?></td>
-					<td><?php echo $data["Preguntas_Contestadas"] ?></td>
-					<td><?php echo $data["Primer_Ingreso"] ?></td>
-					<td><?php echo $data["Fecha_Vencimiento"] ?></td>
-					<td><?php echo $data["Correo_Electronico"] ?></td>
-					<td><?php echo $data["Creado_Por"] ?></td>
-					<td><?php echo $data["Fecha_Creacion"] ?></td>
-					<td><?php echo $data["Modificado_Por"] ?></td>
-					<td><?php echo $data["Fecha_Modificacion"] ?></td>
-					<td><?php echo $data["Id_Estado_Usuario"] ?></td>
+                <td><?php echo $data["Id_Solicitud"]; ?></td>
+					<td><?php echo $data["enlace"]; ?></td>
+                
+					<td><?php echo $data["Nombre_Completo"]; ?></td>
+					<td><?php echo $data["Tipo_Solicitud"]; ?></td>
+					<td><?php echo $data["Estado"]; ?></td>
+					<td><?php echo $data["Nombre_Proyecto"] ?></td>
+					<td><?php echo $data["Motivo"] ?></td>
+					<td><?php echo $data["Fecha_Registro_Solicitud"] ?></td>
 					
 
 					<td>
-						<a class="link_edit" href="editar_usuario.php?id=<?php echo $data["Id_Usuario"]; ?>">Editar</a>
+						<a class="link_edit" href="editar_solicitud.php?id=<?php echo $data["Id_Solicitud"]; ?>">Editar</a>
 
-					<?php if($data["Id_Usuario"] != 1){ ?>
+					<?php if($data["Id_Solicitud"] != 1){ ?>
 						|
-						<a class="link_delete" href="eliminar_confirmar_usuario.php?id=<?php echo $data["Id_Usuario"]; ?>">Eliminar</a>
+						<a class="link_delete" href="eliminar_confirmar_solicitudes.php?id=<?php echo $data["Id_Solicitud"]; ?>">Eliminar</a>
 					<?php } ?>
 						
 					</td>

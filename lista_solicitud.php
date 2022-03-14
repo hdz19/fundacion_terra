@@ -1,8 +1,14 @@
-<?php
-session_start();
-if( isset($_SESSION['Usuario']))
-{
-    ?>
+<?php 
+
+	session_start();
+	if($_SESSION['Id_Rol'] !=1)
+	{
+		header("location: index.php");
+    }
+	$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
+
+ ?>
+
 
 
 <!DOCTYPE html>
@@ -13,45 +19,45 @@ if( isset($_SESSION['Usuario']))
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Fundación Terra</title>
+        <title>Lista Solicitudes</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
+		<link href="css/nuevo.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+	    <section id="container">
+            <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.php">Sistema de Solicitudes </a>
+            <a class="navbar-brand ps-3" href="index.php">Sistema de Solicitudes</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-           ><!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                
-            </form>
+            <!-- Navbar Search-->
+         
+		
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#!">Ajustes</a></li>
-
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="login.php">Cerrar sesión</a></li> 
+                       
+                        <li><a class="dropdown-item" href="login.php">Cerrar Sesion</a></li>
                     </ul>
                 </li>
             </ul>
-        </nav>
-        <div id="layoutSidenav">
+          </nav>
+           <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <div class="sb-sidenav-menu-heading">Configuración</div>
+                            <div class="sb-sidenav-menu-heading">Menu</div>
                             <a class="nav-link" href="index.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Panel de Control
                             </a>
-                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            <div class="sb-sidenav-menu-heading">Interfaz</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Diseños
@@ -59,53 +65,18 @@ if( isset($_SESSION['Usuario']))
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.php">Navegación estática</a>
+                                    <a class="nav-link" href="layout-static.php">Navegación Estatica</a>
                                     <a class="nav-link" href="layout-sidenav-light.php">Luz Sidenav</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Gestiones
+                                Paginas
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-
-                                
-     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                 <?php 
-	if($_SESSION['Id_Rol'] == 1){
-		 ?>
-		<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-
-			Usuarios
-                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-					
-                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                    
-                      <nav class="sb-sidenav-menu-nested nav">
-						<li><a class="nav-link" href="registro_usuario.php">Nuevo Usuario</a></li>
-						<li><a class="nav-link" href="lista_usuarios.php">Lista de Usuarios</a></li>
-                </nav>
-                </div>
-					
-				
-			<?php } ?>
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Solicitudes
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            
-                                            <a class="nav-link" href="solicitud_adjunto.php">Tipo de Solicitud</a>
-                                            <a class="nav-link" href="Solicitud.php">Solicitud</a>
-                                            <a class="nav-link" href="lista_solicitud.php">Lista de Solicitudes</a>
-                                           
-                                        </nav>
-                                    </div>
-                                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                         Autentificacion
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
@@ -116,12 +87,10 @@ if( isset($_SESSION['Usuario']))
                                             <a class="nav-link" href="password.php">Recuperar Contraseña</a>
                                         </nav>
                                     </div>
-
                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
                                         Error
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
-                                    
                                     <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
                                             <a class="nav-link" href="401.php">401 Page</a>
@@ -131,14 +100,14 @@ if( isset($_SESSION['Usuario']))
                                     </div>
                                 </nav>
                             </div>
-                            <div class="sb-sidenav-menu-heading">Complementos</div>
+                            <div class="sb-sidenav-menu-heading">Addons</div>
                             <a class="nav-link" href="Graficas.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 Graficas
                             </a>
                             <a class="nav-link" href="tabla.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Tables
+                                Tabla
                             </a>
                         </div>
                     </div>
@@ -151,16 +120,165 @@ if( isset($_SESSION['Usuario']))
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Fundacion Terra</h1>
+                        <h1 class="mt-4">Lista de Solicitudes</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Panel de Control</li>
+                            <li class="breadcrumb-item"><a href="index.php">Panel de Control</a></li>
+							
+                            <li class="breadcrumb-item active">Tabla</li>
                         </ol>
-                    
+						
+						
+						
+                        <div class="card mb-4">
                            
-                            
-                       
-                            
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                Lista de Solicitudes
+                            </div>
+                           <div class="col-md-"> <a href="solicitud.php" class="btn_new">Crear Solicitud</a>
+                           
+                           </div>
+                           <right> <div class="col-md-6"> <a href="reportes_solicitudes_pdf.php"  style="background-color:#B22222" class="btn_new">PDF</a>
                         
+        
+                        </div>
+                        <right> <div class="col-md-6"> <a href="reportes_solicitudes_excel.php" style="background-color:#008000" class="btn_new">EXCEL</a>
+                        </div>
+
+                           
+                       
+
+                       <right>     <form 
+                       action="buscar_solicitud.php" method="get" class="form_search">
+			<input type="text" name="busqueda" id="busqueda" placeholder="Buscar">
+			<input type="submit" value="Buscar" class="btn_search">
+
+            
+		</form></right>
+                        <div class="card-body">
+                                <table class="display compact nowrap" style="width:100%"   border="1" align="center" >
+								<tbody>
+                                    <thead>
+									
+                                        <tr>
+										<th width="200">Id Solicitud </th>		                        
+                                        <th width="200">Enlace</th>	    
+			                         	<th width="200">Nombre Completo</th>
+				                        <th width="200">Tipo de Solicitud</th>
+				                        <th width="200">Estado</th>
+				                        <th width="200">Nombre Proyecto</th>
+				                        <th width="200">Motivo</th>
+				                        <th width="200">Fecha de Registro </th>
+                                        
+                                        </tr>
+                                         
+										<?php 
+			//Paginador
+			$sql_registe = mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM tbl_solicitud  ");
+			$result_register = mysqli_fetch_array($sql_registe);
+			$total_registro = $result_register['total_registro'];
+
+			$por_pagina = 5;
+
+			if(empty($_GET['pagina']))
+			{
+				$pagina = 1;
+			}else{
+				$pagina = $_GET['pagina'];
+			}
+
+			$desde = ($pagina-1) * $por_pagina;
+			$total_paginas = ceil($total_registro / $por_pagina);
+
+			$query = mysqli_query($conexion,"SELECT s.Id_Solicitud, 
+            s.Id_Solicitud_Adjunto, 
+            s.Id_Personas, 
+            s.Id_Tipo_Solicitud, 
+            s.Id_Estado,
+            s.Nombre_Proyecto, 
+            s.Motivo,
+            s.Fecha_Registro_Solicitud,
+            a.enlace,
+            p.Nombre_Completo,
+            t.Tipo_Solicitud,
+            e.Estado FROM tbl_solicitud s 
+             INNER JOIN tbl_solicitud_adjunto a
+			ON s.Id_Solicitud_Adjunto = a.Id_Solicitud_Adjunto 
+            INNER JOIN tbl_personas p
+			ON s.Id_Personas = p.Id_Personas
+            INNER JOIN tbl_tipo_solicitud t
+			ON s.Id_Tipo_Solicitud = t.Id_Tipo_Solicitud
+            INNER JOIN tbl_estado e
+			ON s.Id_Estado = e.Id_Estado
+             ORDER BY s.Id_Solicitud ASC LIMIT $desde,$por_pagina 
+				");
+
+			mysqli_close($conexion);
+
+			$result = mysqli_num_rows($query);
+			if($result > 0){
+
+				while ($data = mysqli_fetch_array($query)) {
+					
+			?>
+            
+				<tr>
+					<td><?php echo $data["Id_Solicitud"]; ?></td>
+					<td><img src="<?php echo $data["enlace"]; ?>" width="120" alt"" srcset=""></td>" 
+					<td><?php echo $data["Nombre_Completo"]; ?></td>
+					<td><?php echo $data["Tipo_Solicitud"]; ?></td>
+					<td><?php echo $data["Estado"]; ?></td>
+					<td><?php echo $data["Nombre_Proyecto"] ?></td>
+					<td><?php echo $data["Motivo"] ?></td>
+					<td><?php echo $data["Fecha_Registro_Solicitud"] ?></td>
+					
+					
+
+				
+				</tr>
+                
+		<?php 
+				}
+
+			}
+		 ?>
+										
+										</thead>
+                                    </tbody>
+                                </table>
+								<div class="paginador">
+			<ul>
+			<?php 
+				if($pagina != 1)
+				{
+			 ?>
+				<li><a href="?pagina=<?php echo 1; ?>">|<</a></li>
+				<li><a href="?pagina=<?php echo $pagina-1; ?>"><<</a></li>
+			<?php 
+				}
+				for ($i=1; $i <= $total_paginas; $i++) { 
+					# code...
+					if($i == $pagina)
+					{
+						echo '<li class="pageSelected">'.$i.'</li>';
+					}else{
+						echo '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';
+					}
+				}
+
+				if($pagina != $total_paginas)
+				{
+			 ?>
+				<li><a href="?pagina=<?php echo $pagina + 1; ?>">>></a></li>
+				<li><a href="?pagina=<?php echo $total_paginas; ?> ">>|</a></li>
+			<?php } ?>
+			</ul>
+		</div>
+                            </div>
+                        </div>
+                    </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
@@ -175,22 +293,14 @@ if( isset($_SESSION['Usuario']))
                     </div>
                 </footer>
             </div>
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="assets/demo/chart-area-demo.js"></script>
-        <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
-       
-
+		</section>
+      
+        
     </body>
-</html>
-<?php
-}
 
-else{
-    echo "<h1> NO TIENE PERMISO </h1>";
-}
-?> 
+</html>
