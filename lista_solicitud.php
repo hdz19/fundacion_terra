@@ -19,7 +19,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Lista</title>
+        <title>Lista Solicitudes</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
 		<link href="css/nuevo.css" rel="stylesheet" />
@@ -120,7 +120,7 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Lista de division empresa</h1>
+                        <h1 class="mt-4">Lista de Solicitudes</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.php">Panel de Control</a></li>
 							
@@ -135,31 +135,48 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                Lista de division empresa
+                                Lista de Solicitudes
                             </div>
-                           <div class="col-md-6"> <a href="registro_div_empresa.php" class="btn_new">Crear division empresa</a>
+                           <div class="col-md-"> <a href="solicitud.php" class="btn_new">Crear Solicitud</a>
+                           
+                           </div>
+                           <right> <div class="col-md-6"> <a href="reportes_solicitudes_pdf.php"  style="background-color:#B22222" class="btn_new">PDF</a>
+                        
+        
+                        </div>
+                        <right> <div class="col-md-6"> <a href="reportes_solicitudes_excel.php" style="background-color:#008000" class="btn_new">EXCEL</a>
+                        </div>
 
-</div>
-                       <right>     <form action="buscar_usuario.php" method="get" class="form_search">
+                           
+                       
+
+                       <right>     <form 
+                       action="buscar_solicitud.php" method="get" class="form_search">
 			<input type="text" name="busqueda" id="busqueda" placeholder="Buscar">
 			<input type="submit" value="Buscar" class="btn_search">
 
             
 		</form></right>
                         <div class="card-body">
-                                <table >
+                                <table class="display compact nowrap" style="width:100%"   border="1" align="center" >
 								<tbody>
                                     <thead>
 									
                                         <tr>
-										<th>Id Division Empresa</th>
-				                        <th>Division Empresa</th>
-			                          	
-				                        <th>Acciones</th>
+										<th width="200">Id Solicitud </th>		                        
+                                        <th width="200">Enlace</th>	    
+			                         	<th width="200">Nombre Completo</th>
+				                        <th width="200">Tipo de Solicitud</th>
+				                        <th width="200">Estado</th>
+				                        <th width="200">Nombre Proyecto</th>
+				                        <th width="200">Motivo</th>
+				                        <th width="200">Fecha de Registro </th>
+                                        
                                         </tr>
+                                         
 										<?php 
 			//Paginador
-			$sql_registe = mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM tbl_division_empresa  ");
+			$sql_registe = mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM tbl_solicitud  ");
 			$result_register = mysqli_fetch_array($sql_registe);
 			$total_registro = $result_register['total_registro'];
 
@@ -175,7 +192,28 @@
 			$desde = ($pagina-1) * $por_pagina;
 			$total_paginas = ceil($total_registro / $por_pagina);
 
-			$query = mysqli_query($conexion,"SELECT Id_Division_Empresa, Division_Empresa FROM tbl_division_empresa ORDER BY Id_Division_Empresa ASC LIMIT $desde,$por_pagina");
+			$query = mysqli_query($conexion,"SELECT s.Id_Solicitud, 
+            s.Id_Solicitud_Adjunto, 
+            s.Id_Personas, 
+            s.Id_Tipo_Solicitud, 
+            s.Id_Estado,
+            s.Nombre_Proyecto, 
+            s.Motivo,
+            s.Fecha_Registro_Solicitud,
+            a.enlace,
+            p.Nombre_Completo,
+            t.Tipo_Solicitud,
+            e.Estado FROM tbl_solicitud s 
+             INNER JOIN tbl_solicitud_adjunto a
+			ON s.Id_Solicitud_Adjunto = a.Id_Solicitud_Adjunto 
+            INNER JOIN tbl_personas p
+			ON s.Id_Personas = p.Id_Personas
+            INNER JOIN tbl_tipo_solicitud t
+			ON s.Id_Tipo_Solicitud = t.Id_Tipo_Solicitud
+            INNER JOIN tbl_estado e
+			ON s.Id_Estado = e.Id_Estado
+             ORDER BY s.Id_Solicitud ASC LIMIT $desde,$por_pagina 
+				");
 
 			mysqli_close($conexion);
 
@@ -185,32 +223,31 @@
 				while ($data = mysqli_fetch_array($query)) {
 					
 			?>
+            
 				<tr>
-					<td><?php echo $data["Id_Division_Empresa"]; ?></td>
-					<td><?php echo $data["Division_Empresa"]; ?></td>
+					<td><?php echo $data["Id_Solicitud"]; ?></td>
+					<td><img src="<?php echo $data["enlace"]; ?>" width="120" alt"" srcset=""></td>" 
+					<td><?php echo $data["Nombre_Completo"]; ?></td>
+					<td><?php echo $data["Tipo_Solicitud"]; ?></td>
+					<td><?php echo $data["Estado"]; ?></td>
+					<td><?php echo $data["Nombre_Proyecto"] ?></td>
+					<td><?php echo $data["Motivo"] ?></td>
+					<td><?php echo $data["Fecha_Registro_Solicitud"] ?></td>
 					
 					
 
-					<td>
-						<a class="link_edit" href="editar_division.php?id=<?php echo $data["Id_Division_Empresa"]; ?>">Editar</a> // Falta crear pagina de editar
-
-					<?php if($data["Id_Division_Empresa"] != 1){ ?>
-						|
-						<a class="link_delete" href="eliminar_confirmar_division.php?id=<?php echo $data["Id_Division_Empresa"]; ?>">Eliminar</a> // Falta crear pagina de eliminar 
-					<?php } ?>
-						
-					</td>
+				
 				</tr>
-			
+                
 		<?php 
 				}
 
 			}
 		 ?>
 										
-							</thead>
-                            </tbody>
-                            </table>
+										</thead>
+                                    </tbody>
+                                </table>
 								<div class="paginador">
 			<ul>
 			<?php 
@@ -262,6 +299,8 @@
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
 		</section>
+      
+        
     </body>
 
 </html>

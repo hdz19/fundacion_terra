@@ -98,7 +98,14 @@ if( isset($_SESSION['Usuario']))
                                     </a>
                                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                         <a class="nav-link" href="tipo_solicitud.php">Tipo de Solicitud</a>
+
+                                            
+                                            <a class="nav-link" href="solicitud_adjunto.php">Tipo de Solicitud</a>
+                                            <a class="nav-link" href="Solicitud.php">Solicitud</a>
+                                            <a class="nav-link" href="lista_solicitud.php">Lista de Solicitudes</a>
+
+                                        
+
                                            
                                         </nav>
                                     </div>

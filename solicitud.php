@@ -15,49 +15,39 @@ $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 if(!empty($_POST))
 	{
 		$alert='';
-		if( empty($_POST['Id_Parametro'] || empty($_POST['Tipo_Solicitud'])) 
+		if(empty($_POST['Id_Solicitud_Adjunto']) || empty($_POST['Id_Personas']) ||empty($_POST['Id_Tipo_Solicitud'])
+        ||empty($_POST['Id_Estado']) ||empty($_POST['Nombre_Proyecto']) || empty($_POST['Motivo']) 
         )
 		{$alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
 		}else{
-
 			
-            $id_parametro = $_POST['Id_Parametro'];
-			$tipo_solicitud = $_POST['Tipo_Solicitud'];
 
-            if($_FILES["enlace"]){
-                $nombre_base = basename($_FILES["enlace"]["name"]);
-                $nombre_final = date("m-d-Y")."-". date("H:i:s"). " -" .$nombre_base;
-                $ruta = "enlace/" . $nombre_final;
-                $subirenlace = move_uploaded_file($_FILES["enlace"]["tmp_name"], $ruta);
-                if($subirenlace){
-
-                    $query_insert = mysqli_query($conexion,"INSERT INTO tbl_solicitud_adjunto (enlace, Id_Parametro)
-                VALUES ('$ruta','$id_parametro')");
-
-                $query_insert = mysqli_query($conexion,"INSERT INTO tbl_tipo_solicitud (Tipo_Solicitud)
-                VALUES ('$tipo_solicitud')");
-				if($query_insert){
-					$alert='<p class="msg_save">Datos  Ingresados correctamente.</p>';
-                    header('Location: solicitud.php');
-				}else{
-                    $alert='';
-                    $alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
-				}
-
-
-                }
-            }
+			$id_solicitud_adjunto = $_POST['Id_Solicitud_Adjunto'];
+            $id_persona = $_POST['Id_Personas'];
+            $id_tipo_solicitud = $_POST['Id_Tipo_Solicitud'];
+            $id_estado = $_POST['Id_Estado'];
+            $nombre_proyecto = $_POST['Nombre_Proyecto'];
+            $motivo = $_POST['Motivo'];
+            $fecha_registro_solicitud = date('Y/m/d');
+			
 
 
 		
 
-				
+				$query_insert = mysqli_query($conexion,"INSERT INTO tbl_solicitud (Id_Solicitud_Adjunto,Id_Personas,Id_Tipo_Solicitud,
+                Id_Estado,Nombre_Proyecto,Motivo,Fecha_Registro_Solicitud)
+                VALUES ('$id_solicitud_adjunto','$id_persona','$id_tipo_solicitud','$id_estado','$nombre_proyecto',
+                '$motivo','$fecha_registro_solicitud')");
+				if($query_insert){
+					$alert='<p class="msg_save"> Solicitud Ingresado correctamente.</p>';
+				}else{
+					$alert='<p class="msg_error">Error al Ingresar la asolicitud.</p>';
+				}
 
 			}
 
 
-    
-    }
+		}
 
 	
 
@@ -71,7 +61,7 @@ if(!empty($_POST))
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Tipo de Solicitud</title>
+        <title>Registro Usuario</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
 		<link href="css/nuevo.css" rel="stylesheet" />
@@ -276,30 +266,70 @@ if(!empty($_POST))
                         
                 </main>
                                    
-                                    <form action="" method="post"  enctype="multipart/form-data">
+                                    <form action="" method="post">
                                     <div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div>              
-                                   <center> <h1>Ingrese El Tipo de Solicitud</h1></center>
+                                   <center> <h1>Ingrese Datos</h1></center>
+            
 
-                <label for="Tipo_Solicitud">Tipo de Solicitud</label>
-				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Tipo_Solicitud" id="Tippo_Solicitud" placeholder="Ingrese la solicitud"
-                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" required>
-				
+                                   <div class="col-md-8">                     
+				<label for="Nombre_Proyecto">Nombre del Proyecto</label>
+				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Nombre_Proyecto" id="Nombre_Proyecto" placeholder="El proyecto se llamará"
+                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
+                </div>
+                <div class="col-md-8"> 
+                <label for="Motivo">Motivo de la Solicitud</label>
+				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Motivo" id="Motivo" placeholder=" Motivo"
+                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
+                </div>
 
-				<label for="enlace"> Ingrese un Comprobante</label>		              
-                <input type="file" name="enlace"class="form-control" required>
-                
-
-
-
-
-                <div class="col-md-8">
-                                                <label> Selecione Su Parametro</label>
-                                                <select class="form-select" aria-label="Default select example" name="Id_Parametro">
+                                                <div class="col-md-8">
+                                                <label> Selecione su Documento</label>
+                                                <select class="form-select" aria-label="Default select example" name="Id_Solicitud_Adjunto">
                                                          <?php
-                                                         $consulta="SELECT * FROM tbl_ms_parametros ";
+                                                         $consulta="SELECT * FROM tbl_solicitud_adjunto ";
                                                          $resultado=mysqli_query($conexion,$consulta);
                                                          while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Parametro']."'>".$fila['Parametro']."</option
+                                                             echo "<option value='".$fila['Id_Solicitud_Adjunto']."'>".$fila['enlace']."</option
+                                                             >";
+                                                         }
+                                                         ?>
+                                                         </select>
+                                            </div>
+                
+                                            <div class="col-md-8">
+                                                <label> Nombre del Solicitante</label>
+                                                <select class="form-select" aria-label="Default select example" name="Id_Personas">
+                                                         <?php
+                                                         $consulta="SELECT * FROM tbl_personas ";
+                                                         $resultado=mysqli_query($conexion,$consulta);
+                                                         while($fila=$resultado->fetch_array()){
+                                                             echo "<option value='".$fila['Id_Personas']."'>".$fila['Nombre_Completo']."</option
+                                                             >";
+                                                         }
+                                                         ?>
+                                                         </select>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <label> Tipo de Solicitud</label>
+                                                <select class="form-select" aria-label="Default select example" name="Id_Tipo_Solicitud">
+                                                         <?php
+                                                         $consulta="SELECT * FROM tbl_tipo_solicitud ";
+                                                         $resultado=mysqli_query($conexion,$consulta);
+                                                         while($fila=$resultado->fetch_array()){
+                                                             echo "<option value='".$fila['Id_Tipo_Solicitud']."'>".$fila['Tipo_Solicitud']."</option
+                                                             >";
+                                                         }
+                                                         ?>
+                                                         </select>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <label> Estado de la Solicitud </label>
+                                                <select class="form-select" aria-label="Default select example" name="Id_Estado">
+                                                         <?php
+                                                         $consulta="SELECT * FROM tbl_estado ";
+                                                         $resultado=mysqli_query($conexion,$consulta);
+                                                         while($fila=$resultado->fetch_array()){
+                                                             echo "<option value='".$fila['Id_Estado']."'>".$fila['Estado']."</option
                                                              >";
                                                          }
                                                          ?>
@@ -310,7 +340,7 @@ if(!empty($_POST))
                                          
                                         
                                         <center> 
-                                                    <button type="submit" name="Enlace" class="btn_save" >Enviar</button></div>
+                                                    <button type="submit" name="tipo_solicitud" class="btn_save" >Enviar </button></div>
                                                     
                                              </center>     
                                     </form><p>

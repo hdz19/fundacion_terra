@@ -234,7 +234,7 @@
 											u.Creado_Por LIKE '%$busqueda%' OR 	
 											u.Modificado_Por LIKE '%$busqueda%' OR 	  
 											u.Id_Tipo_Persona LIKE '%$busqueda%' OR
-											r.Rol    LIKE  '%$busqueda%' ) 
+											r.Rol    LIKE  '%$busqueda%') 
 										AND
 										Id_Estado_Usuario = 1 ORDER BY u.Id_Usuario ASC LIMIT $desde,$por_pagina 
 				");
