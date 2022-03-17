@@ -196,7 +196,7 @@
 
 					<?php if($data["Id_Division_Empresa"] != 1){ ?>
 						|
-						<a class="link_delete" href="eliminar_confirmar_division.php?id=<?php echo $data["Id_Division_Empresa"]; ?>">Eliminar</a> 
+						<a class="link_delete" href="eliminar_div_emp.php?id=<?php echo $data["Id_Division_Empresa"]; ?>">Eliminar</a> 
 					<?php } ?>
 						
 					</td>
