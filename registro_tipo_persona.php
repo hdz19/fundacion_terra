@@ -32,7 +32,7 @@ if(!empty($_POST))
         VALUES ('$tipo_persona')");
         	if($query_insert){
                 $alert='<p class="msg_save"> Solicitud Ingresado correctamente.</p>';
-                header('Location: registro_personas.php');
+                header('Location: lista_tipo_persona.php');
             }else{
                 $alert='<p class="msg_error">Error al Ingresar la asolicitud.</p>';
             }
