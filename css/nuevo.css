@@ -3,6 +3,8 @@
 
 .link_delete{
 	color: #f26b6b;
+
+	
 }
 .data_delete{
 	text-align: center;
@@ -245,3 +247,108 @@ table td{
 	cursor: pointer;
 	margin-left: 10px;
 }
+/*============ Menu mantenimiento ============*/
+
+*{
+	margin: 0;
+	padding:0;
+}
+.contenedor{
+
+	width: 100%;
+	margin: 0 auto;
+}
+.menu{
+
+	width: 100%;
+	background: #353232ee;
+	text-align: center;
+	position: fixed;
+}
+.menu ul{
+	list-style: none;
+}
+.menu ul li{
+	display: inline-block;
+	padding: 20px;
+	transition: all .3s ease;
+}
+.menu ul li:hover{
+	transform: scale(1.2);
+	background: #e94f37;
+
+}
+.menu ul li a{
+	color: #FFF;
+	text-decoration:none;
+	font-family: 'Roboto', sans-serif;
+}
+
+input[type=button],input[type=submit]
+{
+background-color: white;
+border: none;
+color:black;
+font-weight: bold;
+padding: 6px 20px;
+text-align: center !important;
+font-size:16px;
+margin: 4px 4px;
+box-shadow: 3px 3px 3px black;
+position: center;
+font-family: Arial;
+}
+
+input[type="text"]
+{
+font-family: Arial;
+color:black;
+background-color:white;
+padding:4px;
+text-align: left;
+font-size: 16px;
+margin: 4px 4px;
+box-shadow: 2px 2px 2px black;
+}
+
+body
+{
+background-color: #338DFF;
+}
+
+label
+{
+font-family: Arial;
+padding: 4px;
+font-weight: bold;
+color: black;
+text-align: center;
+align:center;
+font-size: 18px;
+}
+
+table
+{
+background-color: #F0EFEF;
+padding: 5px 5px;
+
+border-collapse: collapse;
+font-size: 12pt;
+font-family: 'arial';
+width: 100%;
+}
+
+td
+{
+padding: 6px 4px;
+}
+.container__submit--actualziar{
+	background: rgba(40,65,120,1);
+	padding:0;
+	margin:0;
+	font-size: .9em;
+	width: 100%;
+}
+
+
+

@@ -15,12 +15,21 @@ $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 if(!empty($_POST))
 	{
 		$alert='';
-		if(empty($_POST['Tipo_Solicitud'])  )
+		if(empty($_POST['Id_Personas  ']) || empty($_POST['	Id_Tipo_Solicitud']) ||empty($_POST['Id_Estado'])
+        ||empty($_POST['Nombre_Proyecto']) ||empty($_POST['Motivo']) 
+        )
 		{
 			$alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
 		}else{
   
-			$tipo_solicitud = $_POST['Tipo_Solicitud'];
+            $id_persona = $_POST['Id_Personas'];
+            $id_tipo_solicitud = $_POST['Id_Tipo_Solicitud'];
+            $id_estado = $_POST['Id_Estado'];
+            $nombre_proyecto = $_POST['Nombre_Proyecto'];
+            $motivo = $_POST['Motivo'];
+            $fecha_registro_solicitud = datetime("Y-m-d\TH-i");
+			
+
 			
            
             if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['limpiardatos']))
@@ -31,13 +40,14 @@ if(!empty($_POST))
 if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['grabardatos']))
 	
 	{
-	$sqlgrabar = "INSERT INTO tbl_tipo_solicitud (Tipo_Solicitud)
-    VALUES ('$tipo_solicitud')";
+	$sqlgrabar = "INSERT INTO tbl_solicitud (Id_Personas,Id_Tipo_Solicitud,
+    Id_Estado,Nombre_Proyecto,Motivo,Fecha_Registro_Solicitud)
+    VALUES ('$id_persona','$id_tipo_solicitud','$id_estado','$nombre_proyecto',
+    '$motivo','$fecha_registro_solicitud')";
 
 if(mysqli_query($conexion,$sqlgrabar))
 {
 	$alert='<p class="msg_save">Tipo de Solicitud Ingresado correctamente.</p>';
-    header('Location: Solicitud.php');
 }else 
 {
 	echo "Error: " .$sql."<br>".mysql_error($conexion);
@@ -162,7 +172,7 @@ if(mysqli_query($conexion,$sqlgrabar))
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="solicitud.php">Ingresar solicitudes</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                       
+                        <li><a class="dropdown-item" href="mantenimiento.php">Mantenimiento</a></li> 
                     </ul>
                 </li>
             </ul>
@@ -176,7 +186,7 @@ if(mysqli_query($conexion,$sqlgrabar))
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="actividades.php">Ingresar actividades </a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        
+                        <li><a class="dropdown-item" href="mantenimiento.php">Mantenimiento</a></li> 
                     </ul>
                 </li>
             </ul>  
@@ -300,10 +310,10 @@ if(mysqli_query($conexion,$sqlgrabar))
                      </div>
                 
                 </main>
-           
+                
+             
                                    
                                     <form action="" method="post">
-                               
                                     
                                     <link href="css/nuevo.css" rel="stylesheet" />
                                     <div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div>       
@@ -312,54 +322,135 @@ if(mysqli_query($conexion,$sqlgrabar))
 
 
                                 <tr>
-                                    <td colspan="4"><label>Mantenimiento de Tipo de Solicitud</label></td>
+                                    <td colspan="10"><label>Mantenimiento de Solicitud</label></td>
                                 </tr>               
                                 <tr>
-                                    <td colspan="4" ><label>Registrar Tipo de Solicitud </label></td></tr>
+                                    <td colspan="10" ><label>Registrar Solicitud </label></td></tr>
+
                                 <tr>
-                                    <td colspan="4 "  align="center"><input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Tipo_Solicitud" id="Tippo_Solicitud" placeholder="Ingrese la solicitud"
-                                    onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" ></td>
+                                
+
+                    
+                                    <td colspan="3" ><label> Nombre del Solicitante</label>
+                    
+                            
+                                    
+                                         <select class="form-select" aria-label="Default select example" name="Id_Personas">
+                                <?php
+                                    $consulta="SELECT * FROM tbl_personas ";
+                                    $resultado=mysqli_query($conexion,$consulta);
+                                        while($fila=$resultado->fetch_array()){
+                                            echo "<option value='".$fila['Id_Personas']."'>".$fila['Nombre_Completo']."</option
+                                                >";
+                                            }
+                                        ?>
+                                </select>
+                        </td>
+                    
+                    
+                         <td colspan="2" > <label> Tipo de Solicitud</label>
+                        <select class="form-select" aria-label="Default select example" name="Id_Tipo_Solicitud">
+                                <?php
+                                    $consulta="SELECT * FROM tbl_tipo_solicitud ";
+                                    $resultado=mysqli_query($conexion,$consulta);
+                                        while($fila=$resultado->fetch_array()){
+                                            echo "<option value='".$fila['Id_Tipo_Solicitud']."'>".$fila['Tipo_Solicitud']."</option
+                                                             >";    
+                                        }
+                                ?>
+                            </select>
+                       
+                    
+                    </td>
+                    <td colspan="2" ><label> Selecione el estado de solicitud</label>
+                   
+                     <select class="form-select" aria-label="Default select example" name="Id_Estado">
+                                    <?php
+                                        $consulta="SELECT * FROM tbl_estado ";
+                                        $resultado=mysqli_query($conexion,$consulta);
+                                        while($fila=$resultado->fetch_array()){
+                                             echo "<option value='".$fila['Id_Estado']."'>".$fila['Estado']."</option>";
+                                            }
+                                    ?>
+                                </select>
+                                </td>
+                    
+                       
+                        
+                    </tr>
+                   
+                    <tr>
+                    <td colspan="3"><label for="Motivo">Motivo de la Solicitud</label>
+                        <input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" 
+                        name="Motivo" id="Motivo" placeholder=" Motivo" onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
+                        </td>
+                         
+                    
+                        <td colspan="3" > <label for="Nombre_Proyecto">Nombre del Proyecto</label>
+                        
+                        <div class="col-md-12">
+                     <input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" 
+                                name="Nombre_Proyecto" id="Nombre_Proyecto" placeholder="El proyecto se llamará"
+                                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
+                               
+                                      
+
+                                </td>
+                        </tr>         
+
+                <div class ="row mb-4">
+                    <div class="col-md-12"> 
+                                           
+                        <input  type="hidden" type="datetime-local" name="Fecha_Registro_Solicitud" step="1" min="2013-01-01T00:00Z" max="2013-12-31T12:00Z" value="<?php echo date("Y-m-d\TH-i");?>">
+                    </div>
+                </div>
                                 </tr>	
                                             
                                 </tr>
 
                                 <tr>
-                                    <td colspan="4" align="center">
+                                    <td colspan="10" align="center">
                                         <div class="btn-group">
                                             <input type="submit" style="background-color:#5CB8E5" class="btn btn-default" value="Limpiar" name="limpiardatos" > 
                                             <input type="submit" style="background-color:#91C66C" class="btn btn-default" value="Enviar" name="grabardatos" >
+                                             
                                             
                                         </div>
                                    </td>
                                 </tr>
 
-                          
+
                                              
 
 
-<tr><td colspan="4"><label>Listado de Tipos de Solicitud </label></td></tr>
-
+<tr><td colspan="10"><label>Listado Solicitud </label></td></tr>
 <tr>
-<td colspan="4" align="center">
+<td colspan="1" align="center">
 <div class="btn-group">
  
-                     <a type="submit" href="reportes_tipo_solicitudes_pdf.php"  style="background-color:#B22222" class="btn_save">PDF</a>
-                    <a type="submit" href="buscar_tipo_solicitud.php"  style="background-color:#008080" class="btn_save">Buscar</a>
+                     <a type="submit" href="reportes_solicitudes_pdf.php"  style="background-color:#B22222" class="btn_save">PDF</a>
+                    <a type="submit" href="buscar_solicitud.php"  style="background-color:#008080" class="btn_save">Buscar</a>
               
                 </div>
                     </td>
                 </tr>  
-                
+
 <tr><td><label>Codigo</label></td>
-	<td><label>Tipo de Solicitud</label></td>
+<td><label>Nombre Completo</label></td>
+	<td><label>Tipo de Solicitud </label></td>
+    <td><label>Estado </label></td>
+    <td><label>Nombre Proyecto</label></td>
+    <td><label>Motivo </label></td>
+    <td><label>Fecha Registro</label></td>
     <td><label>Acciones</label></td>
+
     
 	
 </tr>
 
 <?php 
 			//Paginador
-			$sql_registe = mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM tbl_tipo_solicitud   ");
+			$sql_registe = mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM tbl_solicitud  ");
 			$result_register = mysqli_fetch_array($sql_registe);
 			$total_registro = $result_register['total_registro'];
 
@@ -375,9 +466,26 @@ if(mysqli_query($conexion,$sqlgrabar))
 			$desde = ($pagina-1) * $por_pagina;
 			$total_paginas = ceil($total_registro / $por_pagina);
 
-			$query = mysqli_query($conexion,"SELECT  * FROM tbl_tipo_solicitud 
+			$query = mysqli_query($conexion,"SELECT s.Id_Solicitud, 
+          
+            s.Id_Personas, 
+            s.Id_Tipo_Solicitud, 
+            s.Id_Estado,
+            s.Nombre_Proyecto, 
+            s.Motivo,
+            s.Fecha_Registro_Solicitud,
             
-             ORDER BY Id_Tipo_Solicitud ASC LIMIT $desde,$por_pagina 
+            p.Nombre_Completo,
+            t.Tipo_Solicitud,
+            e.Estado FROM tbl_solicitud s 
+            
+            INNER JOIN tbl_personas p
+			ON s.Id_Personas = p.Id_Personas
+            INNER JOIN tbl_tipo_solicitud t
+			ON s.Id_Tipo_Solicitud = t.Id_Tipo_Solicitud
+            INNER JOIN tbl_estado e
+			ON s.Id_Estado = e.Id_Estado
+             ORDER BY s.Id_Solicitud ASC LIMIT $desde,$por_pagina 
 				");
 
 			mysqli_close($conexion);
@@ -390,23 +498,29 @@ if(mysqli_query($conexion,$sqlgrabar))
 			?>
             
 				<tr>
-					<td><?php echo $data["Id_Tipo_Solicitud"]; ?></td>
-					<td><?php echo $data["Tipo_Solicitud"]; ?></td>
-				
-                    <td>
-						<a class="link_edit" href="actualizar_tipo_solicitud.php?id=<?php echo $data["Id_Tipo_Solicitud"]; ?>">Editar</a>
-
+                <td><?php echo $data["Id_Solicitud"]; ?></td>
 					
+					<td><?php echo $data["Nombre_Completo"]; ?></td>
+					<td><?php echo $data["Tipo_Solicitud"]; ?></td>
+					<td><?php echo $data["Estado"]; ?></td>
+					<td><?php echo $data["Nombre_Proyecto"] ?></td>
+					<td><?php echo $data["Motivo"] ?></td>
+					<td><?php echo $data["Fecha_Registro_Solicitud"] ?></td>
+                    <td>
+						<a class="link_edit" href="actualizar_solicitud.php?id=<?php echo $data["Id_Solicitud"]; ?>">Editar</a>
+
+					<?php if($data["Id_Solicitud"] != 1){ ?>
 						|
-						<a class="link_delete" href="eliminar_confirmar_tipo_solicitud.php?id=<?php echo $data["Id_Tipo_Solicitud"]; ?>">Eliminar</a>
-				
+						<a class="link_delete" href="eliminar_solicitud.php?id=<?php echo $data["Id_Solicitud"]; ?>">Eliminar</a>
+					<?php } ?>
 						
 					</td>
                     
+                   
 				
-          
+				
 				</tr>
-			
+                
 		<?php 
 				}
 

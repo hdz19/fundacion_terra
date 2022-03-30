@@ -1,86 +1,121 @@
 <?php 
-
+//include "../conexion.php";
 
 session_start();
-/*
-if($_SESSION['Id_Rol'] != 1)
+/*if($_SESSION['Id_Rol']!= 1)
 	{
 		header("location: index.php");
-	}
-	
-*/
-//CONEXION A LA BASE DE DATOS
+	}*/
+    $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
+
+
+ if(!empty($_POST))
+ {
+     $alert='';
+    if (empty($_POST['Id_Personas']) >= 1 && empty($_POST['Id_Tipo_Contacto']) >= 1 )
+   {
+       $alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
+   }else{
+
+ 
+       //Campos TBL_MS_USUARIO
+       $id_contacto = ($_POST['Id_Contacto']);
+       $id_personas = trim($_POST['Id_Personas']);
+       $id_tipo_contacto = trim($_POST['Id_Tipo_Contacto']);
+      
+    			//CONEXION A LA BASE DE DATOS
 $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
-if(!empty($_POST))
-	{
-		$alert='';
-		if( empty($_POST['Id_Parametro'] || empty($_POST['Tipo_Solicitud'])) 
-        )
-		{$alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
-		}else{
+$query = mysqli_query($conexion,"SELECT * FROM tbl_contacto
+													   WHERE (Id_Personas = '$id_personas' AND Id_Contacto != $id_contacto)
+													   OR (Id_Tipo_Contacto = '$id_tipo_contacto' AND Id_Contacto 
+                                                       != $id_contacto) ");
 
+			$result = mysqli_fetch_array($query);
+
+			if($result > 0){
+				$alert='<p class="msg_error">El id persona y id tipo contacto ya existe.</p>';
 			
-            $id_parametro = $_POST['Id_Parametro'];
-			$tipo_solicitud = $_POST['Tipo_Solicitud'];
+                    //$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
+					$sql_update = mysqli_query($conexion,"UPDATE tbl_contacto SET 
+                    Id_Contacto='$id_contacto',Id_Personas='$id_personas', Id_Tipo_Contacto='$id_tipo_contacto'
+                    WHERE Id_Usuario='$id_usuario'");
 
-            if($_FILES["enlace"]){
-                $nombre_base = basename($_FILES["enlace"]["name"]);
-                $nombre_final = date("m-d-Y")."-". date("H:i:s"). " -" .$nombre_base;
-                $ruta = "enlace/" . $nombre_final;
-                $subirenlace = move_uploaded_file($_FILES["enlace"]["tmp_name"], $ruta);
-                if($subirenlace){
-
-                    $query_insert = mysqli_query($conexion,"INSERT INTO tbl_solicitud_adjunto (enlace, Id_Parametro)
-                VALUES ('$ruta','$id_parametro')");
-
-                $query_insert = mysqli_query($conexion,"INSERT INTO tbl_tipo_solicitud (Tipo_Solicitud)
-                VALUES ('$tipo_solicitud')");
-				if($query_insert){
-					$alert='<p class="msg_save">Datos  Ingresados correctamente.</p>';
-                    header('Location: solicitud.php');
+                }if($sql_update){
+                    $sql_update = mysqli_query($conexion,"UPDATE tbl_contacto SET 
+                    Id_Contacto='$id_contacto',Id_Personas='$id_personas', Id_Tipo_Contacto='$id_tipo_contacto'
+                    WHERE Id_Usuario='$id_usuario'");
+					$alert='<p class="msg_save">Contacto actualizado correctamente.</p>';
+                    
+                    ?> 
+                    <script type="text/javascript">
+                              alert('¡ Contacto actualizado correctamente !')
+        
+                              </script>
+                                   <?php
+            
+            header('Location: lista_contacto.php');
+            ?> 
+                   <?php
 				}else{
-                    $alert='';
-                    $alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
+					$alert='<p class="msg_error">Error al actualizar el contacto.</p>';
 				}
 
-
-                }
+                                             
+            
             }
+        }
+                                            
+                                     
+//Mostrar Datos
+if(empty($_REQUEST['id']))
+{
+	header('Location: lista_contacto.php');
+	mysqli_close($conexion);
+}
+$idcontacto = $_REQUEST['id'];
 
+$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
+$sql= mysqli_query($conexion,"SELECT u.Id_Contacto,u.Id_Personas, u.Id_Tipo_Contacto
+								FROM tbl_contacto u
+								WHERE Id_Contacto= $idcontacto ");
+mysqli_close($conexion);
+$result_sql = mysqli_num_rows($sql);
 
-		
-
-				
-
-			}
-
-
-    
-    }
-
+if($result_sql == 0){
+	header('Location: lista_contacto.php');
+}else{
+	$option = '';
+	while ($data = mysqli_fetch_array($sql)) {
+		# code...
+		$idcontacto            = $data['Id_Contacto'];
+		$id_personas           = $data['Id_Personas'];
+		$id_tipo_contacto      = $data['Id_Tipo_Contacto'];
 	
+	}
+}
+
 
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
     <head>
-    <meta charset="utf-8" />
+        <meta charset="utf-8" />
+		
+	
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Tipo de Solicitud</title>
+        <title>Registro de Usuario</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-        <link href="css/styles.css" rel="stylesheet" />
-		<link href="css/nuevo.css" rel="stylesheet" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
-	
-    
-    
-        
        
+        <link href="css/nuevo.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet" />
+
+		
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
 
 
@@ -138,16 +173,18 @@ if(!empty($_POST))
 			cambio.type = "text";
 			$('.icon').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
 		}else{
-			cambio.type = "password";
+			cambio.type = "pas  sword";
 			$('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
 		}
 	} 
     </script> 
     </head>
     <body class="bg-primary">
-    
-        <div id="container">
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+	
+                <main>
+				
+	                  <section id="container">
+                      <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="index.php">Sistema de Solicitudes </a>
             <!-- Sidebar Toggle-->
@@ -196,9 +233,7 @@ if(!empty($_POST))
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                    <?php 
-				if($_SESSION['Id_Rol'] == 1){
-			 ?>
+            
 				<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
 
 					Usuarios
@@ -208,13 +243,14 @@ if(!empty($_POST))
                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                     
                       <nav class="sb-sidenav-menu-nested nav">
-						<li><a class="nav-link" href="registro_usuario.php">Nuevo Usuario</a></li>
-						<li><a class="nav-link" href="lista_usuarios.php">Lista de Usuarios</a></li>
+						
+						<li><a class="nav-link" href="lista_contacto.php">Lista de Contacto</a></li>
                 </nav>
                 </div>
 					
 				
-			<?php } ?>
+
+
 
 
 
@@ -264,64 +300,49 @@ if(!empty($_POST))
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Fundacion Terra</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Panel de Control</li>
-                        </ol>
-                    
-                           
-                            
-                       
-                            
                         
-                </main>
-                                   
-                                    <form action="" method="post"  enctype="multipart/form-data">
-                                    <div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div>              
-                                   <center> <h1>Ingrese El Tipo de Solicitud</h1></center>
+                  <div class="form_register">
+						 
+			<hr>
 
-                <label for="Tipo_Solicitud">Tipo de Solicitud</label>
-				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Tipo_Solicitud" id="Tippo_Solicitud" placeholder="Ingrese la solicitud"
-                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" required>
-				
-
-				<label for="enlace"> Ingrese un Comprobante</label>		              
-                <input type="file" name="enlace"class="form-control" required>
-                
-
-
-
-
-                <div class="col-md-8">
-                                                <label> Selecione Su Parametro</label>
-                                                <select class="form-select" aria-label="Default select example" name="Id_Parametro">
-                                                         <?php
-                                                         $consulta="SELECT * FROM tbl_ms_parametros ";
-                                                         $resultado=mysqli_query($conexion,$consulta);
-                                                         while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Parametro']."'>".$fila['Parametro']."</option
-                                                             >";
-                                                         }
-                                                         ?>
-                                                         </select>
-                                            </div>
-				
-			
-                                         
-                                        
-                                        <center> 
-                                                    <button type="submit" name="Enlace" class="btn_save" >Enviar</button></div>
-                                                    
-                                             </center>     
+            <form action="" method="post" >
+                    <div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div>   
+                               
+                    <center> <h1> Contactos </h1></center>
+                    <a href = "lista_contacto.php"> Atras </a> 
+                    <div>
+                        <center> <h3> Editar contacto </h3>
+                    <div class ="row mb-4">
+                        <div class="col-md-12">
+                            <h5> Id personas </h5>
+                            <input width: 50px; class="form-control" type="text" style="width: 450px" 
+                            name="Id_Personas" id="Id_Personas" placeholder="Id_Persona" value="<?php echo $id_personas; ?>"
+                            maxlength="15" >
+                            </div>
+                        </div>
+                    <div>
+                    <div class ="row mb-4">
+                        <div class="col-md-12">
+                            <h5> Id Tipo Contacto </h5>
+                            <input width: 50px; class="form-control" type="text" style="width: 450px" 
+                            name="Id_Tipo_Contacto" id="Id_Tipo_Contacto" placeholder="Id_Tipo_Contacto" value="<?php echo $id_personas; ?>"
+                            maxlength="15" >
+                        </div>
+                    <div>
+                   
+                        
+                   <button  type="submit" name="orden" class="btn_save" > Actualizar Contacto </button>
                                     </form><p>
-                                    
+                
+                                    </center>
+                                       
+                                    </section >
                                 </div>
                             </div>
                         </div>
                     </div>
                 </main>
             </div> <br>
-            
             <div id="layoutAuthentication_footer">
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
@@ -339,6 +360,6 @@ if(!empty($_POST))
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
-        
+		
     </body>
 </html>

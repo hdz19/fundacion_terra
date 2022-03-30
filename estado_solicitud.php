@@ -15,49 +15,43 @@ $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 if(!empty($_POST))
 	{
 		$alert='';
-		if( empty($_POST['Id_Parametro'] || empty($_POST['Tipo_Solicitud'])) 
-        )
-		{$alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
+		if(empty($_POST['Estado'])  )
+		{
+			$alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
 		}else{
-
+  
+			$estado = $_POST['Estado'];
 			
-            $id_parametro = $_POST['Id_Parametro'];
-			$tipo_solicitud = $_POST['Tipo_Solicitud'];
+           
+            if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['limpiardatos']))
+	{
+		$alert='<p class="msg_save">Se limpio la Informacion.</p>';
+	}
 
-            if($_FILES["enlace"]){
-                $nombre_base = basename($_FILES["enlace"]["name"]);
-                $nombre_final = date("m-d-Y")."-". date("H:i:s"). " -" .$nombre_base;
-                $ruta = "enlace/" . $nombre_final;
-                $subirenlace = move_uploaded_file($_FILES["enlace"]["tmp_name"], $ruta);
-                if($subirenlace){
+if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['grabardatos']))
+	
+	{
+	$sqlgrabar = "INSERT INTO tbl_estado (Estado)
+    VALUES ('$estado')";
 
-                    $query_insert = mysqli_query($conexion,"INSERT INTO tbl_solicitud_adjunto (enlace, Id_Parametro)
-                VALUES ('$ruta','$id_parametro')");
-
-                $query_insert = mysqli_query($conexion,"INSERT INTO tbl_tipo_solicitud (Tipo_Solicitud)
-                VALUES ('$tipo_solicitud')");
-				if($query_insert){
-					$alert='<p class="msg_save">Datos  Ingresados correctamente.</p>';
-                    header('Location: solicitud.php');
-				}else{
-                    $alert='';
-                    $alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
-				}
-
-
-                }
-            }
-
-
+if(mysqli_query($conexion,$sqlgrabar))
+{
+	$alert='<p class="msg_save">Estado Ingresado correctamente.</p>';
+}else 
+{
+	echo "Error: " .$sql."<br>".mysql_error($conexion);
+}
 		
 
-				
+           
+        
+        
+}
 
-			}
+		}
 
-
-    
     }
+
 
 	
 
@@ -71,7 +65,7 @@ if(!empty($_POST))
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Tipo de Solicitud</title>
+        <title>Registro Usuario</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
 		<link href="css/nuevo.css" rel="stylesheet" />
@@ -152,14 +146,46 @@ if(!empty($_POST))
             <a class="navbar-brand ps-3" href="index.php">Sistema de Solicitudes </a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-           ><!-- Navbar Search-->
+           <!-- Navbar Search-->
             <!-- Navbar-->
+            <ul>
+                <li><a class="navbar-brand ps-3" href="tipo_solicitud.php">Tipos Solicitudes </a></li>
+            </ul>
+            <ul>
+                <li><a class="navbar-brand ps-3" href="estado_solicitud.php">Estado </a></li>
+            </ul>
+            <ul >
+                <li class="nav-item dropdown">
+                    <a class="navbar-brand ps-3" href="#" 
+                     data-bs-toggle="dropdown"> Solicitudes </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="solicitud.php">Ingresar solicitudes</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="mantenimiento.php">Mantenimiento</a></li> 
+                    </ul>
+                </li>
+            </ul>
+            <ul>
+                <li><a class="navbar-brand ps-3" href="tipo_actividad.php">Tipo Actividades</a></li>
+            </ul> 
+            <ul>
+                <li class="nav-item dropdown">
+                    <a class="navbar-brand ps-3" href="#" 
+                     data-bs-toggle="dropdown"> Actividades </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="actividades.php">Ingresar actividades </a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="mantenimiento.php">Mantenimiento</a></li> 
+                    </ul>
+                </li>
+            </ul>  
+            <ul>
+            </ul>
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"> </i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#!">Ajustes</a></li>
-
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="login.php">Cerrar sesión</a></li> 
                     </ul>
@@ -263,56 +289,163 @@ if(!empty($_POST))
             </div>
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">Fundacion Terra</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Panel de Control</li>
-                        </ol>
-                    
-                           
-                            
-                       
-                            
-                        
-                </main>
-                                   
-                                    <form action="" method="post"  enctype="multipart/form-data">
-                                    <div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div>              
-                                   <center> <h1>Ingrese El Tipo de Solicitud</h1></center>
-
-                <label for="Tipo_Solicitud">Tipo de Solicitud</label>
-				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Tipo_Solicitud" id="Tippo_Solicitud" placeholder="Ingrese la solicitud"
-                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" required>
-				
-
-				<label for="enlace"> Ingrese un Comprobante</label>		              
-                <input type="file" name="enlace"class="form-control" required>
+                <link href="css/nuevo.css" rel="stylesheet" />
+                <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+                   <nav class="menu">   
+                                  
+                     </nav>
+                     <div class="contenedor">
+                     
+                     </div>
                 
+                </main>
+           
+                                   
+                                    <form action="" method="post">
+                                    
+                                    <link href="css/nuevo.css" rel="stylesheet" />
+                                    
+                                    <div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div>       
+
+                                    <table class="display compact nowrap" style="width:100%"   border="1" align="center" >
+
+                                <tr>
+                                    <td colspan="4"><label>Mantenimiento de Estado de Solicitud</label></td>
+                                </tr> 
+                                                 
+                                <tr>
+                                  <td colspan="4" ><label>Registrar Estado de Solicitud </label></td></tr>
+                                
+                                <tr>
+                                    <td colspan="4 "  align="center"><input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Estado" id="Estado" placeholder="Estado de Solicitud"
+                                    onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" ></td>
+                                </tr>	
+                                            
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" align="center">
+                                        <div class="btn-group">
+                                            <input type="submit" style="background-color:#5CB8E5" class="btn btn-default" value="Limpiar" name="limpiardatos" > 
+                                            <input type="submit" style="background-color:#91C66C" class="btn btn-default" value="Enviar" name="grabardatos" >
+                                        </div>
+                                   </td>
+                                </tr>
+
+                               
+                                             
 
 
+<tr><td colspan="4"><label>Listado de Estado de Solicitud </label></td></tr>
+<tr>
+<td colspan="4" align="center">
+<div class="btn-group">
+ 
+                     <a type="submit" href="reportes_estado_solicitud_pdf.php"  style="background-color:#B22222" class="btn_save">PDF</a>
+                    <a type="submit" href="buscar_estado_solicitud.php"  style="background-color:#008080" class="btn_save">Buscar</a>
+              
+                </div>
+                    </td>
+                </tr>  
+<tr><td><label>Codigo</label></td>
+	<td><label>Estado</label></td>
+    <td><label>Acciones</label></td>
+    
+	
+</tr>
 
+<?php 
+			//Paginador
+			$sql_registe = mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM tbl_estado   ");
+			$result_register = mysqli_fetch_array($sql_registe);
+			$total_registro = $result_register['total_registro'];
 
-                <div class="col-md-8">
-                                                <label> Selecione Su Parametro</label>
-                                                <select class="form-select" aria-label="Default select example" name="Id_Parametro">
-                                                         <?php
-                                                         $consulta="SELECT * FROM tbl_ms_parametros ";
-                                                         $resultado=mysqli_query($conexion,$consulta);
-                                                         while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Parametro']."'>".$fila['Parametro']."</option
-                                                             >";
-                                                         }
-                                                         ?>
-                                                         </select>
-                                            </div>
+			$por_pagina = 5;
+
+			if(empty($_GET['pagina']))
+			{
+				$pagina = 1;
+			}else{
+				$pagina = $_GET['pagina'];
+			}
+
+			$desde = ($pagina-1) * $por_pagina;
+			$total_paginas = ceil($total_registro / $por_pagina);
+
+			$query = mysqli_query($conexion,"SELECT  * FROM tbl_estado  
+            
+             ORDER BY Id_Estado ASC LIMIT $desde,$por_pagina 
+				");
+
+			mysqli_close($conexion);
+
+			$result = mysqli_num_rows($query);
+			if($result > 0){
+
+				while ($data = mysqli_fetch_array($query)) {
+					
+			?>
+            
+				<tr>
+					<td><?php echo $data["Id_Estado"]; ?></td>
+					<td><?php echo $data["Estado"]; ?></td>
 				
-			
-                                         
-                                        
-                                        <center> 
-                                                    <button type="submit" name="Enlace" class="btn_save" >Enviar</button></div>
-                                                    
-                                             </center>     
+                    <td>
+						<a class="link_edit" href="actualizar_estado_solicitud.php?id=<?php echo $data["Id_Estado"]; ?>">Editar</a>
+
+					
+						|
+						<a class="link_delete" href="eliminar_confirmar_estado.php?id=<?php echo $data["Id_Estado"]; ?>">Eliminar</a>
+					
+						
+					</td>
+                    
+				
+				
+				</tr>
+                
+		<?php 
+				}
+
+			}
+		 ?>
+										
+										</thead>
+                                    </tbody>
+                                </table>
+								<div class="paginador">
+			<ul>
+			<?php 
+				if($pagina != 1)
+				{
+			 ?>
+				<li><a href="?pagina=<?php echo 1; ?>">|<</a></li>
+				<li><a href="?pagina=<?php echo $pagina-1; ?>"><<</a></li>
+			<?php 
+				}
+				for ($i=1; $i <= $total_paginas; $i++) { 
+					# code...
+					if($i == $pagina)
+					{
+						echo '<li class="pageSelected">'.$i.'</li>';
+					}else{
+						echo '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';
+					}
+				}
+
+				if($pagina != $total_paginas)
+				{
+			 ?>
+				<li><a href="?pagina=<?php echo $pagina + 1; ?>">>></a></li>
+				<li><a href="?pagina=<?php echo $total_paginas; ?> ">>|</a></li>
+			<?php } ?>
+			</ul>
+		</div>
+</center>  			
+			                                
+                                    
+                      
+
                                     </form><p>
                                     
                                 </div>

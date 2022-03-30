@@ -1,86 +1,167 @@
 <?php 
-
+//include "../conexion.php";
 
 session_start();
-/*
-if($_SESSION['Id_Rol'] != 1)
+if($_SESSION['Id_Rol']!= 1)
 	{
 		header("location: index.php");
 	}
-	
-*/
-//CONEXION A LA BASE DE DATOS
-$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
+    $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
-if(!empty($_POST))
-	{
-		$alert='';
-		if( empty($_POST['Id_Parametro'] || empty($_POST['Tipo_Solicitud'])) 
-        )
-		{$alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
-		}else{
 
+    if (isset($_POST['Actualizar_Actividad'])) {
+        if (  strlen($_POST['Descripcion']) >= 1 && strlen($_POST['Nombre_Proyecto']) >= 1 && 
+          strlen($_POST['Tipo_Actividad']) >= 1 
+           
+         )
+        
+		{
 			
-            $id_parametro = $_POST['Id_Parametro'];
-			$tipo_solicitud = $_POST['Tipo_Solicitud'];
+            $id_actividad    = ($_POST['Id_Actividad']);
+            $nombre_proyecto   = ($_POST['Nombre_Proyecto']);
+            $descripcion       = $_POST['Descripcion'];
+            $tipo_actividad               = $_POST['Tipo_Actividad'];
+        
+            
+            foreach($_FILES['Archivo']['tmp_name'] as $key => $tmp_name){
+                if($_FILES['Archivo']['name'][$key]){
+    
+                    $filename = $_FILES['Archivo']['name'][$key];
+                    $temporal = $_FILES['Archivo']['tmp_name'][$key];
+                    $directorio = "Archivo/";
+                
+                   if(!file_exists($directorio)){
+                       mkdir($directorio, 0777);
+                   }
+                   $dir = opendir($directorio);
+                   $ruta= $directorio.'/'.$filename;
+            
+      
+                }if(move_uploaded_file($temporal,$ruta)){
 
-            if($_FILES["enlace"]){
-                $nombre_base = basename($_FILES["enlace"]["name"]);
-                $nombre_final = date("m-d-Y")."-". date("H:i:s"). " -" .$nombre_base;
-                $ruta = "enlace/" . $nombre_final;
-                $subirenlace = move_uploaded_file($_FILES["enlace"]["tmp_name"], $ruta);
-                if($subirenlace){
 
-                    $query_insert = mysqli_query($conexion,"INSERT INTO tbl_solicitud_adjunto (enlace, Id_Parametro)
-                VALUES ('$ruta','$id_parametro')");
+                    //$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
+					$sql_update = mysqli_query($conexion,"UPDATE tbl_actividades  a
+                       INNER JOIN tbl_solicitud s
+			ON a.Id_Solicitud = s.Id_Solicitud
 
-                $query_insert = mysqli_query($conexion,"INSERT INTO tbl_tipo_solicitud (Tipo_Solicitud)
-                VALUES ('$tipo_solicitud')");
-				if($query_insert){
-					$alert='<p class="msg_save">Datos  Ingresados correctamente.</p>';
-                    header('Location: solicitud.php');
+            INNER JOIN tbl_tipo_actividad ta
+			ON a.Id_Tipo_Actividad = ta.Id_Tipo_Actividad
+                     SET 
+                     a.Id_Actividad='$id_actividad',
+                     a.Archivo ='$ruta',
+                     a.Descripcion = '$descripcion',
+                    ta.Tipo_Actividad='$tipo_actividad', 
+                    
+                    s.Nombre_Proyecto=' $nombre_proyecto'
+                      
+    
+                  WHERE Id_Actividad='$id_actividad'");
+               if($sql_update){
+                    
+				
+            
+            header('Location: actividades.php');
+               
+           
+            ?> 
+                   <?php
 				}else{
-                    $alert='';
-                    $alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
+					?> 
+                    <script type="text/javascript">
+                              alert('¡Error !')
+        
+                              </script>
+                                   <?php
 				}
 
-
-                }
             }
+        }                
+            
+            }
+        }
+                                            
+                                       
+//Mostrar Datos
+if(empty($_REQUEST['id']))
+{
+	header('Location: actividades.php');
+	mysqli_close($conexion);
+}
+$id_actividad = $_REQUEST['id'];
 
+$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
+$sql= mysqli_query($conexion,"SELECT 
+a.Id_Actividad,
+a.Archivo, 
+a.Descripcion, 
+ s.Nombre_Proyecto,
+ ta.Tipo_Actividad
+ FROM tbl_actividades a
+ 
 
-		
+ INNER JOIN tbl_solicitud s
+ ON a.Id_Solicitud = s.Id_Solicitud
 
-				
+ INNER JOIN tbl_tipo_actividad ta
+ ON a.Id_Tipo_Actividad = ta.Id_Tipo_Actividad
+							
+								WHERE Id_Actividad= $id_actividad ");
+mysqli_close($conexion);
+$result_sql = mysqli_num_rows($sql);
 
-			}
-
-
+if($result_sql == 0){
+	header('Location: actividades.php');
+}else{
+	$option = '';
+	while ($data = mysqli_fetch_array($sql)) {
+		# code...
+		$id_actividad                = $data['Id_Actividad'];
+        $archivo                       =$data['Archivo'];
+        $descripcion                = $data['Descripcion'];
+        
+        $nombre_proyecto               = $data['Nombre_Proyecto'];
+        
     
-    }
+        $tipo_actividad               = $data['Tipo_Actividad'];
+    
 
+      
+
+
+        
+					
+       
 	
+	
+		
+	
+
+
+	}
+}
+
 
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
     <head>
-    <meta charset="utf-8" />
+        <meta charset="utf-8" />
+		
+	
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Tipo de Solicitud</title>
+        <title>Actualizar</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-        <link href="css/styles.css" rel="stylesheet" />
-		<link href="css/nuevo.css" rel="stylesheet" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
-	
-    
-    
-        
        
+        <link href="css/nuevo.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet" />
+
+		
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
 
 
@@ -145,21 +226,55 @@ if(!empty($_POST))
     </script> 
     </head>
     <body class="bg-primary">
-    
-        <div id="container">
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+	
+                <main>
+				
+	                  <section id="container">
+                      <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="index.php">Sistema de Solicitudes </a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
            ><!-- Navbar Search-->
             <!-- Navbar-->
+            <ul>
+                <li><a class="navbar-brand ps-3" href="tipo_solicitud.php">Tipos Solicitudes </a></li>
+            </ul>
+            <ul>
+                <li><a class="navbar-brand ps-3" href="estado_solicitud.php">Estado </a></li>
+            </ul>
+            <ul >
+                <li class="nav-item dropdown">
+                    <a class="navbar-brand ps-3" href="#" 
+                     data-bs-toggle="dropdown"> Solicitudes </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="solicitud.php">Ingresar solicitudes</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                       
+                    </ul>
+                </li>
+            </ul>
+            <ul>
+                <li><a class="navbar-brand ps-3" href="tipo_actividad.php">Tipo Actividades</a></li>
+            </ul> 
+            <ul>
+                <li class="nav-item dropdown">
+                    <a class="navbar-brand ps-3" href="#" 
+                     data-bs-toggle="dropdown"> Actividades </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="actividades.php">Ingresar actividades </a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        
+                    </ul>
+                </li>
+            </ul>  
+            <ul>
+            </ul>
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"> </i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#!">Ajustes</a></li>
-
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="login.php">Cerrar sesión</a></li> 
                     </ul>
@@ -216,10 +331,6 @@ if(!empty($_POST))
 				
 			<?php } ?>
 
-
-
-
-
                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                         Autentificacion
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -262,66 +373,101 @@ if(!empty($_POST))
                 </nav>
             </div>
             <div id="layoutSidenav_content">
-                <main>
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">Fundacion Terra</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Panel de Control</li>
-                        </ol>
-                    
-                           
-                            
-                       
-                            
-                        
+                
+            <main>
+                
+                <link href="css/nuevo.css" rel="stylesheet" />
+                <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+                   <nav class="menu">   
+                                  
+                     </nav>
+                     <div class="contenedor">
+                     
+                     </div>
+                
                 </main>
-                                   
-                                    <form action="" method="post"  enctype="multipart/form-data">
-                                    <div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div>              
-                                   <center> <h1>Ingrese El Tipo de Solicitud</h1></center>
-
-                <label for="Tipo_Solicitud">Tipo de Solicitud</label>
-				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Tipo_Solicitud" id="Tippo_Solicitud" placeholder="Ingrese la solicitud"
-                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" required>
-				
-
-				<label for="enlace"> Ingrese un Comprobante</label>		              
-                <input type="file" name="enlace"class="form-control" required>
                 
 
-
-
-
-                <div class="col-md-8">
-                                                <label> Selecione Su Parametro</label>
-                                                <select class="form-select" aria-label="Default select example" name="Id_Parametro">
-                                                         <?php
-                                                         $consulta="SELECT * FROM tbl_ms_parametros ";
-                                                         $resultado=mysqli_query($conexion,$consulta);
-                                                         while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Parametro']."'>".$fila['Parametro']."</option
-                                                             >";
-                                                         }
-                                                         ?>
-                                                         </select>
-                                            </div>
-				
-			
-                                         
-                                        
-                                        <center> 
-                                                    <button type="submit" name="Enlace" class="btn_save" >Enviar</button></div>
-                                                    
-                                             </center>     
-                                    </form><p>
+		                  <div class="form_register">
+						
+		
+            <section id="container">
+            <center>  <form  action="" method="post"  enctype="multipart/form-data">                                 
+									<input type="hidden" name="Id_Actividad" value="<?php echo $id_actividad; ?>">
+                                    <center> <h1>Mantenimiento</h1></center>    
                                     
+                                    <td colspan="2" >    <label for="Archivo"> Seleccione Archivo</label>		              
+                            <input width: 50px; style="width: 450px" type="file" name="Archivo[]" id="Archivo[]" class="form__file" multiple="" value="<?php echo $ruta; ?>" >
+                            <img src="<?php echo $archivo; ?>" width="120"  srcset="" >
+
+                            </td>
+                          	              
+                            
+                                   
+
+
+
+                            </td>
+
+                                    <label for="Descripcion">Descripcion</label>
+                <input width: 50px; class="form-control" type="text" style="width: 450px" name="Descripcion" id="Descripcion" onKeyUP="this.value=this.value.toUpperCase();" placeholder="Descripcion" value="<?php echo $descripcion; ?>"
+                onkeypress="return  SoloLetras(event)" maxlength="100"  >
+
+
+				<label for="Nombre_Proyecto">Nombre Proyecto</label>
+				<input class="form-control" style="width: 450px" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Nombre_Proyecto" id="Nombre_Proyecto" placeholder="Nombre Proyecto" value="<?php echo $nombre_proyecto; ?>"
+                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
+
+              
+
+                <label for="Tipo_Actividad">Tipo de Actividad</label>
+				<input class="form-control" style="width: 450px" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Tipo_Actividad" id="Tipo_Actividad" placeholder="Tipo Actividad " value="<?php echo $tipo_actividad; ?>"
+                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
+
+          
+				
+              
+			
+
+
+
+                            
+                                          
+
+                                                 
+                                           <td colspan="4" align="center">
+                                           <div class="btn-group">
+                                                   
+                                                    <button type="submit" name="Actualizar_Actividad" class="btn_save" >Actualizar </button></div>
+                                                    
+                                                  
+                                               
+                                            </div>
+                                            </td>
+                                              </tr>    
+                                            
+                                    </tbody>
+                                
+                                    </form><p>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+
+                                    </center>
+                                       
+                                    </section >
                                 </div>
                             </div>
                         </div>
                     </div>
                 </main>
             </div> <br>
-            
             <div id="layoutAuthentication_footer">
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
@@ -339,6 +485,6 @@ if(!empty($_POST))
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
-        
+		
     </body>
 </html>
