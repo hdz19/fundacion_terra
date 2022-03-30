@@ -90,9 +90,7 @@ if( isset($_SESSION['Usuario']))
                 </nav>
                 </div>
 					
-
-				
-			<?php } ?>
+			<?php ?>
                                     
                                 </nav>
                             </div>
