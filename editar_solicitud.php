@@ -1,144 +1,170 @@
 <?php 
-
+//include "../conexion.php";
 
 session_start();
-if($_SESSION['Id_Rol'] != 1){
+/*
+if($_SESSION['Id_Rol']!= 1)
+	{
+		header("location: index.php");
+	}
+    $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
+*/
 
-	header("location: index.php");
+ if(!empty($_POST))
+ {
+    $alert='';
+		if(empty($_POST['Id_Solicitud_Adjunto']) || empty($_POST['Id_Personas']) ||empty($_POST['Id_Tipo_Solicitud'])
+        ||empty($_POST['Id_Estado']) ||empty($_POST['Nombre_Proyecto']) || empty($_POST['Motivo']) 
+        )
+		{$alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
+		}else{
+			
+            $id_solicitud              = $_POST['Id_Solicitud'];
+			$id_solicitud_adjunto      = $_POST['Id_Solicitud_Adjunto'];
+            $id_persona                = $_POST['Id_Personas'];
+            $id_tipo_solicitud         = $_POST['Id_Tipo_Solicitud'];
+            $id_estado                 = $_POST['Id_Estado'];
+            $nombre_proyecto           = $_POST['Nombre_Proyecto'];
+            $motivo                    = $_POST['Motivo'];
+            $fecha_registro_solicitud  = date('Y/m/d');
 
-}
-	
-
-//CONEXION A LA BASE DE DATOS
+    			//CONEXION A LA BASE DE DATOS
 $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
+/*
+$query = mysqli_query($conexion,"SELECT * FROM tbl_ms_usuario 
+													   WHERE (Usuario = '$usuario' AND Id_Usuario != $id_usuario)
+													   OR (Correo_Electronico = '$correo_electronico' AND Id_Usuario != $id_usuario) ");
 
-if (isset($_POST['crear_cuenta'])) {
-    if (strlen($_POST['Usuario']) >= 1 && strlen($_POST['Nombre_Usuario']) >= 1 && 
-     strlen($_POST['Contraseña']) >= 1  &&   strlen($_POST['Id_Rol']) >= 1 &&   strlen($_POST['Id_Tipo_Persona']) >= 1  
-       
-     && strlen($_POST['Correo_Electronico']) >= 1  &&  strlen($_POST['Creado_Por']) >= 1  &&  strlen($_POST['Modificado_Por']) >= 1 
-    && strlen($_POST['Id_Estado_Usuario']) >= 1 )
-    {
-	    
-	    //Campos TBL_MS_USUARIO
-        $usuario = trim($_POST['Usuario']);
-	    $nombre_usuario = trim($_POST['Nombre_Usuario']);
-       
-        $contraseña  = ($_POST['Contraseña']);
-        
-			$id_rol  = $_POST['Id_Rol'];
-			$id_personas  = $_POST['Id_Tipo_Persona'];
-			$fecha_ultima_conexion  = $_POST['Fecha_Ultima_Conexion'];
-			$preguntas_contestadas  = 1;
-			$primer_ingreso  =1;
-			$fecha_vencimiento  = $_POST['Fecha_Vencimiento'];
-			$correo_electronico  = $_POST['Correo_Electronico'];
-			$creado_por  = $_POST['Creado_Por'];
-			$fecha_creacion  = date('Y/m/d');
-			$modificado_por  = $_POST['Modificado_Por'];
-			$fecha_modificacion  = $_POST['Fecha_Modificacion'];
-			$id_estado_usuario  = $_POST['Id_Estado_Usuario'];
+			$result = mysqli_fetch_array($query);
 
-        
-         //PROCESO DE INSERT DE LA TABLA: tbl_ms_usuario
-	    $consulta="INSERT INTO tbl_ms_usuario (Usuario,Nombre_Usuario,Contraseña,Id_Rol,Id_Tipo_Persona,
-        Fecha_Ultima_Conexion,Preguntas_Contestadas,Primer_Ingreso,Fecha_Vencimiento,
-        Correo_Electronico,Creado_Por,Fecha_Creacion,Modificado_Por,Fecha_Modificacion,Id_Estado_Usuario)
-         VALUES ('$usuario','$nombre_usuario','$contraseña','$id_rol','$id_personas','$fecha_ultima_conexion','$preguntas_contestadas','$primer_ingreso',
-			'$fecha_vencimiento','$correo_electronico','$creado_por','$fecha_creacion','$modificado_por','$fecha_modificacion','$id_estado_usuario')";
+			if($result > 0){
+				$alert='<p class="msg_error">El correo o el usuario ya existe.</p>';
+			}else{
 
-
-         //VERIFICAR QUE EL USUARIO NO SE REPITA EN LA BASE DE DATOS
-         $verificar_usuario=mysqli_query($conexion, "SELECT * FROM tbl_ms_usuario WHERE Usuario='$usuario' OR Correo_Electronico = '$correo_electronico'");
-
-
-         if(mysqli_num_rows($verificar_usuario) > 0){
-         
-            ?> 
-	    	<script type="text/javascript">
-                      alert('¡ Este Usuario ya esta registrado, Intenta con otro diferente !')
-                      </script>
-                      <?php
+				if(empty($_POST['Contraseña']))
+				{
+*/
+                    //$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
+					$sql_update = mysqli_query($conexion,"UPDATE tbl_solicitud SET Id_Solicitud='$id_solicitud',Id_Solicitud_Adjunto='$id_solicitud_adjunto',
+                                                                                    Id_Personas='$id_persona',Id_Tipo_Solicitud='$id_tipo_solicitud',
+                                                                                    Id_Estado='$id_estado',Nombre_Proyecto='$nombre_proyecto', 
+                                                                                    Motivo= '$motivo'WHERE Id_Solicitud='$id_solicitud'");
     
-    header('Location: lista_usuarios.php');
-    ?> 
-                      
-           <?php
-          
-           
-            exit();
-         }
 
-      //PASO PARA SABER SI SE GUARDARON O NO LOS DATOS   
-         $resultado=mysqli_query($conexion,$consulta);   
-	    if ($resultado) {
-            mail ($correo_electronico, "Bienvenida al sistema", "Estimad@ ".$usuario.",
-            Estamos  felices de que formes parte de nuestro sistema.
-            Para ingresar favor utiliza tu usuario y contraseña.
 
-            Favor no contestar.
-            Generado automaticamente."
-           ,
-            "From: fundacio.terra22@gmail.com");
-	    	?> 
-	    	<script type="text/javascript">
-                
-                alert('¡ Exito, Inscrito Correctamente !')
-                      
-            </script>
-
-            <?php
-
-                header('Location: lista_usuarios.php');
-    
-            ?> 
-
-        <?php
-	    } else {
-        ?>    
-  
-            <script type="text/javascript">
-                alert('¡ Usuario o Contraseña Invalido, Intentalo de nuevo !')
-            </script>
+                }if($sql_update){
+                    
+					$alert='<p class="msg_save">Usuario actualizado correctamente.</p>';
+                    
+                    ?> 
+                    <script type="text/javascript">
+                              alert('¡ Usuario actualizado correctamente !')
+        
+                              </script>
+                                   <?php
             
-            <?php
-
-                header('Location: registro_usuario.php');
-
+            header('Location: lista_solicitud.php');
             ?> 
-            
-            <?php           
-	    }
+                   <?php
+				}else{
+					$alert='<p class="msg_error">Error al actualizar el usuario.</p>';
+				}
 
-    }else {
-        ?>    
-  
-        <script type="text/javascript">
-                  alert('¡ Por favor completa los campos!')
-                  </script>
-          <?php      
-    }
+                                             
+            
+            
+        
+                                            
+ }                                       
+//Mostrar Datos
+if(empty($_REQUEST['id']))
+{
+	header('Location: lista_solicitud.php');
+	mysqli_close($conexion);
 }
+$idsolicitud = $_REQUEST['id'];
+
+$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
+$sql= mysqli_query($conexion,"SELECT s.Id_Solicitud, 
+s.Id_Solicitud_Adjunto, 
+s.Id_Personas, 
+s.Id_Tipo_Solicitud, 
+s.Id_Estado,
+s.Nombre_Proyecto, 
+s.Motivo,
+s.Fecha_Registro_Solicitud,
+a.enlace,
+p.Nombre_Completo,
+t.Tipo_Solicitud,
+e.Estado FROM tbl_solicitud s 
+ INNER JOIN tbl_solicitud_adjunto a
+ON s.Id_Solicitud_Adjunto = a.Id_Solicitud_Adjunto 
+INNER JOIN tbl_personas p
+ON s.Id_Personas = p.Id_Personas
+INNER JOIN tbl_tipo_solicitud t
+ON s.Id_Tipo_Solicitud = t.Id_Tipo_Solicitud
+INNER JOIN tbl_estado e
+ON s.Id_Estado = e.Id_Estado
+
+
+
+WHERE s.Id_Solicitud= $idsolicitud ");
+mysqli_close($conexion);
+$result_sql = mysqli_num_rows($sql);
+
+if($result_sql == 0){
+	header('Location: lista_solicitud.php');
+}else{
+	$option = '';
+	while ($data = mysqli_fetch_array($sql)) {
+		# code...
+		$idsolicitud                  = $data['Id_Solicitud'];
+		$id_solicitud_adjunto         = $data['Id_Solicitud_Adjunto'];
+		$id_persona                   = $data['Id_Personas'];
+		$id_tipo_solicitud            = $data['Id_Tipo_Solicitud'];
+		$id_estado                    = $data['Id_Estado'];
+		$nombre_proyecto              = $data['Nombre_Proyecto'];
+		$motivo                       = $data['Motivo'];
+		$fecha_registro_solicitud     = $data['Fecha_Registro_Solicitud'];
+
+
+
+		
+		
+/*
+		if($id_rol == 1){
+			$option = '<option value="'.$id_rol.'" select>'.$id_rol.'</option>';
+		}else if($id_rol == 2){
+			$option = '<option value="'.$id_rol.'" select>'.$id_rol.'</option>';	
+		}else if($id_rol == 3){
+			$option = '<option value="'.$id_rol.'" select>'.$id_rol.'</option>';
+		}
+*/
+
+	}
+}
+
+
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
     <head>
-    <meta charset="utf-8" />
+        <meta charset="utf-8" />
+		
+	
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Registro Usuario</title>
+        <title>Editar Solicitud</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-        <link href="css/styles.css" rel="stylesheet" />
-		<link href="css/nuevo.css" rel="stylesheet" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
-	
-    
-    
-        
        
+        <link href="css/nuevo.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet" />
+
+		
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
 
 
@@ -203,9 +229,11 @@ if (isset($_POST['crear_cuenta'])) {
     </script> 
     </head>
     <body class="bg-primary">
-    
-        <div id="container">
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+	
+                <main>
+				
+	                  <section id="container">
+                      <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="index.php">Sistema de Solicitudes </a>
             <!-- Sidebar Toggle-->
@@ -278,6 +306,7 @@ if (isset($_POST['crear_cuenta'])) {
 
 
 
+
                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                         Autentificacion
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -322,129 +351,107 @@ if (isset($_POST['crear_cuenta'])) {
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Fundacion Terra</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Panel de Control</li>
-                        </ol>
-                    
-                           
-                            
+                        
                        
-                            
+                    
+                                
                         
                 </main>
-                                   
-                                    <form action="" method="post">
-                                                                   
-                                   <center> <h1>Crear Usuario</h1></center>
-                 <label for="Usuario">Usuario</label>
-                <input class="form-control" type="text" name="Usuario" id="Usuario" onKeyUP="this.value=this.value.toUpperCase();" placeholder="Usuario"
+		
+		                  <div class="form_register">
+						 
+			<hr>
+			<div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div>
+            <section id="container">
+            <center>  <form  action="" method="post">
+
+                                               
+									<input type="hidden" name="Id_Solicitud" value="<?php echo $idsolicitud; ?>">
+                                    <center> <h1>Editar Solicitud</h1></center>
+
+                                    <label for="Nombre_Proyecto">Nombre del Proyecto</label>
+                <input width: 50px; class="form-control" type="text" style="width: 450px" name="Nombre_Proyecto" id="Nombre_Proyecto" onKeyUP="this.value=this.value.toUpperCase();"  value="<?php echo $nombre_proyecto; ?>"
                 onkeypress="return  SoloLetras(event)" maxlength="15"  >
 
-				<label for="Nombre_Usuario">Nombre</label>
-				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Nombre_Usuario" id="Nombre_Usuario" placeholder="Nombre completo"
+
+				<label for="Motivo">Motivo de la Solicitud</label>
+				<input class="form-control" style="width: 450px" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Motivo" id="Motivo"  value="<?php echo $motivo; ?>"
                 onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
 				
-				<label for="Contraseña">Contraseña</label>
-                <input class="form-control" style="width: 450px" id="inputPassword" name="Contraseña" type="password" placeholder="Contraseña" 
-                                                onkeypress="return pulsar(event)"  maxlength="256"  />
-                                                
-                                                <button class="btn btn-primary" type="button" onclick="mostrarPassword()"><span class="fa fa-eye-slash icon"></span></button>
-                                               
+              
+				
 
-				<label for="Correo_Electronico">Correo electrónico</label>
-				<input class="form-control" id="inputPasswordConfirm" type="email"
-                                                    name="Correo_Electronico" placeholder="example@gmail.com" 
-                                                    onkeypress="return pulsar(event)" maxlength="50"/>
-
-                                       
-				<input type="hidden" name="Preguntas_Contestadas" id="Preguntas_Contestadas" placeholder="Cantidad ">
-
-			
-				<input type="hidden" name="Primer_Ingreso" id="Primer_Ingreso" placeholder="Cantidad ">
-
-                <label for="Fecha_Ultima_Conexion">Fecha de Ultima Conexión</label>
-				<input type="date" name="Fecha_Ultima_Conexion" id="Fecha_Ultima_Conexion" placeholder="Y/m/d">
-
-                <label for="Fecha_Vencimiento">Fecha de Vencimiento</label>
-				<input type="date" name="Fecha_Vencimiento" id="Fecha_Vencimiento" placeholder="Y/m/d">
-
-                <label for="Fecha_Modificacion">Fecha de Modificación</label>
-				<input type="date" name="Fecha_Modificacion" id="Fecha_Modificacion" placeholder="Y/m/d">
-
-                <label for="Modificado_Por">Modificado Por </label>
-				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Modificado_Por" id="Modificado_Por" placeholder= "Modificado Por" 
-                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
-
-
-			
-
-				<label for="Creado_Por">Creado Por </label>
-				<input class="form-control"  type="text"onKeyUP="this.value=this.value.toUpperCase();" name="Creado_Por" id="Creado_Por" placeholder= "Creado Por"
-                onkeypress="return  SoloLetras(event)" maxlength="15">
-
-
-                                        <div class ="row mb-4">
-                                            <div class="col-md-8">
-                                                <label> Selecione su Rol</label>
-                                                <select class="form-select" aria-label="Default select example" name="Id_Rol">
+                                       <div class ="row mb-4">
+                                            <div class="col-md-4">
+                                            <label> Selecione su Documento</label>
+                                                <select class="form-select" aria-label="Default select example" name="Id_Solicitud_Adjunto" >
                                                          <?php
-                                                         $consulta="SELECT * FROM tbl_ms_roles ";
+                                                         $consulta="SELECT * FROM tbl_solicitud_adjunto ";
                                                          $resultado=mysqli_query($conexion,$consulta);
                                                          while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Rol']."'>".$fila['Rol']."</option
+                                                             echo "<option value='".$fila['Id_Solicitud_Adjunto']."'>".$fila['enlace']."</option
                                                              >";
                                                          }
                                                          ?>
                                                          </select>
                                             </div>
-                                            </div>
-                                            <div class ="row mb-4">
-                                            <div class="col-md-8">
-                                                    <label> Selecione tipo de persona </label>
-                                                    <select name="Id_Tipo_Persona" class="form-select" aria-label="Default select example">
-                                                        <?php
-                                                         $consulta="SELECT * FROM tbl_tipo_persona ";
+                                            <div class="col-md-4">
+                                            <label> Nombre del Solicitante</label>
+                                                <select class="form-select" aria-label="Default select example" name="Id_Personas">
+                                                         <?php
+                                                         $consulta="SELECT * FROM tbl_personas ";
                                                          $resultado=mysqli_query($conexion,$consulta);
                                                          while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Tipo_Persona']."'>".$fila['Tipo_Persona']."</option
+                                                             echo "<option value='".$fila['Id_Personas']."'>".$fila['Nombre_Completo']."</option
                                                              >";
-                                                        }
+                                                         }
                                                         ?>
                                                 </select>
                                             </div>
-                                            </div>
-
-                                            <div class ="row mb-4">
-                                            <div class="col-md-8">
-                                                <label> Selecione estado de usuario </label> 
-                                                <select name="Id_Estado_Usuario" class="form-select" aria-label="Default select example">
-                                                        <?php
-                                                        $consulta="SELECT * FROM tbl_ms_estado_usuario ";
-                                                        $resultado=mysqli_query($conexion,$consulta);
+                                            <div class="col-md-4">
+                                            <label> Tipo de Solicitud</label>
+                                                <select class="form-select" aria-label="Default select example" name="Id_Tipo_Solicitud">
+                                                         <?php
+                                                         $consulta="SELECT * FROM tbl_tipo_solicitud ";
+                                                         $resultado=mysqli_query($conexion,$consulta);
                                                          while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Estado_Usuario']."'>".$fila['Estado_Usuario']."</option
+                                                             echo "<option value='".$fila['Id_Tipo_Solicitud']."'>".$fila['Tipo_Solicitud']."</option
                                                              >";
-                                                        }
+                                                         }
                                                         ?>
                                                 </select>
                                             </div>
-                                        </div>  
-                                         
-                                        
-                                        <center> 
-                                                    <button type="submit" name="crear_cuenta" class="btn_save" >Crear Cuenta</button></div>
-                                                    
-                                             </center>     
+                                            <div class="col-md-4">
+                                            <label> Estado de la Solicitud </label>
+                                                <select class="form-select" aria-label="Default select example" name="Id_Estado">
+                                                         <?php
+                                                         $consulta="SELECT * FROM tbl_estado ";
+                                                         $resultado=mysqli_query($conexion,$consulta);
+                                                         while($fila=$resultado->fetch_array()){
+                                                             echo "<option value='".$fila['Id_Estado']."'>".$fila['Estado']."</option
+                                                             >";
+                                                         }
+                                                        ?>
+                                                </select>
+                                            </div>
+                                        </div>          
+                            
+                                        <div class="mt-4 mb-0">
+                                                    <div class="d-grid">
+                                                    <button type="submit" name="Actualizar Usuario" class="btn_save" >Editar</button></div>
+                                                    </div>  
+                                                </div> 
+                                            </div> </center>     
                                     </form><p>
-                                    
+                                    </center>
+                                       
+                                    </section >
                                 </div>
                             </div>
                         </div>
                     </div>
                 </main>
             </div> <br>
-            
             <div id="layoutAuthentication_footer">
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
@@ -462,6 +469,6 @@ if (isset($_POST['crear_cuenta'])) {
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
-        
+		
     </body>
 </html>

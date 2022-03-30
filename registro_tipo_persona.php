@@ -12,112 +12,56 @@ if($_SESSION['Id_Rol'] != 1){
 //CONEXION A LA BASE DE DATOS
 $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
-if (isset($_POST['crear_cuenta'])) {
-    if (strlen($_POST['Usuario']) >= 1 && strlen($_POST['Nombre_Usuario']) >= 1 && 
-     strlen($_POST['Contraseña']) >= 1  &&   strlen($_POST['Id_Rol']) >= 1 &&   strlen($_POST['Id_Tipo_Persona']) >= 1  
-       
-     && strlen($_POST['Correo_Electronico']) >= 1  &&  strlen($_POST['Creado_Por']) >= 1  &&  strlen($_POST['Modificado_Por']) >= 1 
-    && strlen($_POST['Id_Estado_Usuario']) >= 1 )
-    {
+if(!empty($_POST))
+	{
+		$alert='';
+		if(empty($_POST['Tipo_Persona']) 
+        )
+		{$alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
+		}else{
+			
+
 	    
-	    //Campos TBL_MS_USUARIO
-        $usuario = trim($_POST['Usuario']);
-	    $nombre_usuario = trim($_POST['Nombre_Usuario']);
-       
-        $contraseña  = ($_POST['Contraseña']);
-        
-			$id_rol  = $_POST['Id_Rol'];
-			$id_personas  = $_POST['Id_Tipo_Persona'];
-			$fecha_ultima_conexion  = $_POST['Fecha_Ultima_Conexion'];
-			$preguntas_contestadas  = 1;
-			$primer_ingreso  =1;
-			$fecha_vencimiento  = $_POST['Fecha_Vencimiento'];
-			$correo_electronico  = $_POST['Correo_Electronico'];
-			$creado_por  = $_POST['Creado_Por'];
-			$fecha_creacion  = date('Y/m/d');
-			$modificado_por  = $_POST['Modificado_Por'];
-			$fecha_modificacion  = $_POST['Fecha_Modificacion'];
-			$id_estado_usuario  = $_POST['Id_Estado_Usuario'];
+	    //Campos TBL_DIVISION_EMPRESA
+        $tipo_persona = trim($_POST['Tipo_Persona']);
+	   
 
         
-         //PROCESO DE INSERT DE LA TABLA: tbl_ms_usuario
-	    $consulta="INSERT INTO tbl_ms_usuario (Usuario,Nombre_Usuario,Contraseña,Id_Rol,Id_Tipo_Persona,
-        Fecha_Ultima_Conexion,Preguntas_Contestadas,Primer_Ingreso,Fecha_Vencimiento,
-        Correo_Electronico,Creado_Por,Fecha_Creacion,Modificado_Por,Fecha_Modificacion,Id_Estado_Usuario)
-         VALUES ('$usuario','$nombre_usuario','$contraseña','$id_rol','$id_personas','$fecha_ultima_conexion','$preguntas_contestadas','$primer_ingreso',
-			'$fecha_vencimiento','$correo_electronico','$creado_por','$fecha_creacion','$modificado_por','$fecha_modificacion','$id_estado_usuario')";
+        //PROCESO DE INSERT DE LA TABLA: division_empresa 
+        $query_insert = mysqli_query($conexion,"INSERT INTO tbl_tipo_persona (Tipo_Persona)
+        VALUES ('$tipo_persona')");
+        	if($query_insert){
+                $alert='<p class="msg_save"> Solicitud Ingresado correctamente.</p>';
+                header('Location: lista_tipo_persona.php');
+            }else{
+                $alert='<p class="msg_error">Error al Ingresar la asolicitud.</p>';
+            }
 
 
-         //VERIFICAR QUE EL USUARIO NO SE REPITA EN LA BASE DE DATOS
-         $verificar_usuario=mysqli_query($conexion, "SELECT * FROM tbl_ms_usuario WHERE Usuario='$usuario' OR Correo_Electronico = '$correo_electronico'");
+        //VERIFICAR QUE EL TIPO DE PERSONA NO SE REPITA EN LA BASE DE DATOS
+        $verificar_div=mysqli_query($conexion, "SELECT * FROM tbl_tipo_persona WHERE Tipo_Persona='$tipo_persona'");
 
 
-         if(mysqli_num_rows($verificar_usuario) > 0){
+        if(mysqli_num_rows($verificar_div) > 0){
          
             ?> 
-	    	<script type="text/javascript">
-                      alert('¡ Este Usuario ya esta registrado, Intenta con otro diferente !')
-                      </script>
-                      <?php
+	            <script type="text/javascript">
+                    alert('¡ Este tipo de persona  ya ha sido registrada, Intenta con otra diferente !')
+                </script>
+
+            <?php
     
-    header('Location: lista_usuarios.php');
-    ?> 
-                      
-           <?php
+            //header('Location: lista_usuarios.php');//LISTA DE LA DIVISION DE EMPRESAAAAAAAAA (lista_tipo_persona.php) FALTA CREAR 
+    
           
            
             exit();
-         }
+        }
 
-      //PASO PARA SABER SI SE GUARDARON O NO LOS DATOS   
-         $resultado=mysqli_query($conexion,$consulta);   
-	    if ($resultado) {
-            mail ($correo_electronico, "Bienvenida al sistema", "Estimad@ ".$usuario.",
-            Estamos  felices de que formes parte de nuestro sistema.
-            Para ingresar favor utiliza tu usuario y contraseña.
+      
 
-            Favor no contestar.
-            Generado automaticamente."
-           ,
-            "From: fundacio.terra22@gmail.com");
-	    	?> 
-	    	<script type="text/javascript">
-                
-                alert('¡ Exito, Inscrito Correctamente !')
-                      
-            </script>
+    }   
 
-            <?php
-
-                header('Location: lista_usuarios.php');
-    
-            ?> 
-
-        <?php
-	    } else {
-        ?>    
-  
-            <script type="text/javascript">
-                alert('¡ Usuario o Contraseña Invalido, Intentalo de nuevo !')
-            </script>
-            
-            <?php
-
-                header('Location: registro_usuario.php');
-
-            ?> 
-            
-            <?php           
-	    }
-
-    }else {
-        ?>    
-  
-        <script type="text/javascript">
-                  alert('¡ Por favor completa los campos!')
-                  </script>
-          <?php      
-    }
 }
 ?>
 
@@ -129,7 +73,7 @@ if (isset($_POST['crear_cuenta'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Registro Usuario</title>
+        <title>Registro de Tipo de persona</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
 		<link href="css/nuevo.css" rel="stylesheet" />
@@ -185,21 +129,14 @@ if (isset($_POST['crear_cuenta'])) {
                 }
 
             }
+
             function pulsar(e) {
               tecla=(document.all) ? e.keyCode : e.which;
               if(tecla==32) return false;
             }
-            //Funcion Mostrar Contraseña
-            function mostrarPassword(){
-		var cambio = document.getElementById("inputPassword");
-		if(cambio.type == "password"){
-			cambio.type = "text";
-			$('.icon').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
-		}else{
-			cambio.type = "password";
-			$('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
-		}
-	} 
+
+
+
     </script> 
     </head>
     <body class="bg-primary">
@@ -266,8 +203,8 @@ if (isset($_POST['crear_cuenta'])) {
                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                     
                       <nav class="sb-sidenav-menu-nested nav">
-						<li><a class="nav-link" href="registro_usuario.php">Nuevo Usuario</a></li>
-						<li><a class="nav-link" href="lista_usuarios.php">Lista de Usuarios</a></li>
+						<li><a class="nav-link" href="registro_division_empresa.php">Nuevo tipo persona</a></li>
+						<li><a class="nav-link" href="lista_usuarios.php">Lista de tipos de personas</a></li>
                 </nav>
                 </div>
 					
@@ -335,105 +272,16 @@ if (isset($_POST['crear_cuenta'])) {
                 </main>
                                    
                                     <form action="" method="post">
-                                                                   
-                                   <center> <h1>Crear Usuario</h1></center>
-                 <label for="Usuario">Usuario</label>
-                <input class="form-control" type="text" name="Usuario" id="Usuario" onKeyUP="this.value=this.value.toUpperCase();" placeholder="Usuario"
-                onkeypress="return  SoloLetras(event)" maxlength="15"  >
+                                    <div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div> 
+                                   <center> <h1>Crear Nuevo Tipo persona</h1></center>
+                 <label for="Tipo_Persona">Nombre del tipo de persona</label>
+                <input class="form-control" type="text" name="Tipo_Persona" id="Tipo_Persona" onKeyUP="this.value=this.value.toUpperCase();" placeholder="Nombre tipo persona"
+                onkeypress="return  SoloLetras(event)" maxlength="20" >
 
-				<label for="Nombre_Usuario">Nombre</label>
-				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Nombre_Usuario" id="Nombre_Usuario" placeholder="Nombre completo"
-                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
 				
-				<label for="Contraseña">Contraseña</label>
-                <input class="form-control" style="width: 450px" id="inputPassword" name="Contraseña" type="password" placeholder="Contraseña" 
-                                                onkeypress="return pulsar(event)"  maxlength="256"  />
-                                                
-                                                <button class="btn btn-primary" type="button" onclick="mostrarPassword()"><span class="fa fa-eye-slash icon"></span></button>
-                                               
-
-				<label for="Correo_Electronico">Correo electrónico</label>
-				<input class="form-control" id="inputPasswordConfirm" type="email"
-                                                    name="Correo_Electronico" placeholder="example@gmail.com" 
-                                                    onkeypress="return pulsar(event)" maxlength="50"/>
-
-                                       
-				<input type="hidden" name="Preguntas_Contestadas" id="Preguntas_Contestadas" placeholder="Cantidad ">
-
-			
-				<input type="hidden" name="Primer_Ingreso" id="Primer_Ingreso" placeholder="Cantidad ">
-
-                <label for="Fecha_Ultima_Conexion">Fecha de Ultima Conexión</label>
-				<input type="date" name="Fecha_Ultima_Conexion" id="Fecha_Ultima_Conexion" placeholder="Y/m/d">
-
-                <label for="Fecha_Vencimiento">Fecha de Vencimiento</label>
-				<input type="date" name="Fecha_Vencimiento" id="Fecha_Vencimiento" placeholder="Y/m/d">
-
-                <label for="Fecha_Modificacion">Fecha de Modificación</label>
-				<input type="date" name="Fecha_Modificacion" id="Fecha_Modificacion" placeholder="Y/m/d">
-
-                <label for="Modificado_Por">Modificado Por </label>
-				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Modificado_Por" id="Modificado_Por" placeholder= "Modificado Por" 
-                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
-
-
-			
-
-				<label for="Creado_Por">Creado Por </label>
-				<input class="form-control"  type="text"onKeyUP="this.value=this.value.toUpperCase();" name="Creado_Por" id="Creado_Por" placeholder= "Creado Por"
-                onkeypress="return  SoloLetras(event)" maxlength="15">
-
-
-                                        <div class ="row mb-4">
-                                            <div class="col-md-8">
-                                                <label> Selecione su Rol</label>
-                                                <select class="form-select" aria-label="Default select example" name="Id_Rol">
-                                                         <?php
-                                                         $consulta="SELECT * FROM tbl_ms_roles ";
-                                                         $resultado=mysqli_query($conexion,$consulta);
-                                                         while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Rol']."'>".$fila['Rol']."</option
-                                                             >";
-                                                         }
-                                                         ?>
-                                                         </select>
-                                            </div>
-                                            </div>
-                                            <div class ="row mb-4">
-                                            <div class="col-md-8">
-                                                    <label> Selecione tipo de persona </label>
-                                                    <select name="Id_Tipo_Persona" class="form-select" aria-label="Default select example">
-                                                        <?php
-                                                         $consulta="SELECT * FROM tbl_tipo_persona ";
-                                                         $resultado=mysqli_query($conexion,$consulta);
-                                                         while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Tipo_Persona']."'>".$fila['Tipo_Persona']."</option
-                                                             >";
-                                                        }
-                                                        ?>
-                                                </select>
-                                            </div>
-                                            </div>
-
-                                            <div class ="row mb-4">
-                                            <div class="col-md-8">
-                                                <label> Selecione estado de usuario </label> 
-                                                <select name="Id_Estado_Usuario" class="form-select" aria-label="Default select example">
-                                                        <?php
-                                                        $consulta="SELECT * FROM tbl_ms_estado_usuario ";
-                                                        $resultado=mysqli_query($conexion,$consulta);
-                                                         while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Estado_Usuario']."'>".$fila['Estado_Usuario']."</option
-                                                             >";
-                                                        }
-                                                        ?>
-                                                </select>
-                                            </div>
-                                        </div>  
-                                         
                                         
                                         <center> 
-                                                    <button type="submit" name="crear_cuenta" class="btn_save" >Crear Cuenta</button></div>
+                                                    <button type="submit" name="crear_tipo_persona" class="btn_save" >Crear tipo persona</button></div>
                                                     
                                              </center>     
                                     </form><p>
