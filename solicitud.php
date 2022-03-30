@@ -425,7 +425,7 @@ if(mysqli_query($conexion,$sqlgrabar))
 
 <tr><td colspan="10"><label>Listado Solicitud </label></td></tr>
 <tr>
-<td colspan="1" align="center">
+<td colspan="10" align="center">
 <div class="btn-group">
  
                      <a type="submit" href="reportes_solicitudes_pdf.php"  style="background-color:#B22222" class="btn_save">PDF</a>
