@@ -132,11 +132,11 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-<<<<<<< HEAD
+
                        
-=======
+
                         <h1 class="mt-4">Lista de Solicitudes</h1>
->>>>>>> bb7b3f006c4d6be14f084e8daf2c5b36504059d0
+
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.php">Panel de Control</a></li>
 							
@@ -151,15 +151,15 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-<<<<<<< HEAD
+
                                 Lista Tipo de Solicitudes
                             </div>
 							<div class="col-md-6"> <a href="solicitud.php" class="btn_new">Nueva Solicitud</a>
-=======
+
                                 Lista Solicitudes
                             </div>
 							<div class="col-md-6"> <a href="solicitud.php" class="btn_new">Crear Solicitud</a>
->>>>>>> bb7b3f006c4d6be14f084e8daf2c5b36504059d0
+
 
 
 </div>
@@ -174,7 +174,7 @@
 								<tbody>
                                     <thead>
 									
-<<<<<<< HEAD
+
                                     <tr><td><label>Codigo</label></td>
 <td><label>Nombre Completo</label></td>
 	<td><label>Tipo de Solicitud </label></td>
@@ -225,7 +225,8 @@
                                     e.Estado   LIKE  '%$busqueda%') 
                                    ORDER BY s.Id_Solicitud
             ");
-
+?>
+				
                                     <tr>
 										<th>Id Solicitud </th>		                        
                                         <th>Enlace</th>	    
@@ -312,7 +313,7 @@
 									
 										 ORDER BY s.Id_Solicitud ASC LIMIT $desde,$por_pagina 
 				");
->>>>>>> bb7b3f006c4d6be14f084e8daf2c5b36504059d0
+
 			mysqli_close($conexion);
 			$result = mysqli_num_rows($query);
 			if($result > 0){
@@ -323,19 +324,19 @@
 								
 				<tr>
                 <td><?php echo $data["Id_Solicitud"]; ?></td>
-<<<<<<< HEAD
+
 					
-=======
+
 					<td><?php echo $data["enlace"]; ?></td>
                 
->>>>>>> bb7b3f006c4d6be14f084e8daf2c5b36504059d0
+
 					<td><?php echo $data["Nombre_Completo"]; ?></td>
 					<td><?php echo $data["Tipo_Solicitud"]; ?></td>
 					<td><?php echo $data["Estado"]; ?></td>
 					<td><?php echo $data["Nombre_Proyecto"] ?></td>
 					<td><?php echo $data["Motivo"] ?></td>
 					<td><?php echo $data["Fecha_Registro_Solicitud"] ?></td>
-<<<<<<< HEAD
+
                     <td>
 						<a class="link_edit" href="actualizar_solicitud.php?id=<?php echo $data["Id_Solicitud"]; ?>">Editar</a>
 
@@ -344,7 +345,7 @@
 						<a class="link_delete" href="eliminar_solicitud.php?id=<?php echo $data["Id_Solicitud"]; ?>">Eliminar</a>
 					
 				
-=======
+
 					
 
 					<td>
@@ -354,7 +355,7 @@
 						|
 						<a class="link_delete" href="eliminar_confirmar_solicitudes.php?id=<?php echo $data["Id_Solicitud"]; ?>">Eliminar</a>
 					<?php } ?>
->>>>>>> bb7b3f006c4d6be14f084e8daf2c5b36504059d0
+
 						
 					</td>
 				</tr>
@@ -368,11 +369,7 @@
 										</thead>
                                     </tbody>
                                 </table>
-<<<<<<< HEAD
-								
-	
-	
-=======
+
 								<?php 
 	
 	if($total_registro != 0)
@@ -407,7 +404,7 @@
 			</ul>
 		</div>
              <?php } ?>
->>>>>>> bb7b3f006c4d6be14f084e8daf2c5b36504059d0
+
 
 			              </ul>
 		                  </div>
