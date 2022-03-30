@@ -2,7 +2,6 @@
 include ('funciones.php');
 session_start();
 
-
 if($_SESSION['Id_Rol'] != 1)
 	{
 		header("location: index.php");
@@ -11,20 +10,16 @@ if($_SESSION['Id_Rol'] != 1)
 
 //CONEXION A LA BASE DE DATOS
 $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
-//print_r($_POST);
-if (strlen(@$_POST['crear_cuenta'])>= 1) 
+
+if (1==1)//strlen(@$_POST['crear_cuenta'])>= 1) 
 {
-    //print_r($_POST);
-    if (isset($_POST['Usuario'])
-    
-    && strlen($_POST['Nombre_Usuario']) >= 1 && 
+    print_r($_POST);
+    if (isset($_POST['Usuario']))
+    {
+        /*&& strlen($_POST['Nombre_Usuario']) >= 1 && 
      strlen($_POST['Contraseña']) >= 1  && strlen($_POST['Id_Rol']) >= 1 &&  
      strlen($_POST['Id_Tipo_Persona']) >= 1  && strlen($_POST['Correo_Electronico']) >= 1  
-     && strlen($_POST['Id_Estado_Usuario'])>= 1
-    )
-    
-    {
-        
+     && strlen($_POST['Id_Estado_Usuario'])>= 1*/
         $Date1 = date('Y-m-d');
         $vence = date('Y-m-d', strtotime($Date1 . " + 30 day"));
 	    //Campos TBL_MS_USUARIO
@@ -49,19 +44,18 @@ if (strlen(@$_POST['crear_cuenta'])>= 1)
         Fecha_Ultima_Conexion,Preguntas_Contestadas,Primer_Ingreso,Fecha_Vencimiento,
         Correo_Electronico,Creado_Por,Modificado_Por,Id_Estado_Usuario,Fecha_Creacion,Fecha_Modificacion,Verificar_Contraseña)
         VALUES ('$usuario','$nombre_usuario','$contraseña','$id_rol','$id_personas','$fecha_ultima_conexion','$preguntas_contestadas','$primer_ingreso',
-			'$vence','$correo_electronico','$creado_por','$modificado_por','$id_estado_usuario','$Date1','$Date1','$vcontraseña')";
+			'$vence','$correo_electronico','$creado_por','$modificado_por','$id_estado_usuario','$Date1','$Date1',$vcontraseña)";
 
          //VERIFICAR QUE EL USUARIO NO SE REPITA EN LA BASE DE DATOS
          $verificar_usuario=mysqli_query($conexion, "SELECT * FROM tbl_ms_usuario WHERE Usuario='$usuario' OR Correo_Electronico = '$correo_electronico'");
          if(mysqli_num_rows($verificar_usuario) > 0){
             ?> 
 	    	<script type="text/javascript">
-                      alert('¡Este Usuario ya esta registrado, Intenta con otro diferente !')
+                      alert('¡ Este Usuario ya esta registrado, Intenta con otro diferente !')
                       </script>
                       <?php
             header('Location: lista_usuarios.php');
-            ?>          
-           <?php
+
             exit();
          }
 
@@ -76,41 +70,28 @@ if (strlen(@$_POST['crear_cuenta'])>= 1)
             Estamos  felices de que formes parte de nuestro sistema.
             Para ingresar favor utiliza tu usuario y contraseña.
 
-
-            
             Favor no contestar.
             Generado automaticamente."
            ,
             "From: fundacio.terra22@gmail.com");
 	    	?> 
 	    	<script type="text/javascript">
-
-                      alert('¡Exito, Inscrito Correctamente!')
+                      alert('¡ Exito, Inscrito Correctamente !')
                       
                       </script>
                            <?php
             header('Location: lista_usuarios.php');
-
 	    } else {
-        ?>    
+            ?>    
   
             <script type="text/javascript">
-
                       alert('¡ Usuario o Contraseña Invalido, Intentalo de nuevo !')
                       </script>
                       <?php
            // header('Location: registro_usuario.php');          
-
 	    }
 
-    }else {
-        ?>    
-  
-        <script type="text/javascript">
-                  alert('¡Por favor completa los campos!')
-                  </script>
-          <?php      
-    }
+    }  
 }
 ?>
 
@@ -216,6 +197,7 @@ if (strlen(@$_POST['crear_cuenta'])>= 1)
       //  password.onchange = validatePassword;
       //  confirm_password.onkeyup = validatePassword;
     </script> 
+              
     </head>
     <body class="bg-primary">
     
@@ -276,6 +258,10 @@ if (strlen(@$_POST['crear_cuenta'])>= 1)
                 </nav>
                 </div>	
 			<?php } ?>
+                                   
+                                    
+                                    
+                
                                 </nav>
                             </div>
                             
@@ -285,14 +271,22 @@ if (strlen(@$_POST['crear_cuenta'])>= 1)
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4"></h1>
-                        
+                        <h1 class="mt-4">Fundacion Terra</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Panel de Control</li>
+                        </ol>
  
                 </main>
                                    
-         <form class="password-strength"  method="POST">
-         <center><img src="IMG/logo-fundacion.png" ></center>
-         <br></br>                                      
+         <form method="post">
+         <link rel="stylesheet" href="./style.css">
+                <div style="">
+                <!-- -->
+                <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+                <link href="https://fonts.googleapis.com/css?family=Muli:400,600&display=swap" rel="stylesheet">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.3.1/minty/bootstrap.min.css">
+                <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css'>
+                <link rel="stylesheet" href="./js/style.css">                                    
                  <center> <h1>Crear Usuario</h1></center>
                  <label for="Usuario">Usuario</label>
                 <input class="form-control" type="text" name="Usuario" id="Usuario" onKeyUP="this.value=this.value.toUpperCase();" placeholder="Usuario"
@@ -301,25 +295,7 @@ if (strlen(@$_POST['crear_cuenta'])>= 1)
 				<label for="Nombre_Usuario">Nombre</label>
 				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Nombre_Usuario" id="Nombre_Usuario" placeholder="Nombre completo"
                 onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >                            
-               <!-- <label for="Contraseña">Contraseña</label>
-                <div class="input-group mb-2 mr-sm-2">
-                     <input class="form-control" style="width: 450px" id="inputPassword" name="Contraseña" type="password" placeholder="Contraseña" 
-                     onkeypress="return pulsar(event)"  maxlength="256"  />
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">
-                        <button class="btn btn-primary" type="button" onclick="mostrarPassword()"><span class="fa fa-eye-slash icon"></span></button>
-                        </div>
-                    </div>
-                </div>-->
-                <link rel="stylesheet" href="./style.css">
-                <div style="">
-                <!-- -->
-                <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-                <link href="https://fonts.googleapis.com/css?family=Muli:400,600&display=swap" rel="stylesheet">
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.3.1/minty/bootstrap.min.css">
-                <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css'>
-                <link rel="stylesheet" href="./js/style.css">
-                 <div class="form-group" >
+                <div class="form-group" >
                         <label for="password-input">Contraseña</label>
                             <div >
                                 <input name="Contraseña" class="password-strength__input form-control inputPassword" type="password" id="password-input"
@@ -327,7 +303,7 @@ if (strlen(@$_POST['crear_cuenta'])>= 1)
                                 <div class="input-group-append">
                                 <button class="password-strength__visibility btn btn-outline-secondary" type="button"><span class="password-strength__visibility-icon" data-visible="hidden"><i class="fas fa-eye-slash"></i></span><span class="password-strength__visibility-icon js-hidden" data-visible="visible"><i class="fas fa-eye"></i></span></button>
                                 </div>
-                            </div><small class="password-strength__error text-danger js-hidden">This symbol is not allowed!</small><small class="form-text text-muted mt-2" id="passwordHelp">¡Agregue 9 caracteres o más, letras minúsculas, letras mayúsculas, números y símbolos para que la contraseña sea realmente segura!</small>
+                            </div><small class="password-strength__error text-danger js-hidden">This symbol is not allowed!</small><small class="form-text text-muted mt-2" id="passwordHelp">Add 9 charachters or more, lowercase letters, uppercase letters, numbers and symbols to make the password really strong!</small>
                             </div>
                             <div class="password-strength__bar-block progress mb-4">
                             <div class="password-strength__bar progress-bar bg-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
@@ -336,17 +312,18 @@ if (strlen(@$_POST['crear_cuenta'])>= 1)
 
                     </div>
                     </script><script  src="./js/script.js"></script>
-                    
+                    <!-- -->
                     <span class="indicator"></span>
                 <div class="">
-                <label for="password-input">Verificar Contraseña</label>
+                        <div  class="password-strength">
+                        <label for="password-input">Verificar Contraseña</label>
 
-                <input class="form-control" style="width: 450px" id="inputVPassword" name="VContraseña" type="password" placeholder="Verificar Contraseña" 
-                     onkeypress="return pulsar2(event)" onKeyUP="validatePassword()" maxlength="15"  />   
-                    <div class="input-group-text">                          
-                         <button class="btn btn-primary" type="button" onclick="mostrarPassword2()"><span class="fa fa-eye-slash icon"></span></button>
-                    </div>
-         
+                        <input class="form-control" style="width: 450px" id="inputVPassword" name="VContraseña" type="password" placeholder="Verificar Contraseña" 
+                            onkeypress="return pulsar2(event)" onKeyUP="validatePassword()" maxlength="15"  />   
+                            <div class="input-group-text">                          
+                                <button class="btn btn-primary" type="button" onclick="mostrarPassword2()"><span class="fa fa-eye-slash icon"></span></button>
+                            </div>
+                        </div>
                 </div>
                
 				<label for="Correo_Electronico">Correo electrónico</label>
@@ -408,7 +385,7 @@ if (strlen(@$_POST['crear_cuenta'])>= 1)
 
                                         <center> 
                                         <input type="hidden" name="crear_cuenta" id="crear_cuenta" value="1">
-                                            <button type="submit"  class="btn_save password-strength__submit" >Crear Cuenta</button>
+                                            <button type="submit"  class="btn_save" >Crear Cuenta</button>
                                                     
                                              </center>  
                                               

@@ -13,9 +13,7 @@ $consulta="Select up.Respuesta, p.Pregunta from tbl_ms_preguntas_usuario up
  WHERE u.Usuario='$usuario'";
 
 $resultado=mysqli_query($conexion,$consulta);
-//$filas=$resultado->fetch_array();
-//$filas=($resultado);
-//print_r($resultado);
+
 if($resultado->num_rows>0){
   
 ?>
@@ -67,8 +65,7 @@ if($resultado->num_rows>0){
                                         </br>
                                        
                                         <br></br>
-                                        <div class="small mb-3 text-muted">A continuación se le presenta una serie de preguntas, deberá seleccionar una de ellas para responder y cumplir con el proceso de 
-                                            recuperación de su contraseña de usuario.
+                                        <div class="small mb-3 text-muted">A continuación se le presentan sus preguntas secretas,
                                         </div>
                                        
                                         <form >
@@ -126,21 +123,19 @@ if($resultado->num_rows>0){
                                             <script src="main.js"></script>
 
 
-
-
-                                            
-                                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                            <br></br>
+                                            <center>
                                                 
                                                <button class="btn btn-primary">Aceptar</button>
                                                  
-                                            </div>
-                                           
+                                                    </center>
+                                                    
                                         </form>
 
                                     </div>
                                     <div class="card-footer text-center py-3">
                                         <div class="small">
-                                        <a  href="login.php">Volver a iniciar sesión</a>
+                                        <a  href="login.php"></a>
                                         
                                         </div>
                                     </div>

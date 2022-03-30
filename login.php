@@ -140,10 +140,15 @@
                                                 </div> 
                                             <div class="form-check mb-4">   
                                             </div>
-                                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                            
+                                             <center>
+                                             <button class="btn btn-primary" >Acceso</button>
+                                                </center>
+                                                <br></br>
+                                                <center>
                                                 <a class="small" href="password.php">¿Has olvidado tu contraseña?</a> 
-                                                <button class="btn btn-primary" >Acceso</button>
-                                            </div>
+                                                </center>
+                                            
                                         </form>
                                     </div>
                                   
