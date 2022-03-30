@@ -12,55 +12,28 @@ if($_SESSION['Id_Rol'] != 1)
 //CONEXION A LA BASE DE DATOS
 $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
-if(!empty($_POST))
-	{
-		$alert='';
-		if( empty($_POST['Id_Parametro'] || empty($_POST['Tipo_Solicitud'])) 
-        )
-		{$alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
-		}else{
-
-			
-            $id_parametro = $_POST['Id_Parametro'];
-			$tipo_solicitud = $_POST['Tipo_Solicitud'];
-
-            if($_FILES["enlace"]){
-                $nombre_base = basename($_FILES["enlace"]["name"]);
-                $nombre_final = date("m-d-Y")."-". date("H:i:s"). " -" .$nombre_base;
-                $ruta = "enlace/" . $nombre_final;
-                $subirenlace = move_uploaded_file($_FILES["enlace"]["tmp_name"], $ruta);
-                if($subirenlace){
-
-                    $query_insert = mysqli_query($conexion,"INSERT INTO tbl_solicitud_adjunto (enlace, Id_Parametro)
-                VALUES ('$ruta','$id_parametro')");
-
-                $query_insert = mysqli_query($conexion,"INSERT INTO tbl_tipo_solicitud (Tipo_Solicitud)
-                VALUES ('$tipo_solicitud')");
-				if($query_insert){
-					$alert='<p class="msg_save">Datos  Ingresados correctamente.</p>';
-                    header('Location: solicitud.php');
-				}else{
-                    $alert='';
-                    $alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
-				}
-
-
-                }
-            }
-
-
+if(!empty($_POST)){
+        $alert='';
+        if(empty($_POST['Precio']) || empty($_POST['Descripcion_de_Producto']) || empty($_POST['Producto']) || empty($_POST['Cantidad']))
+        {
+            $alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
+        }else{
+               
+        	$precio= $_POST['Precio'];
+			$descripcion_producto= $_POST['Descripcion_de_Producto'];
+            $producto= $_POST['Producto'];
+            $cantidad= $_POST['Cantidad'];
 		
-
-				
-
-			}
-
-
-    
-    }
-
+            $consulta = mysqli_query($conexion,"INSERT INTO tbl_detalle_orden_compra (Precio, Descripcion_de_Producto, Producto, Cantidad)
+            VALUES ('$precio','$descripcion_producto','$producto','$cantidad')");
+            if($consulta){
+                $alert='<p class="msg_save">El detalle del producto se registro correctamente.</p>';
+            }else{
+                $alert='<p class="msg_error">Error al ingresar el detalle del producto.</p>';
+            }
 	
-
+        }    
+}    
 ?>
 
 <!DOCTYPE html>
@@ -71,7 +44,7 @@ if(!empty($_POST))
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Tipo de Solicitud</title>
+        <title>Registro Usuario</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
 		<link href="css/nuevo.css" rel="stylesheet" />
@@ -208,8 +181,8 @@ if(!empty($_POST))
                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                     
                       <nav class="sb-sidenav-menu-nested nav">
-						<li><a class="nav-link" href="registro_usuario.php">Nuevo Usuario</a></li>
-						<li><a class="nav-link" href="lista_usuarios.php">Lista de Usuarios</a></li>
+						<li><a class="nav-link" href="orden_compra.php">Nueva orden de compra</a></li>
+						
                 </nav>
                 </div>
 					
@@ -267,52 +240,37 @@ if(!empty($_POST))
                         <h1 class="mt-4">Fundacion Terra</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">Panel de Control</li>
-                        </ol>
-                    
-                           
-                            
-                       
-                            
-                        
+                        </ol>                        
                 </main>
                                    
-                                    <form action="" method="post"  enctype="multipart/form-data">
-                                    <div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div>              
-                                   <center> <h1>Ingrese El Tipo de Solicitud</h1></center>
-
-                <label for="Tipo_Solicitud">Tipo de Solicitud</label>
-				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Tipo_Solicitud" id="Tippo_Solicitud" placeholder="Ingrese la solicitud"
-                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" required>
-				
-
-				<label for="enlace"> Ingrese un Comprobante</label>		              
-                <input type="file" name="enlace"class="form-control" required>
-                
-
-
-
-
-                <div class="col-md-8">
-                                                <label> Selecione Su Parametro</label>
-                                                <select class="form-select" aria-label="Default select example" name="Id_Parametro">
-                                                         <?php
-                                                         $consulta="SELECT * FROM tbl_ms_parametros ";
-                                                         $resultado=mysqli_query($conexion,$consulta);
-                                                         while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Parametro']."'>".$fila['Parametro']."</option
-                                                             >";
-                                                         }
-                                                         ?>
-                                                         </select>
-                                            </div>
-				
-			
-                                         
-                                        
-                                        <center> 
-                                                    <button type="submit" name="Enlace" class="btn_save" >Enviar</button></div>
-                                                    
-                                             </center>     
+                <form action="" method="post">
+                    <div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div>              
+                    <div>
+                    <center> <h1> Detalle orden compra </h1></center>
+                        <label for="Precio">Precio</label>
+				        <input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" 
+                        name="Precio" id="Precio" placeholder="0.00"
+                        maxlength="11" >
+                    </div>
+                    <div>
+                        <label for="Descripcion_de_Producto">Descripcion de Producto </label>
+				        <input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" 
+                        name="Descripcion_de_Producto" id="Descripcion_de_Producto" placeholder="Ingrese el estado"
+                        maxlength="100" >
+                    </div>
+                    <div>
+                        <label for="Producto">Producto</label>
+				        <input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" 
+                        name="Producto" id="Producto" placeholder="Ingrese el nombre del producto"
+                        onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="50" >
+                    </div>
+                    <div>
+                        <label for="Cantidad"> Cantidad </label>
+				        <input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" 
+                        name="Cantidad" id="Cantidad" placeholder="1"
+                        maxlength="11" >
+                    </div>
+                    <center> <button  type="submit" name="orden" class="btn_save" >Enviar estado </button> </center>
                                     </form><p>
                                     
                                 </div>

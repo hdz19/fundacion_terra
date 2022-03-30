@@ -12,55 +12,26 @@ if($_SESSION['Id_Rol'] != 1)
 //CONEXION A LA BASE DE DATOS
 $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
-if(!empty($_POST))
-	{
-		$alert='';
-		if( empty($_POST['Id_Parametro'] || empty($_POST['Tipo_Solicitud'])) 
-        )
-		{$alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
-		}else{
-
-			
-            $id_parametro = $_POST['Id_Parametro'];
-			$tipo_solicitud = $_POST['Tipo_Solicitud'];
-
-            if($_FILES["enlace"]){
-                $nombre_base = basename($_FILES["enlace"]["name"]);
-                $nombre_final = date("m-d-Y")."-". date("H:i:s"). " -" .$nombre_base;
-                $ruta = "enlace/" . $nombre_final;
-                $subirenlace = move_uploaded_file($_FILES["enlace"]["tmp_name"], $ruta);
-                if($subirenlace){
-
-                    $query_insert = mysqli_query($conexion,"INSERT INTO tbl_solicitud_adjunto (enlace, Id_Parametro)
-                VALUES ('$ruta','$id_parametro')");
-
-                $query_insert = mysqli_query($conexion,"INSERT INTO tbl_tipo_solicitud (Tipo_Solicitud)
-                VALUES ('$tipo_solicitud')");
-				if($query_insert){
-					$alert='<p class="msg_save">Datos  Ingresados correctamente.</p>';
-                    header('Location: solicitud.php');
-				}else{
-                    $alert='';
-                    $alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
-				}
-
-
-                }
-            }
-
-
+if(!empty($_POST)){
+        //$alert='';
+        if(empty($_POST['Id_Personas']) || empty($_POST['Id_Tipo_Contacto ']))
+        {
+                         
+        	$id_personas= $_POST['Id_Personas'];
+			$id_tipo_contacto= $_POST['Id_Tipo_Contacto'];
+            
+            
 		
-
-				
-
-			}
-
-
-    
-    }
-
+            $consulta = mysqli_query($conexion,"INSERT INTO  tbl_contacto (Id_Personas, Id_Tipo_Contacto)
+            VALUES ('$id_personas','$id_tipo_contacto')");
+            if($consulta){
+                $alert='<p class="msg_save">El Contacto se registro correctamente.</p>';
+            }else{
+                $alert='<p class="msg_error">Error al ingresar Contacto </p>';
+            }
 	
-
+        }    
+    }
 ?>
 
 <!DOCTYPE html>
@@ -71,7 +42,7 @@ if(!empty($_POST))
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Tipo de Solicitud</title>
+        <title>Registro Usuario</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
 		<link href="css/nuevo.css" rel="stylesheet" />
@@ -197,7 +168,7 @@ if(!empty($_POST))
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                     <?php 
-				if($_SESSION['Id_Rol'] == 1){
+				/*if($_SESSION['Id_Rol'] == 1)*/{
 			 ?>
 				<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
 
@@ -208,8 +179,7 @@ if(!empty($_POST))
                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                     
                       <nav class="sb-sidenav-menu-nested nav">
-						<li><a class="nav-link" href="registro_usuario.php">Nuevo Usuario</a></li>
-						<li><a class="nav-link" href="lista_usuarios.php">Lista de Usuarios</a></li>
+						<li><a class="nav-link" href="lista_contacto.php">Lista de Contactos</a></li>
                 </nav>
                 </div>
 					
@@ -267,52 +237,44 @@ if(!empty($_POST))
                         <h1 class="mt-4">Fundacion Terra</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">Panel de Control</li>
-                        </ol>
-                    
-                           
-                            
-                       
-                            
-                        
+                        </ol>                        
                 </main>
                                    
-                                    <form action="" method="post"  enctype="multipart/form-data">
-                                    <div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div>              
-                                   <center> <h1>Ingrese El Tipo de Solicitud</h1></center>
-
-                <label for="Tipo_Solicitud">Tipo de Solicitud</label>
-				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Tipo_Solicitud" id="Tippo_Solicitud" placeholder="Ingrese la solicitud"
-                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" required>
-				
-
-				<label for="enlace"> Ingrese un Comprobante</label>		              
-                <input type="file" name="enlace"class="form-control" required>
-                
-
-
-
-
-                <div class="col-md-8">
-                                                <label> Selecione Su Parametro</label>
-                                                <select class="form-select" aria-label="Default select example" name="Id_Parametro">
-                                                         <?php
-                                                         $consulta="SELECT * FROM tbl_ms_parametros ";
-                                                         $resultado=mysqli_query($conexion,$consulta);
-                                                         while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Parametro']."'>".$fila['Parametro']."</option
-                                                             >";
-                                                         }
-                                                         ?>
-                                                         </select>
-                                            </div>
-				
-			
-                                         
-                                        
-                                        <center> 
-                                                    <button type="submit" name="Enlace" class="btn_save" >Enviar</button></div>
-                                                    
-                                             </center>     
+                <form action="" method="post">
+                    <div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div>   
+                               
+                    <div>
+                    <center> <h1> Contactos </h1></center>
+                        <div class ="row mb-4">
+                            <div class="col-md-12">
+                                <label> Selecione la Persona</label>
+                                <select class="form-select" aria-label="Default select example" name="Id_Personas">
+                                    <?php
+                                        $consulta="SELECT * FROM tbl_personas ";
+                                        $resultado=mysqli_query($conexion,$consulta);
+                                            while($fila=$resultado->fetch_array()){
+                                                echo "<option value='".$fila['Id_Personas']."'>".$fila['Nombre_Completo']."</option>";
+                                                }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class ="row mb-4">
+                            <div class="col-md-12">
+                                <label> Selecione Tipo Contacto</label>
+                                <select class="form-select" aria-label="Default select example" name="Id_Tipo_Contacto">
+                                    <?php
+                                        $consulta="SELECT * FROM tbl_tipo_contacto ";
+                                        $resultado=mysqli_query($conexion,$consulta);
+                                            while($fila=$resultado->fetch_array()){
+                                                echo "<option value='".$fila['Id_Tipo_Contacto']."'>".$fila['Tipo_Contacto']."</option>";
+                                                }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        
+                    <center> <button  type="submit" name="orden" class="btn_save" >Guardar Contacto </button> </center>
                                     </form><p>
                                     
                                 </div>

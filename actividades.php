@@ -14,52 +14,67 @@ $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
 if(!empty($_POST))
 	{
-		$alert='';
-		if( empty($_POST['Id_Parametro'] || empty($_POST['Tipo_Solicitud'])) 
+		/*$alert='';*/
+		if( empty($_POST['Descripcion']) ||empty($_POST['Id_Solicitud '])
+        ||empty($_POST['Id_Tipo_Actividad ']) 
         )
-		{$alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
-		}else{
+		/*{$alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
+		}else{*/
+		
+            $descripcion = $_POST['Descripcion'];
+            $id_solicitud = $_POST['Id_Solicitud'];
+            $id_tipo_actividad = $_POST['Id_Tipo_Actividad'];
 
-			
-            $id_parametro = $_POST['Id_Parametro'];
-			$tipo_solicitud = $_POST['Tipo_Solicitud'];
+            
 
-            if($_FILES["enlace"]){
-                $nombre_base = basename($_FILES["enlace"]["name"]);
-                $nombre_final = date("m-d-Y")."-". date("H:i:s"). " -" .$nombre_base;
-                $ruta = "enlace/" . $nombre_final;
-                $subirenlace = move_uploaded_file($_FILES["enlace"]["tmp_name"], $ruta);
-                if($subirenlace){
+            foreach($_FILES['Archivo']['tmp_name'] as $key => $tmp_name){
+                if($_FILES['Archivo']['name'][$key]){
+    
+                    $filename = $_FILES['Archivo']['name'][$key];
+                    $temporal = $_FILES['Archivo']['tmp_name'][$key];
+                    $directorio = "Archivo/";
+                
+                   if(!file_exists($directorio)){
+                       mkdir($directorio, 0777);
+                   }
+                   $dir = opendir($directorio);
+                   $ruta= $directorio.'/'.$filename;
 
-                    $query_insert = mysqli_query($conexion,"INSERT INTO tbl_solicitud_adjunto (enlace, Id_Parametro)
-                VALUES ('$ruta','$id_parametro')");
+                   if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['limpiardatos']))
+            {
+                $alert='<p class="msg_save">Se limpio la Informacion.</p>';
+            }
+            if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['grabardatos']))
+	
+            {
+                   if(move_uploaded_file($temporal,$ruta)){
+    
+                
 
-                $query_insert = mysqli_query($conexion,"INSERT INTO tbl_tipo_solicitud (Tipo_Solicitud)
-                VALUES ('$tipo_solicitud')");
-				if($query_insert){
+
+                    $insertarSQL = "INSERT INTO tbl_actividades (Archivo, Descripcion, Id_Solicitud, Id_Tipo_Actividad)
+                    VALUES ('$ruta','$descripcion','$id_solicitud','$id_tipo_actividad')";
+                    $resultado =mysqli_query($conexion,$insertarSQL);
+                    
+
+
+				if($resultado){
 					$alert='<p class="msg_save">Datos  Ingresados correctamente.</p>';
-                    header('Location: solicitud.php');
+                    
 				}else{
                     $alert='';
                     $alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
 				}
 
-
-                }
-            }
-
-
-		
-
-				
-
 			}
-
-
-    
+        
+        }
     }
-
-	
+            }
+}
+        
+            
+        
 
 ?>
 
@@ -71,7 +86,7 @@ if(!empty($_POST))
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Tipo de Solicitud</title>
+        <title>Registro Usuario</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
 		<link href="css/nuevo.css" rel="stylesheet" />
@@ -154,12 +169,44 @@ if(!empty($_POST))
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
            ><!-- Navbar Search-->
             <!-- Navbar-->
+            <ul>
+                <li><a class="navbar-brand ps-3" href="tipo_solicitud.php">Tipos Solicitudes </a></li>
+            </ul>
+            <ul>
+                <li><a class="navbar-brand ps-3" href="estado_solicitud.php">Estado </a></li>
+            </ul>
+            <ul >
+                <li class="nav-item dropdown">
+                    <a class="navbar-brand ps-3" href="#" 
+                     data-bs-toggle="dropdown"> Solicitudes </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="solicitud.php">Ingresar solicitudes</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="mantenimiento.php">Mantenimiento</a></li> 
+                    </ul>
+                </li>
+            </ul>
+            <ul>
+                <li><a class="navbar-brand ps-3" href="tipo_actividad.php">Tipo Actividades</a></li>
+            </ul> 
+            <ul>
+                <li class="nav-item dropdown">
+                    <a class="navbar-brand ps-3" href="#" 
+                     data-bs-toggle="dropdown"> Actividades </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="actividades.php">Ingresar actividades </a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="mantenimiento.php">Mantenimiento</a></li> 
+                    </ul>
+                </li>
+            </ul>  
+            <ul>
+            </ul>
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"> </i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#!">Ajustes</a></li>
-
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="login.php">Cerrar sesión</a></li> 
                     </ul>
@@ -262,57 +309,209 @@ if(!empty($_POST))
                 </nav>
             </div>
             <div id="layoutSidenav_content">
-                <main>
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">Fundacion Terra</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Panel de Control</li>
-                        </ol>
-                    
-                           
-                            
-                       
-                            
+             
+                </ol>                        
                         
                 </main>
                                    
-                                    <form action="" method="post"  enctype="multipart/form-data">
-                                    <div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div>              
-                                   <center> <h1>Ingrese El Tipo de Solicitud</h1></center>
+                                    <form action="" method="post" enctype="multipart/form-data">
+                                   
+                                    <div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div>  
+                                    <table border="1">              
+                                    <tr>
+                                    <td colspan="10"><label>Mantenimiento de Actividades</label></td>
+                                </tr>               
+                                <tr>
+                                    <td colspan="10" ><label>Registrar Información </label></td></tr>
 
-                <label for="Tipo_Solicitud">Tipo de Solicitud</label>
-				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Tipo_Solicitud" id="Tippo_Solicitud" placeholder="Ingrese la solicitud"
-                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" required>
-				
+                                <tr>
+                                
+                    
+                                <td colspan="3" >    <label for="Archivo"> Seleccione Archivo</label>		              
+                            <input type="file" name="Archivo[]" id="Archivo[]" class="form__file" multiple="" required >
 
-				<label for="enlace"> Ingrese un Comprobante</label>		              
-                <input type="file" name="enlace"class="form-control" required>
-                
+                            </td>
+                          
+                        
+                            <td colspan="3" >  <label for="Descripcion"> Descripcion </label>
+				            <input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" 
+                            name="Descripcion" id="Descripcion" placeholder="Descripcion de archivo" onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="50" >
+                            </td>
+                          
+                    </tr>    
+                     
+                   
+                    <tr>
+      
+                    <td colspan="3" >   <label> Solicitud </label>
+                            <select class="form-select" aria-label="Default select example" name="Id_Solicitud">
+                                <?php
+                                    $consulta="SELECT * FROM tbl_solicitud ";
+                                    $resultado=mysqli_query($conexion,$consulta);
+                                        while($fila=$resultado->fetch_array()){
+                                            echo "<option value='".$fila['Id_Solicitud']."'>".$fila['Nombre_Proyecto']."</option
+                                                >";
+                                            }
+                                        ?>
+                                </select>
+                     
+                                </td>
+                                <td colspan="4" >  <label> Tipo de Actividad </label>
+                            <select class="form-select" aria-label="Default select example" name="Id_Tipo_Actividad">
+                                <?php
+                                    $consulta="SELECT * FROM tbl_tipo_actividad ";
+                                    $resultado=mysqli_query($conexion,$consulta);
+                                        while($fila=$resultado->fetch_array()){
+                                            echo "<option value='".$fila['Id_Tipo_Actividad']."'>".$fila['Tipo_Actividad']."</option
+                                                             >";    
+                                        }
+                                ?>
+                            </select>
+                     
+                            </td>
+                            
+                          </tr>   
+                          
 
 
-
-
-                <div class="col-md-8">
-                                                <label> Selecione Su Parametro</label>
-                                                <select class="form-select" aria-label="Default select example" name="Id_Parametro">
-                                                         <?php
-                                                         $consulta="SELECT * FROM tbl_ms_parametros ";
-                                                         $resultado=mysqli_query($conexion,$consulta);
-                                                         while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Parametro']."'>".$fila['Parametro']."</option
-                                                             >";
-                                                         }
-                                                         ?>
-                                                         </select>
-                                            </div>
-				
-			
-                                         
+                          <td colspan="10" align="center">
+                                        <div class="btn-group">
+                                            <input type="submit" style="background-color:#5CB8E5" class="btn btn-default" value="Nuevo" name="limpiardatos" > 
+                                            <input type="submit" style="background-color:#91C66C" class="btn btn-default" value="Enviar" name="grabardatos" >
+                                            
+                                        </div>
+                                   </td>
                                         
-                                        <center> 
-                                                    <button type="submit" name="Enlace" class="btn_save" >Enviar</button></div>
-                                                    
-                                             </center>     
+                                             <tr><td colspan="10"><label>Listado de Actividades</label></td></tr>
+                                             <tr>
+<td colspan="10" align="center">
+<div class="btn-group">
+ 
+                     <a type="submit" href="reporte_actividades_pdf.php"  style="background-color:#B22222" class="btn_save">PDF</a>
+                    <a type="submit" href="buscar_actividades.php"  style="background-color:#008080" class="btn_save">Buscar</a>
+              
+                </div>
+                    </td>
+                </tr>  
+                                             
+<tr><td><label>Codigo</label></td>
+	<td><label>Archivo</label></td>
+    <td><label> Descripcion</label></td>
+    <td><label>Nombre del Proyecto  </label></td>
+    <td><label>Tipo Actividad  </label></td>
+    <td><label>Acciones    </label></td>
+    
+	
+</tr>
+
+<?php 
+			//Paginador
+			$sql_registe = mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM tbl_actividades  ");
+			$result_register = mysqli_fetch_array($sql_registe);
+			$total_registro = $result_register['total_registro'];
+
+			$por_pagina = 5;
+
+			if(empty($_GET['pagina']))
+			{
+				$pagina = 1;
+			}else{
+				$pagina = $_GET['pagina'];
+			}
+
+			$desde = ($pagina-1) * $por_pagina;
+			$total_paginas = ceil($total_registro / $por_pagina);
+
+			$query = mysqli_query($conexion,"SELECT a.Id_Actividad, 
+          
+           a.Archivo, 
+           a.Descripcion, 
+          
+            s.Nombre_Proyecto,
+            ta.Tipo_Actividad
+            FROM tbl_actividades a
+            
+          
+            INNER JOIN tbl_solicitud s
+			ON a.Id_Solicitud = s.Id_Solicitud
+
+            INNER JOIN tbl_tipo_actividad ta
+			ON a.Id_Tipo_Actividad = ta.Id_Tipo_Actividad
+             ORDER BY a.Id_Actividad ASC LIMIT $desde,$por_pagina 
+				");
+
+			mysqli_close($conexion);
+
+			$result = mysqli_num_rows($query);
+			if($result > 0){
+
+				while ($data = mysqli_fetch_array($query)) {
+					
+			?>
+            
+				<tr>
+					<td><?php echo $data["Id_Actividad"]; ?></td>
+                    <td><img src="<?php echo $data["Archivo"]; ?>" width="120"  srcset=""></td>" 
+				
+                    <td><?php echo $data["Descripcion"]; ?></td>
+				
+                    <td><?php echo $data["Nombre_Proyecto"]; ?></td>
+				
+                    <td><?php echo $data["Tipo_Actividad"]; ?></td>
+				
+                    <td>
+						<a class="link_edit" href="actualizar_actividades.php?id=<?php echo $data["Id_Actividad"]; ?>">Editar</a>
+
+				
+						
+						<a class="link_delete" href="eliminar_confirmar_actividades.php?id=<?php echo $data["Id_Actividad"]; ?>">Eliminar</a>
+				
+						
+					</td>
+                    
+                    
+				
+				
+				</tr>
+                
+		<?php 
+				}
+
+			}
+		 ?>
+										
+										</thead>
+                                    </tbody>
+                                </table>
+								<div class="paginador">
+			<ul>
+			<?php 
+				if($pagina != 1)
+				{
+			 ?>
+				<li><a href="?pagina=<?php echo 1; ?>">|<</a></li>
+				<li><a href="?pagina=<?php echo $pagina-1; ?>"><<</a></li>
+			<?php 
+				}
+				for ($i=1; $i <= $total_paginas; $i++) { 
+					# code...
+					if($i == $pagina)
+					{
+						echo '<li class="pageSelected">'.$i.'</li>';
+					}else{
+						echo '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';
+					}
+				}
+
+				if($pagina != $total_paginas)
+				{
+			 ?>
+				<li><a href="?pagina=<?php echo $pagina + 1; ?>">>></a></li>
+				<li><a href="?pagina=<?php echo $total_paginas; ?> ">>|</a></li>
+			<?php } ?>
+			</ul>
+		</div>
+</center>  		
                                     </form><p>
                                     
                                 </div>
@@ -321,6 +520,13 @@ if(!empty($_POST))
                     </div>
                 </main>
             </div> <br>
+            
+  	
+			                                
+                                    
+                      
+
+                  
             
             <div id="layoutAuthentication_footer">
                 <footer class="py-4 bg-light mt-auto">
