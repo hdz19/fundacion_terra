@@ -2,9 +2,19 @@
 session_start();
 if( isset($_SESSION['Usuario']))
 {
-    ?>
-
-
+    $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
+    $resultclave=mysqli_query($conexion,"SELECT Contraseña FROM `tbl_ms_usuario` WHERE `Usuario`='".$_SESSION['Usuario']."'");
+    $sqlrclave=$resultclave->fetch_array();
+    $resultclave2=mysqli_query($conexion,"SELECT Contraseña FROM `tbl_ms_hist_contraseña` WHERE `ID_Usuario`='".$_SESSION['Id_Usuario']."' order by Fecha_Creacion desc limit 0,1");  
+   //print_r($resultclave2->fetch_array());
+    $sqlrclave2=$resultclave2->fetch_array();
+    if(isset($sqlrclave) && isset($sqlrclave2)){
+        if($sqlrclave['Contraseña']==$sqlrclave2['Contraseña']){
+            header("location:http://localhost/fundacion_terra/NuevaPassword.php?id=".$_SESSION['Id_Usuario']."&t=1");
+        }
+    }
+    
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -21,10 +31,10 @@ if( isset($_SESSION['Usuario']))
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.php">Sistema de Solicitudes </a>
+            <a class="navbar-brand ps-3" href="index.php">Bienvenido</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-           ><!-- Navbar Search-->
+           <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 
             </form>
@@ -33,10 +43,10 @@ if( isset($_SESSION['Usuario']))
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Ajustes</a></li>
+                        
 
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="login.php">Cerrar sesión</a></li> 
+                        <li><a class="dropdown-item" href="logout.php">Cerrar sesión</a></li> 
                     </ul>
                 </li>
             </ul>
@@ -49,20 +59,10 @@ if( isset($_SESSION['Usuario']))
                             <div class="sb-sidenav-menu-heading">Configuración</div>
                             <a class="nav-link" href="index.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Panel de Control
+                                Contenido Informativo
                             </a>
                             <div class="sb-sidenav-menu-heading">Interface</div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Diseños
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.php">Navegación estática</a>
-                                    <a class="nav-link" href="layout-sidenav-light.php">Luz Sidenav</a>
-                                </nav>
-                            </div>
+                            
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                                 Gestiones
@@ -87,74 +87,47 @@ if( isset($_SESSION['Usuario']))
                       <nav class="sb-sidenav-menu-nested nav">
 						<li><a class="nav-link" href="registro_usuario.php">Nuevo Usuario</a></li>
 						<li><a class="nav-link" href="lista_usuarios.php">Lista de Usuarios</a></li>
+                        <li><a class="nav-link" href="lista_bitacora.php">Lista de Bitacora</a></li>
+                        <li><a class="nav-link" href="NuevaPassword.php?id=<?php echo $_SESSION['Id_Usuario'];?>">Cambiar Contraseña</a></li>
+                        <li><a class="nav-link" href="IngresoPreguntas.php">Preguntas Secretas</a></li>
                 </nav>
                 </div>
 					
 				
 			<?php } ?>
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Autentificacion
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="login.php">Acceso</a>
-                                            <a class="nav-link" href="usuario.php">Registro</a>
-                                            <a class="nav-link" href="password.php">Recuperar Contraseña</a>
-                                        </nav>
-                                    </div>
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                        Error
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="401.php">401 Page</a>
-                                            <a class="nav-link" href="404.php">404 Page</a>
-                                            <a class="nav-link" href="500.php">500 Page</a>
-                                        </nav>
-                                    </div>
+                                    
+                                   
+                                    
                                 </nav>
                             </div>
-                            <div class="sb-sidenav-menu-heading">Complementos</div>
-                            <a class="nav-link" href="Graficas.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                Graficas
-                            </a>
-                            <a class="nav-link" href="tabla.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Tables
-                            </a>
+                            
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        Start Bootstrap
+                        <div class="small"></div>
+                        
                     </div>
                 </nav>
             </div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Fundacion Terra</h1>
+                        <h1 class="mt-4"><img src="IMG/logo-fundacion.png" ></h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Panel de Control</li>
+                            
                         </ol>
                     
                            
-                            
-                       
-                            
                         
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                            <div class="text-muted">Copyright &copy; Su sitio web 2022</div>
                             <div>
-                                <a href="#">Privacy Policy</a>
+                                <a href="#">Política de privacidad</a>
                                 &middot;
-                                <a href="#">Terms &amp; Conditions</a>
+                                <a href="#">Terminos &amp; Condiciones</a>
                             </div>
                         </div>
                     </div>

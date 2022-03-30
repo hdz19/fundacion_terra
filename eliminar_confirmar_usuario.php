@@ -1,4 +1,5 @@
 <?php 
+include ('funciones.php');
 	session_start();
 	if($_SESSION['Id_Rol'] != 1)
 	{
@@ -21,6 +22,7 @@
 		//$query_delete = mysqli_query($conexion,"UPDATE tbl_ms_usuario SET Id_Estado_Usuario = 0 WHERE Id_Usuario = $id_usuario ");
 		mysqli_close($conexion);
 		if($query_delete){
+			$bitacora = EVENT_BITACORA($id_usuario ,2,'Delete','Usuario eliminado.');
 			header("location: lista_usuarios.php");
 		}else{
 			echo "Error al eliminar";

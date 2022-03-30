@@ -4,7 +4,7 @@ include ('funciones.php');
 session_start();
 if($_SESSION['Id_Rol']!= 1)
 	{
-		header("location: index.php");
+		//header("location: index.php");
 	}
     $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
@@ -24,7 +24,7 @@ if($_SESSION['Id_Rol']!= 1)
            $id_usuario = ($_POST['Id_Usuario']);
            $usuario = trim($_POST['Usuario']);
            $nombre_usuario = trim($_POST['Nombre_Usuario']);
-           //$contraseña  = ($_POST['Contraseña']);
+           $contraseña  = ($_POST['Contraseña']);
            $id_rol  = $_POST['Id_Rol'];
            $id_personas  = $_POST['Id_Tipo_Persona'];
            $fecha_ultima_conexion  = $_POST['Fecha_Ultima_Conexion'];
@@ -87,17 +87,17 @@ $query = mysqli_query($conexion,"SELECT * FROM tbl_ms_usuario
 
                 }
                 if($sql_update){
-                    $bitacora = EVENT_BITACORA($id_usuario ,3,'update','Datos del Usuario Actualizado.');
+                    $bitacora = EVENT_BITACORA($id_usuario ,3,'Update','Cambio de contraseña.');
 					$alert='<p class="msg_save">Usuario actualizado correctamente.</p>';
                     
                     ?> 
                     <script type="text/javascript">
-                              alert('¡ Usuario actualizado correctamente !')
+                              alert('¡Contraseña actualizada correctamente!')
         
                               </script>
                                    <?php
             
-            header('Location: lista_usuarios.php');
+           // header('Location: lista_usuarios.php');
             ?> 
                    <?php
 				}else{
@@ -113,7 +113,7 @@ $query = mysqli_query($conexion,"SELECT * FROM tbl_ms_usuario
 //Mostrar Datos
 if(empty($_REQUEST['id']))
 {
-	header('Location: lista_usuarios.php');
+	//header('Location: lista_usuarios.php');
 	mysqli_close($conexion);
 }
 $iduser = $_REQUEST['id'];
@@ -131,7 +131,7 @@ mysqli_close($conexion);
 $result_sql = mysqli_num_rows($sql);
 
 if($result_sql == 0){
-	header('Location: lista_usuarios.php');
+	//header('Location: lista_usuarios.php');
 }else{
 	$option = '';
 	while ($data = mysqli_fetch_array($sql)) {
@@ -178,7 +178,7 @@ if($result_sql == 0){
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Editar Usuario</title>
+        <title>Cambio Contraseña</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
        
         <link href="css/nuevo.css" rel="stylesheet" />
@@ -342,98 +342,22 @@ if($result_sql == 0){
 
                                                
 									<input type="hidden" name="Id_Usuario" value="<?php echo $iduser; ?>">
-                                    <center> <h1>Editar Usuario</h1></center>
+                                    <center> <h1>Cambiar Contraseña</h1></center>
 
                                
-                                    <label for="Usuario">Usuario</label>
+                                    <label for="Usuario">Nueva Contraseña</label>
                 <input width: 50px; class="form-control" type="text" style="width: 450px" name="Usuario" id="Usuario" onKeyUP="this.value=this.value.toUpperCase();" placeholder="Usuario" value="<?php echo $usuario; ?>"
                 onkeypress="return  SoloLetras(event)" maxlength="15"  >
 
 
-				<label for="Nombre_Usuario">Nombre</label>
+				<label for="Nombre_Usuario">Confirmar Contraseña</label>
 				<input class="form-control" style="width: 450px" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Nombre_Usuario" id="Nombre_Usuario" placeholder="Nombre completo" value="<?php echo $nombre_usuario; ?>"
                 onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
 				
-              
-				
-				<label for="Correo_Electronico">Correo electrónico</label>
-				<input class="form-control" style="width: 450px" id="inputPasswordConfirm" type="email"
-                                                    name="Correo_Electronico" placeholder="example@gmail.com" value="<?php echo $correo_electronico; ?>"
-                                                    onkeypress="return pulsar(event)" maxlength="50"/>
-
-                                       
-				<input type="hidden" name="Preguntas_Contestadas" style="width: 450px" id="Preguntas_Contestadas" placeholder="Cantidad "value="<?php echo $preguntas_contestadas; ?>">
-
-				
-				<input type="hidden" style="width: 450px" name="Primer_Ingreso" id="Primer_Ingreso" placeholder="Cantidad "value="<?php echo $primer_ingreso; ?>">
-
-               <!-- <label for="Fecha_Ultima_Conexion">Fecha de Ultima Conexión</label> 
-				<input type="date" style="width: 450px" name="Fecha_Ultima_Conexion" id="Fecha_Ultima_Conexion" placeholder="Y/m/d" value="<?php echo $fecha_ultima_conexion; ?>"> 
-
-               
-               <!-- <label for="Fecha_Vencimiento">Fecha de Vencimiento</label> 
-				<input type="date" style="width: 450px" name="Fecha_Vencimiento" id="Fecha_Vencimiento" placeholder="Y/m/d" value="<?php echo $fecha_vencimiento; ?>"> -->
-
-                <label for="Fecha_Modificacion">Fecha de Modificación</label>
-				<input type="date"style="width: 450px"  name="Fecha_Modificacion" id="Fecha_Modificacion" placeholder="Y/m/d" value="<?php echo $fecha_modificacion; ?>">
-
-                <label for="Modificado_Por">Modificado Por </label>
-				<input class="form-control"style="width: 450px"  type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Modificado_Por" id="Modificado_Por" placeholder= "Modificado Por" value="<?php echo $modificado_por; ?>"
-                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
-
-                <label for="Creado_Por">Creado Por </label>
-				<input class="form-control" style="width: 450px" type="text"onKeyUP="this.value=this.value.toUpperCase();" name="Creado_Por" id="Creado_Por" placeholder= "Creado Por" value="<?php echo $creado_por; ?>"
-                onkeypress="return  SoloLetras(event)" maxlength="15">
-
-
-                                       
-                                            <div class="col-md-5">
-                                                <label> Selecione su rol</label>
-                                                <select class="form-select" aria-label="Default select example" name="Id_Rol">
-                                                         <?php
-														 $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
-                                                         $consulta="SELECT * FROM tbl_ms_roles ";
-                                                         $resultado=mysqli_query($conexion,$consulta);
-                                                         while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Rol']."'>".$fila['Rol']."</option
-                                                             >";
-                                                         }
-                                                         ?>
-                                                         </select>
-                                            </div>
-                                            <div class="col-md-5">
-                                                    <label> Selecione Tipo de Persona </label>
-                                                    <select name="Id_Tipo_Persona" class="form-select" aria-label="Default select example">
-                                                        <?php
-														$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
-                                                         $consulta="SELECT * FROM tbl_tipo_persona ";
-                                                         $resultado=mysqli_query($conexion,$consulta);
-                                                         while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Tipo_Persona']."'>".$fila['Tipo_Persona']."</option
-                                                             >";
-                                                        }
-                                                        ?>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <label> Selecione Estado del Usuario </label> 
-                                                <select name="Id_Estado_Usuario" class="form-select" aria-label="Default select example">
-                                                        <?php
-														$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
-                                                        $consulta="SELECT * FROM tbl_ms_estado_usuario ";
-                                                        $resultado=mysqli_query($conexion,$consulta);
-                                                         while($fila=$resultado->fetch_array()){
-                                                             echo "<option value='".$fila['Id_Estado_Usuario']."'>".$fila['Estado_Usuario']."</option
-                                                             >";
-                                                        }
-                                                        ?>
-                                                </select>
-                                            </div>
-                                                
                             
                                         <div class="mt-4 mb-0">
                                                     <div class="d-grid">
-                                                    <button type="submit" name="Actualizar Usuario" class="btn_save" >Actualizar Usuario</button></div>
+                                                    <button type="submit" name="Actualizar Usuario" class="btn_save" >Cambiar</button></div>
                                                     </div>  
                                                 </div> 
                                             </div> </center>     

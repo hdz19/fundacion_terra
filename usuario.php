@@ -1,6 +1,5 @@
 <?php 
 
-
 session_start();
 if($_SESSION['Id_Rol'] != 1)
 	{
@@ -359,12 +358,8 @@ if (isset($_POST['crear_cuenta'])) {
                                                          $consulta="SELECT * FROM tbl_tipo_persona ";
                                                          $resultado=mysqli_query($conexion,$consulta);
                                                          while($fila=$resultado->fetch_array()){
-<<<<<<< HEAD
                                                              echo "<option value='".$fila['Id_Tipo_Persona']."'>".$fila['Tipo_Persona']."</option>";
-=======
-                                                             echo "<option value='".$fila['Id_Tipo_Persona']."'>".$fila['Tipo_Persona']."</option
-                                                             >";
->>>>>>> 281f8dbb8987aa7cd218fbb863d5ec442b366dcb
+                                                             echo "<option value='".$fila['Id_Tipo_Persona']."'>".$fila['Tipo_Persona']."</option>";
                                                         }
                                                         ?>
                                                 </select>
