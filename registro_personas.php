@@ -53,7 +53,7 @@ if (isset($_POST['crear_persona'])) {
             
             <?php
     
-            //header('Location: lista_usuarios.php'); falta crear lista_personas.php
+            header('Location: lista_personas.php'); 
             
             ?> 
                       
@@ -222,7 +222,7 @@ if (isset($_POST['crear_persona'])) {
                     
                       <nav class="sb-sidenav-menu-nested nav">
 						<li><a class="nav-link" href="registro_personas.php">Nueva Persona</a></li>
-						<li><a class="nav-link" href="lista_usuarios.php">Lista de Personas</a></li>
+						<li><a class="nav-link" href="lista_personas.php">Lista de Personas</a></li>
                 </nav>
                 </div>
 					

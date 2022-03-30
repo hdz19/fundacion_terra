@@ -39,10 +39,7 @@
 
 		$id_tipo_persona = $_REQUEST['id'];
 
-		$query = mysqli_query($conexion,"SELECT Id_Tipo_Persona
-												FROM tbl_tipo_persona
-												
-												WHERE Id_Tipo_Persona = $id_tipo_persona");
+		$query = mysqli_query($conexion,"SELECT Id_Tipo_Persona FROM tbl_tipo_persona WHERE Id_Tipo_Persona = $id_tipo_persona");
 		
 		mysqli_close($conexion);
 		$result = mysqli_num_rows($query);
@@ -83,8 +80,8 @@
 			<p>Tipo Persona: <span><?php echo $tipo_persona; ?></span></p>
 			
 			<form method="post" action="">
-				<input type="hidden" name="Id_Division_Empresa" value="<?php echo $id_tipo_persona; ?>">
-				<a href="lista_div_empresa.php" class="btn_cancel">Cancelar</a>
+				<input type="hidden" name="Id_Tipo_Persona" value="<?php echo $id_tipo_persona; ?>">
+				<a href="lista_tipo_persona.php" class="btn_cancel">Cancelar</a>
 				<input type="submit" value="Aceptar" class="btn_ok">
 			</form>
 		</div>
