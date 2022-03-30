@@ -81,6 +81,7 @@ include ('funciones.php');
 
                                     <div class="card-body">
                                     <br>
+
                                         <center>  
                                           <img src="IMG/logo-fundacion.png" >
                                         </center>
@@ -91,6 +92,7 @@ include ('funciones.php');
                                         </div>
                                         <form action="" method="post" >
                                        <?php
+
                                        
                                        if($resultado->num_rows>0){
                                            while ($r=$resultado->fetch_array()) {

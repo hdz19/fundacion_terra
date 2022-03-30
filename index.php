@@ -70,12 +70,9 @@ if( isset($_SESSION['Usuario']))
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-
-                                
+                           
      <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                 <?php 
-	if($_SESSION['Id_Rol'] == 1){
-		 ?>
+     
 		<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
 
 			Usuarios
@@ -93,16 +90,16 @@ if( isset($_SESSION['Usuario']))
                 </nav>
                 </div>
 					
+
 				
 			<?php } ?>
-                                    
-                                   
                                     
                                 </nav>
                             </div>
                             
                         </div>
                     </div>
+
                     <div class="sb-sidenav-footer">
                         <div class="small"></div>
                         

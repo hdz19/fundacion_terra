@@ -1,31 +1,31 @@
 <?php 
-	session_start();
-	/*if($_SESSION['Id_Rol'] != 1)
-	{
-		header("location: ./");
-	}
-	*/
 
-	$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");	
+	session_start();
+	if($_SESSION['Id_Rol'] !=1)
+	{
+		header("location: index.php");
+    }
+	$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
  ?>
 
 
+
 <!DOCTYPE html>
 <html lang="es">
-<head>
+    <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Buscar Usuarios</title>
+        <title>Lista</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
 		<link href="css/nuevo.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
     </head>
-	<body class="sb-nav-fixed">
+    <body class="sb-nav-fixed">
 	    <section id="container">
             <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
@@ -33,26 +33,16 @@
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
-            <?php 
-
-			$busqueda = strtolower($_REQUEST['busqueda']);
-			if(empty($busqueda))
-			{
-				header("location: lista_usuarios.php");
-				mysqli_close($conexion);
-			}
-
-
-		 ?>
+         
 		
             <!-- Navbar-->
-          <right>  <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#!">Ajustes</a></li>
                        
-                        <li><a class="dropdown-item" href="#!">Cerrar Sesion</a></li>
+                        <li><a class="dropdown-item" href="login.php">Cerrar Sesion</a></li>
                     </ul>
                 </li>
             </ul>
@@ -130,14 +120,14 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Lista de Usuarios</h1>
+                        <h1 class="mt-4">Lista de Personas</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.php">Panel de Control</a></li>
 							
                             <li class="breadcrumb-item active">Tabla</li>
                         </ol>
 						
-					
+						
 						
                         <div class="card mb-4">
                            
@@ -145,13 +135,13 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                Lista Usuarios
+                                Lista de Personas
                             </div>
-							<div class="col-md-6"> <a href="registro_usuario.php" class="btn_new">Crear Usuario</a>
+                           <div class="col-md-6"> <a href="registro_personas.php" class="btn_new">Crear Persona</a>
 
 
 </div>
-							<right>     <form action="buscar_usuario.php" method="get" class="form_search">
+                       <right>     <form action="buscar_usuario.php" method="get" class="form_search">
 			<input type="text" name="busqueda" id="busqueda" placeholder="Buscar">
 			<input type="submit" value="Buscar" class="btn_search">
 
@@ -163,49 +153,22 @@
                                     <thead>
 									
                                         <tr>
-										<th>Id Usuario</th>
-				                        <th>Usuario</th>
-			                          	<th>Nombre Usuario</th>
-			                         	<th>Contraseña</th>
-				                        <th>Id Rol</th>
-			                         	<th>Id Personas</th>
-				                        <th>Fecha de Ultima Conexion</th>
-				                        <th>Preguntas Contestadas</th>
-				                        <th>Primer Ingreso</th>
-				                        <th>Fecha Vencimiento</th>
-				                        <th>Correo Electrónico</th>
+										<th>Id Personas</th>
+				                        <th>Id Tipo Persona</th>
+			                          	<th>Id Division Empresa</th>
+			                         	<th>Nombre Completo</th>
+				                        <th>Identidad</th>
+			                         	<th>Genero</th>
+				                        <th>Fecha Nacimiento</th>
 				                        <th>Creado Por</th>
 				                        <th>Fecha Creacion</th>
 				                       <th>Modificado Por</th>
-				                       <th>Fecha_Modificacion Por</th>
-				                       <th>Estado Usuario</th>
+				                       <th>Fecha Modificacion</th>
 				                       <th>Acciones</th>
                                         </tr>
 										<?php 
 			//Paginador
-			$rol = '';
-			if($busqueda == 'administrador')
-			{
-				$rol = " OR rol LIKE '%1%' ";
-
-			}else if($busqueda == 'supervisor'){
-
-				$rol = " OR rol LIKE '%2%' ";
-
-			}else if($busqueda == 'vendedor'){
-
-				$rol = " OR rol LIKE '%3%' ";
-			}
-
-
-			$sql_registe = mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM tbl_ms_usuario 
-																WHERE ( Id_Usuario LIKE '%$busqueda%' OR 
-																Usuario LIKE '%$busqueda%' OR 
-																Nombre_Usuario LIKE '%$busqueda%' OR 
-																Correo_Electronico LIKE '%$busqueda%' 
-																		$rol  ) 
-																AND Id_Estado_Usuario = 1  ");
-
+			$sql_registe = mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM tbl_personas  ");
 			$result_register = mysqli_fetch_array($sql_registe);
 			$total_registro = $result_register['total_registro'];
 
@@ -221,56 +184,38 @@
 			$desde = ($pagina-1) * $por_pagina;
 			$total_paginas = ceil($total_registro / $por_pagina);
 
-			$query = mysqli_query($conexion,"SELECT u.Id_Usuario, u.Usuario, u.Nombre_Usuario, u.Contraseña, u.Correo_Electronico,r.Rol ,
-			u.Id_Tipo_Persona,u.Fecha_Ultima_Conexion,u.Preguntas_Contestadas,u.Primer_Ingreso,
-			u.Fecha_Vencimiento,u.Correo_Electronico,u.Creado_Por,u.Fecha_Creacion,u.Modificado_Por,u.Fecha_Modificacion,u.Id_Estado_Usuario FROM tbl_ms_usuario u INNER JOIN tbl_ms_roles r ON u.Id_Rol = r.Id_Rol 
-										WHERE 
-										( u.Id_Usuario LIKE '%$busqueda%' OR 
-											u.Usuario LIKE '%$busqueda%' OR 
-											u.Nombre_Usuario LIKE '%$busqueda%' OR 
-											u.Correo_Electronico LIKE '%$busqueda%' OR 	
-											u.Preguntas_Contestadas LIKE '%$busqueda%' OR 
-											u.Primer_Ingreso LIKE '%$busqueda%' OR
-											u.Creado_Por LIKE '%$busqueda%' OR 	
-											u.Modificado_Por LIKE '%$busqueda%' OR 	  
-											u.Id_Tipo_Persona LIKE '%$busqueda%' OR
-											r.Rol    LIKE  '%$busqueda%') 
-										AND
-										Id_Estado_Usuario = 1 ORDER BY u.Id_Usuario ASC LIMIT $desde,$por_pagina 
-				");
+			$query = mysqli_query($conexion,"SELECT u.Id_Persona, u.Id_Tipo_Persona, u.Id_Division_Empresa, u.Nombre_Completo, u.Identidad, u.Genero,
+		  u.Creado_Por, u.Fecha_Creacion, u.Modificado_Por,u.Fecha_Mod 
+		  FROM tbl_personas u INNER JOIN tbl_tipo_persona r 
+			ON u.Id_Tipo_Persona = r.Id_Tipo_Persona  ORDER BY u.Id_Persona ASC LIMIT $desde,$por_pagina");
+
 			mysqli_close($conexion);
+
 			$result = mysqli_num_rows($query);
 			if($result > 0){
 
 				while ($data = mysqli_fetch_array($query)) {
 					
 			?>
-								
 				<tr>
-					<td><?php echo $data["Id_Usuario"]; ?></td>
-					<td><?php echo $data["Usuario"]; ?></td>
-					<td><?php echo $data["Nombre_Usuario"]; ?></td>
-					<td><?php echo $data["Contraseña"]; ?></td>
-					<td><?php echo $data["Rol"]; ?></td>
-					<td><?php echo $data["Id_Tipo_Persona"] ?></td>
-					<td><?php echo $data["Fecha_Ultima_Conexion"] ?></td>
-					<td><?php echo $data["Preguntas_Contestadas"] ?></td>
-					<td><?php echo $data["Primer_Ingreso"] ?></td>
-					<td><?php echo $data["Fecha_Vencimiento"] ?></td>
-					<td><?php echo $data["Correo_Electronico"] ?></td>
+					<td><?php echo $data["Id_Persona"]; ?></td>
+					<td><?php echo $data["Id_Tipo_Persona"]; ?></td>
+					<td><?php echo $data["Id_Division_Empresa"]; ?></td>
+					<td><?php echo $data["Nombre_Completo"]; ?></td>
+					<td><?php echo $data["Identidad"]; ?></td>
+					<td><?php echo $data["Genero"] ?></td>
 					<td><?php echo $data["Creado_Por"] ?></td>
 					<td><?php echo $data["Fecha_Creacion"] ?></td>
 					<td><?php echo $data["Modificado_Por"] ?></td>
-					<td><?php echo $data["Fecha_Modificacion"] ?></td>
-					<td><?php echo $data["Id_Estado_Usuario"] ?></td>
+					<td><?php echo $data["Fecha_Mod"] ?></td>
 					
 
 					<td>
-						<a class="link_edit" href="editar_usuario.php?id=<?php echo $data["Id_Usuario"]; ?>">Editar</a>
+						<a class="link_edit" href="editar_personas.php?id=<?php echo $data["Id_Persona"]; ?>">Editar</a>
 
-					<?php if($data["Id_Usuario"] != 1){ ?>
-						|
-						<a class="link_delete" href="eliminar_confirmar_usuario.php?id=<?php echo $data["Id_Usuario"]; ?>">Eliminar</a>
+					 <?php if($data["Id_Usuario"] != 1){ ?>
+						
+						<a class="link_delete" href="eliminar_personas.php?id=<?php echo $data["Id_Persona"]; ?>">Eliminar</a>
 					<?php } ?>
 						
 					</td>
@@ -285,19 +230,14 @@
 										</thead>
                                     </tbody>
                                 </table>
-								<?php 
-	
-	if($total_registro != 0)
-	{
- ?>
-		<div class="paginador">
+								<div class="paginador">
 			<ul>
 			<?php 
 				if($pagina != 1)
 				{
 			 ?>
-				<li><a href="?pagina=<?php echo 1; ?>&busqueda=<?php echo $busqueda; ?>">|<</a></li>
-				<li><a href="?pagina=<?php echo $pagina-1; ?>&busqueda=<?php echo $busqueda; ?>"><<</a></li>
+				<li><a href="?pagina=<?php echo 1; ?>">|<</a></li>
+				<li><a href="?pagina=<?php echo $pagina-1; ?>"><<</a></li>
 			<?php 
 				}
 				for ($i=1; $i <= $total_paginas; $i++) { 
@@ -306,29 +246,23 @@
 					{
 						echo '<li class="pageSelected">'.$i.'</li>';
 					}else{
-						echo '<li><a href="?pagina='.$i.'&busqueda='.$busqueda.'">'.$i.'</a></li>';
+						echo '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';
 					}
 				}
 
 				if($pagina != $total_paginas)
 				{
 			 ?>
-				<li><a href="?pagina=<?php echo $pagina + 1; ?>&busqueda=<?php echo $busqueda; ?>">>></a></li>
-				<li><a href="?pagina=<?php echo $total_paginas; ?>&busqueda=<?php echo $busqueda; ?> ">>|</a></li>
+				<li><a href="?pagina=<?php echo $pagina + 1; ?>">>></a></li>
+				<li><a href="?pagina=<?php echo $total_paginas; ?> ">>|</a></li>
 			<?php } ?>
 			</ul>
 		</div>
-             <?php } ?>
-
-			              </ul>
-		                  </div>
                             </div>
                         </div>
                     </div>
                 </main>
-                
-		</section>
-		<footer class="py-4 bg-light mt-auto">
+                <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; Your Website 2021</div>
@@ -346,6 +280,7 @@
         <script src="js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
+		</section>
     </body>
 
 </html>

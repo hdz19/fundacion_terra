@@ -2,6 +2,7 @@
 include ('funciones.php');
 session_start();
 
+
 if($_SESSION['Id_Rol'] != 1)
 	{
 		header("location: index.php");
@@ -83,22 +84,26 @@ if (strlen(@$_POST['crear_cuenta'])>= 1)
             "From: fundacio.terra22@gmail.com");
 	    	?> 
 	    	<script type="text/javascript">
+
                       alert('¡Exito, Inscrito Correctamente!')
                       
                       </script>
                            <?php
             header('Location: lista_usuarios.php');
+
 	    } else {
-            ?>    
+        ?>    
   
             <script type="text/javascript">
+
                       alert('¡ Usuario o Contraseña Invalido, Intentalo de nuevo !')
                       </script>
                       <?php
            // header('Location: registro_usuario.php');          
+
 	    }
 
-    }   else {
+    }else {
         ?>    
   
         <script type="text/javascript">
