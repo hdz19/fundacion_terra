@@ -1,33 +1,153 @@
-<?php
-session_start();
-if( isset($_SESSION['Usuario']))
-{
-    ?>
+<?php 
 
+
+session_start();
+if($_SESSION['Id_Rol'] != 1){
+
+	header("location: index.php");
+
+}
+	
+
+//CONEXION A LA BASE DE DATOS
+$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
+
+if(!empty($_POST))
+	{
+		$alert='';
+		if(empty($_POST['Tipo_Persona']) 
+        )
+		{$alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
+		}else{
+			
+
+	    
+	    //Campos TBL_DIVISION_EMPRESA
+        $tipo_persona = trim($_POST['Tipo_Persona']);
+	   
+
+        
+        //PROCESO DE INSERT DE LA TABLA: division_empresa 
+        $query_insert = mysqli_query($conexion,"INSERT INTO tbl_tipo_persona (Tipo_Persona)
+        VALUES ('$tipo_persona')");
+        	if($query_insert){
+                $alert='<p class="msg_save"> Solicitud Ingresado correctamente.</p>';
+                header('Location: lista_tipo_persona.php');
+            }else{
+                $alert='<p class="msg_error">Error al Ingresar la asolicitud.</p>';
+            }
+
+
+        //VERIFICAR QUE EL TIPO DE PERSONA NO SE REPITA EN LA BASE DE DATOS
+        $verificar_div=mysqli_query($conexion, "SELECT * FROM tbl_tipo_persona WHERE Tipo_Persona='$tipo_persona'");
+
+
+        if(mysqli_num_rows($verificar_div) > 0){
+         
+            ?> 
+	            <script type="text/javascript">
+                    alert('¡ Este tipo de persona  ya ha sido registrada, Intenta con otra diferente !')
+                </script>
+
+            <?php
+    
+            //header('Location: lista_usuarios.php');//LISTA DE LA DIVISION DE EMPRESAAAAAAAAA (lista_tipo_persona.php) FALTA CREAR 
+    
+          
+           
+            exit();
+        }
+
+      
+
+    }   
+
+}
+?>
 
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        <meta charset="utf-8" />
+    <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Fundación Terra</title>
+        <title>Registro de Tipo de persona</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
+		<link href="css/nuevo.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+	
+    
+    
+        
+       
+        <script type="text/javascript">
+
+
+            //Funcion Solo Letras
+            function SoloLetras(e)
+            {
+                key=e.keyCode || e.which;
+                tecla=String.fromCharCode(key).toString();
+                letras ="{ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz}";
+
+                especiales = [8,13]
+                tecla_especial =false
+                for(var i in especiales){
+                    if(key ==especiales[i]){
+                        tecla_especial = true;
+                        break;
+                    }
+                }
+                if(letras.indexOf(tecla) == -1 && !tecla_especial)
+                {
+                    alert("Ingrese Solo Letras");
+                    return false
+                }
+            }
+
+            function SoloLetras_Espacio_uno(e)
+            {
+                key=e.keyCode || e.which;
+                tecla=String.fromCharCode(key).toString();
+                letras ="{ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz}";
+
+                especiales = [8,13,32]
+                tecla_especial =false
+                for(var i in especiales){
+                    if(key ==especiales[i]){
+                        tecla_especial = true;
+                        break;
+                    }
+                }
+                if(letras.indexOf(tecla) == -1 && !tecla_especial)
+                {
+                    alert("Ingrese Solo Letras");
+                    return false
+                }
+
+            }
+
+            function pulsar(e) {
+              tecla=(document.all) ? e.keyCode : e.which;
+              if(tecla==32) return false;
+            }
+
+
+
+    </script> 
     </head>
-    <body class="sb-nav-fixed">
+    <body class="bg-primary">
+    
+        <div id="container">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="index.php">Sistema de Solicitudes </a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
            ><!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                
-            </form>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
@@ -65,106 +185,34 @@ if( isset($_SESSION['Usuario']))
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Gestiones
+                                Paginas
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                           
-     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-     
-		<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                    <?php 
+				if($_SESSION['Id_Rol'] == 1){
+			 ?>
+				<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
 
-			Usuarios
-                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+					Usuarios
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
 					
                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                     
                       <nav class="sb-sidenav-menu-nested nav">
-						<li><a class="nav-link" href="registro_usuario.php">Nuevo Usuario</a></li>
-						<li><a class="nav-link" href="lista_usuarios.php">Lista de Usuarios</a></li>
+						<li><a class="nav-link" href="registro_division_empresa.php">Nuevo tipo persona</a></li>
+						<li><a class="nav-link" href="lista_usuarios.php">Lista de tipos de personas</a></li>
                 </nav>
                 </div>
 					
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Solicitudes
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
-                                            
-                                            
-                                            <a class="nav-link" href="mantenimiento_solicitudes.php">Mantenimiento Solicitudes</a>
-                                        
-<<<<<<< HEAD
-=======
-=======
-
-                                            
-                                            <a class="nav-link" href="solicitud_adjunto.php">Tipo de Solicitud</a>
-                                            <a class="nav-link" href="Solicitud.php">Solicitud</a>
-                                            <a class="nav-link" href="lista_solicitud.php">Lista de Solicitudes</a>
-
-                                        
-
->>>>>>> bb7b3f006c4d6be14f084e8daf2c5b36504059d0
->>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
-                                           
-                                        </nav>
-                                    </div>
-
-                                
-
-
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Division Empresa
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="registro_div_empresa.php">Nueva Division</a>
-                                            <a class="nav-link" href="lista_div_empresa.php">Lista de divisiones</a>
-                                           
-                                        </nav>
-                                    </div>
+				
+			<?php } ?>
 
 
 
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Personas
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="registro_personas.php">Nueva Persona</a>
-                                            <a class="nav-link" href="lista_personas.php">Lista Personas</a>
-                                           
-                                        </nav>
-                                    </div>
-
-
-
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Tipo Persona
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="registro_tipo_persona.php">Nuevo T. Persona</a>
-                                            <a class="nav-link" href="lista_tipo_persona.php">Lista T. Personas</a>
-                                           
-                                        </nav>
-                                    </div>
-
-
-
-
-                                    
 
 
                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
@@ -178,16 +226,30 @@ if( isset($_SESSION['Usuario']))
                                             <a class="nav-link" href="password.php">Recuperar Contraseña</a>
                                         </nav>
                                     </div>
-
-
-
                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
                                         Error
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
-                                    
-                                
-                         
+                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="401.php">401 Page</a>
+                                            <a class="nav-link" href="404.php">404 Page</a>
+                                            <a class="nav-link" href="500.php">500 Page</a>
+                                        </nav>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="sb-sidenav-menu-heading">Complementos</div>
+                            <a class="nav-link" href="Graficas.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                Graficas
+                            </a>
+                            <a class="nav-link" href="tabla.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Tables
+                            </a>
+                        </div>
+                    </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
                         Start Bootstrap
@@ -208,6 +270,30 @@ if( isset($_SESSION['Usuario']))
                             
                         
                 </main>
+                                   
+                                    <form action="" method="post">
+                                    <div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div> 
+                                   <center> <h1>Crear Nuevo Tipo persona</h1></center>
+                 <label for="Tipo_Persona">Nombre del tipo de persona</label>
+                <input class="form-control" type="text" name="Tipo_Persona" id="Tipo_Persona" onKeyUP="this.value=this.value.toUpperCase();" placeholder="Nombre tipo persona"
+                onkeypress="return  SoloLetras(event)" maxlength="20" >
+
+				
+                                        
+                                        <center> 
+                                                    <button type="submit" name="crear_tipo_persona" class="btn_save" >Crear tipo persona</button></div>
+                                                    
+                                             </center>     
+                                    </form><p>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div> <br>
+            
+            <div id="layoutAuthentication_footer">
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
@@ -224,19 +310,6 @@ if( isset($_SESSION['Usuario']))
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="assets/demo/chart-area-demo.js"></script>
-        <script src="assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
-       
-
+        
     </body>
 </html>
-<?php
-}
-
-else{
-    echo "<h1> NO TIENE PERMISO </h1>";
-}
-?> 

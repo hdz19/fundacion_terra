@@ -16,22 +16,46 @@ function Header()
     $this->CELL(70,10,'Reporte de Solicitantes',0,0,'C' );
    
 //se muestra fecha de imrpesion
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
     $this->CELL(70,15,'Fecha de Impresion:'.date('Y-m-d/ H:i'),0,1 );
 
    
 
     
+<<<<<<< HEAD
+=======
+=======
+    $this->CELL(70,15,'Fecha de Impresion:'.date("d/m/y"),0,1 );
+>>>>>>> bb7b3f006c4d6be14f084e8daf2c5b36504059d0
+>>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
     // Salto de línea
     $this->Ln(20);
 
 
 
     $this->Cell(10,10, "ID", 1, 0, 'C', 0);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
     
     $this->Cell(35,10, "Nombre Completo", 1, 0, 'C', 0);
     $this->Cell(35,10, "Tipo de Solicitud", 1, 0, 'C', 0);
     $this->Cell(35,10, "Estado ", 1, 0, 'C', 0);
     $this->Cell(50,10, "Nombre del Proyecto", 1, 0, 'C', 0);
+<<<<<<< HEAD
+=======
+=======
+    $this->Cell(35,10, "Archivo", 1, 0, 'C', 0);
+    $this->Cell(35,10, "Nombre Completo", 1, 0, 'C', 0);
+    $this->Cell(35,10, "Tipo de Solicitud", 1, 0, 'C', 0);
+    $this->Cell(35,10, "Estado ", 1, 0, 'C', 0);
+    $this->Cell(37,10, "Nombre del Proyecto", 1, 0, 'C', 0);
+>>>>>>> bb7b3f006c4d6be14f084e8daf2c5b36504059d0
+>>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
     $this->Cell(58,10, "Motivo ", 1, 0, 'C', 0);
     $this->Cell(35,10, "Fecha de Registros", 1, 1, 'C', 0);
 }
@@ -50,18 +74,41 @@ function Footer()
 
 require 'cn.php';
 $consulta =("SELECT s.Id_Solicitud, 
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+
+=======
+s.Id_Solicitud_Adjunto, 
+>>>>>>> bb7b3f006c4d6be14f084e8daf2c5b36504059d0
+>>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
 s.Id_Personas, 
 s.Id_Tipo_Solicitud, 
 s.Id_Estado,
 s.Nombre_Proyecto, 
 s.Motivo,
 s.Fecha_Registro_Solicitud,
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
 
 p.Nombre_Completo,
 t.Tipo_Solicitud,
 e.Estado FROM tbl_solicitud s 
 
+<<<<<<< HEAD
+=======
+=======
+a.enlace,
+p.Nombre_Completo,
+t.Tipo_Solicitud,
+e.Estado FROM tbl_solicitud s 
+ INNER JOIN tbl_solicitud_adjunto a
+ON s.Id_Solicitud_Adjunto = a.Id_Solicitud_Adjunto 
+>>>>>>> bb7b3f006c4d6be14f084e8daf2c5b36504059d0
+>>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
 INNER JOIN tbl_personas p
 ON s.Id_Personas = p.Id_Personas
 INNER JOIN tbl_tipo_solicitud t
@@ -85,10 +132,24 @@ $pdf->SetFont('Arial','',8);
 while($row = $resultado->fetch_assoc()){
     
     $pdf->Cell(10,28, $row["Id_Solicitud"], 1, 0, 'C', 0);  
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
     $pdf->Cell(35,28, $row["Nombre_Completo"], 1, 0, 'C', 0);
     $pdf->Cell(35,28, $row["Tipo_Solicitud"], 1, 0, 'C', 0);
     $pdf->Cell(35,28, $row["Estado"], 1, 0, 'C', 0);
     $pdf->Cell(50,28, $row["Nombre_Proyecto"], 1, 0, 'C', 0);
+<<<<<<< HEAD
+=======
+=======
+    $pdf->Cell(35,28, $pdf->Image($row["enlace"], $pdf->GetX(), $pdf->GetY(),35,28),1); 
+    $pdf->Cell(35,28, $row["Nombre_Completo"], 1, 0, 'C', 0);
+    $pdf->Cell(35,28, $row["Tipo_Solicitud"], 1, 0, 'C', 0);
+    $pdf->Cell(35,28, $row["Estado"], 1, 0, 'C', 0);
+    $pdf->Cell(37,28, $row["Nombre_Proyecto"], 1, 0, 'C', 0);
+>>>>>>> bb7b3f006c4d6be14f084e8daf2c5b36504059d0
+>>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
     $pdf->Cell(58,28, $row["Motivo"], 1, 0, 'C', 0);
     $pdf->Cell(35,28, $row["Fecha_Registro_Solicitud"], 1, 1, 'C', 0);
 

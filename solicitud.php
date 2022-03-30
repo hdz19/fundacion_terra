@@ -15,6 +15,10 @@ $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 if(!empty($_POST))
 	{
 		$alert='';
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
 		if(empty($_POST['Id_Personas  ']) || empty($_POST['	Id_Tipo_Solicitud']) ||empty($_POST['Id_Estado'])
         ||empty($_POST['Nombre_Proyecto']) ||empty($_POST['Motivo']) 
         )
@@ -22,11 +26,28 @@ if(!empty($_POST))
 			$alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
 		}else{
   
+<<<<<<< HEAD
+=======
+=======
+		if(empty($_POST['Id_Solicitud_Adjunto']) || empty($_POST['Id_Personas']) ||empty($_POST['Id_Tipo_Solicitud'])
+        ||empty($_POST['Id_Estado']) ||empty($_POST['Nombre_Proyecto']) || empty($_POST['Motivo']) 
+        )
+		{$alert='<p class="msg_error">Todos los campos son obligatorios.</p>';
+		}else{
+			
+
+			$id_solicitud_adjunto = $_POST['Id_Solicitud_Adjunto'];
+>>>>>>> bb7b3f006c4d6be14f084e8daf2c5b36504059d0
+>>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
             $id_persona = $_POST['Id_Personas'];
             $id_tipo_solicitud = $_POST['Id_Tipo_Solicitud'];
             $id_estado = $_POST['Id_Estado'];
             $nombre_proyecto = $_POST['Nombre_Proyecto'];
             $motivo = $_POST['Motivo'];
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
             $fecha_registro_solicitud = datetime("Y-m-d\TH-i");
 			
 
@@ -64,6 +85,32 @@ if(mysqli_query($conexion,$sqlgrabar))
     }
 
 
+<<<<<<< HEAD
+=======
+=======
+            $fecha_registro_solicitud = date('Y/m/d');
+			
+
+
+		
+
+				$query_insert = mysqli_query($conexion,"INSERT INTO tbl_solicitud (Id_Solicitud_Adjunto,Id_Personas,Id_Tipo_Solicitud,
+                Id_Estado,Nombre_Proyecto,Motivo,Fecha_Registro_Solicitud)
+                VALUES ('$id_solicitud_adjunto','$id_persona','$id_tipo_solicitud','$id_estado','$nombre_proyecto',
+                '$motivo','$fecha_registro_solicitud')");
+				if($query_insert){
+					$alert='<p class="msg_save"> Solicitud Ingresado correctamente.</p>';
+				}else{
+					$alert='<p class="msg_error">Error al Ingresar la asolicitud.</p>';
+				}
+
+			}
+
+
+		}
+
+>>>>>>> bb7b3f006c4d6be14f084e8daf2c5b36504059d0
+>>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
 	
 
 ?>
@@ -157,6 +204,10 @@ if(mysqli_query($conexion,$sqlgrabar))
             <a class="navbar-brand ps-3" href="index.php">Sistema de Solicitudes </a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
            <!-- Navbar Search-->
             <!-- Navbar-->
             <ul>
@@ -197,6 +248,19 @@ if(mysqli_query($conexion,$sqlgrabar))
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"> </i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#!">Ajustes</a></li>
+<<<<<<< HEAD
+=======
+=======
+           ><!-- Navbar Search-->
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Ajustes</a></li>
+
+>>>>>>> bb7b3f006c4d6be14f084e8daf2c5b36504059d0
+>>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="login.php">Cerrar sesión</a></li> 
                     </ul>
@@ -300,6 +364,10 @@ if(mysqli_query($conexion,$sqlgrabar))
             </div>
             <div id="layoutSidenav_content">
                 <main>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
                 <link href="css/nuevo.css" rel="stylesheet" />
                 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
                    <nav class="menu">   
@@ -563,6 +631,101 @@ if(mysqli_query($conexion,$sqlgrabar))
                                     
                       
 
+<<<<<<< HEAD
+=======
+=======
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Fundacion Terra</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Panel de Control</li>
+                        </ol>
+                    
+                           
+                            
+                       
+                            
+                        
+                </main>
+                                   
+                                    <form action="" method="post">
+                                    <div class="alert"><?php echo isset($alert) ? $alert : ''; ?></div>              
+                                   <center> <h1>Ingrese Datos</h1></center>
+            
+
+                                   <div class="col-md-8">                     
+				<label for="Nombre_Proyecto">Nombre del Proyecto</label>
+				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Nombre_Proyecto" id="Nombre_Proyecto" placeholder="El proyecto se llamará"
+                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
+                </div>
+                <div class="col-md-8"> 
+                <label for="Motivo">Motivo de la Solicitud</label>
+				<input class="form-control" type="text" onKeyUP="this.value=this.value.toUpperCase();" name="Motivo" id="Motivo" placeholder=" Motivo"
+                onkeypress="return  SoloLetras_Espacio_uno(event)" maxlength="100" >
+                </div>
+
+                                                <div class="col-md-8">
+                                                <label> Selecione su Documento</label>
+                                                <select class="form-select" aria-label="Default select example" name="Id_Solicitud_Adjunto">
+                                                         <?php
+                                                         $consulta="SELECT * FROM tbl_solicitud_adjunto ";
+                                                         $resultado=mysqli_query($conexion,$consulta);
+                                                         while($fila=$resultado->fetch_array()){
+                                                             echo "<option value='".$fila['Id_Solicitud_Adjunto']."'>".$fila['enlace']."</option
+                                                             >";
+                                                         }
+                                                         ?>
+                                                         </select>
+                                            </div>
+                
+                                            <div class="col-md-8">
+                                                <label> Nombre del Solicitante</label>
+                                                <select class="form-select" aria-label="Default select example" name="Id_Personas">
+                                                         <?php
+                                                         $consulta="SELECT * FROM tbl_personas ";
+                                                         $resultado=mysqli_query($conexion,$consulta);
+                                                         while($fila=$resultado->fetch_array()){
+                                                             echo "<option value='".$fila['Id_Personas']."'>".$fila['Nombre_Completo']."</option
+                                                             >";
+                                                         }
+                                                         ?>
+                                                         </select>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <label> Tipo de Solicitud</label>
+                                                <select class="form-select" aria-label="Default select example" name="Id_Tipo_Solicitud">
+                                                         <?php
+                                                         $consulta="SELECT * FROM tbl_tipo_solicitud ";
+                                                         $resultado=mysqli_query($conexion,$consulta);
+                                                         while($fila=$resultado->fetch_array()){
+                                                             echo "<option value='".$fila['Id_Tipo_Solicitud']."'>".$fila['Tipo_Solicitud']."</option
+                                                             >";
+                                                         }
+                                                         ?>
+                                                         </select>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <label> Estado de la Solicitud </label>
+                                                <select class="form-select" aria-label="Default select example" name="Id_Estado">
+                                                         <?php
+                                                         $consulta="SELECT * FROM tbl_estado ";
+                                                         $resultado=mysqli_query($conexion,$consulta);
+                                                         while($fila=$resultado->fetch_array()){
+                                                             echo "<option value='".$fila['Id_Estado']."'>".$fila['Estado']."</option
+                                                             >";
+                                                         }
+                                                         ?>
+                                                         </select>
+                                            </div>
+				
+			
+                                         
+                                        
+                                        <center> 
+                                                    <button type="submit" name="tipo_solicitud" class="btn_save" >Enviar </button></div>
+                                                    
+                                             </center>     
+>>>>>>> bb7b3f006c4d6be14f084e8daf2c5b36504059d0
+>>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
                                     </form><p>
                                     
                                 </div>

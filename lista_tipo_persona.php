@@ -1,31 +1,31 @@
 <?php 
-	session_start();
-	/*if($_SESSION['Id_Rol'] != 1)
-	{
-		header("location: ./");
-	}
-	*/
 
-	$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");	
+	session_start();
+	if($_SESSION['Id_Rol'] !=1)
+	{
+		header("location: index.php");
+    }
+	$conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");
 
  ?>
 
 
+
 <!DOCTYPE html>
 <html lang="es">
-<head>
+    <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Buscar Usuarios</title>
+        <title>Lista tipo persona</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
 		<link href="css/nuevo.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
     </head>
-	<body class="sb-nav-fixed">
+    <body class="sb-nav-fixed">
 	    <section id="container">
             <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
@@ -33,32 +33,16 @@
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
-            <?php 
-
-			$busqueda = strtolower($_REQUEST['busqueda']);
-			if(empty($busqueda))
-			{
-<<<<<<< HEAD
-				
-=======
-
-				header("location: lista_solicitud.php");
-
->>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
-				mysqli_close($conexion);
-			}
-
-
-		 ?>
+         
 		
             <!-- Navbar-->
-          <right>  <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#!">Ajustes</a></li>
                        
-                        <li><a class="dropdown-item" href="#!">Cerrar Sesion</a></li>
+                        <li><a class="dropdown-item" href="login.php">Cerrar Sesión</a></li>
                     </ul>
                 </li>
             </ul>
@@ -136,22 +120,14 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-<<<<<<< HEAD
-                       
-=======
-
-                       
-
-                        <h1 class="mt-4">Lista de Solicitudes</h1>
-
->>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
+                        <h1 class="mt-4">Lista de Tipo de Persona</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.php">Panel de Control</a></li>
 							
                             <li class="breadcrumb-item active">Tabla</li>
                         </ol>
 						
-					
+						
 						
                         <div class="card mb-4">
                            
@@ -159,25 +135,12 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-<<<<<<< HEAD
-=======
-
->>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
-                                Lista Tipo de Solicitudes
+                                Lista de Tipo de Persona
                             </div>
-							<div class="col-md-6"> <a href="solicitud.php" class="btn_new">Nueva Solicitud</a>
-
-<<<<<<< HEAD
-=======
-                                Lista Solicitudes
-                            </div>
-							<div class="col-md-6"> <a href="solicitud.php" class="btn_new">Crear Solicitud</a>
-
-
->>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
+                           <div class="col-md-6"> <a href="registro_tipo_persona.php" class="btn_new">Crear Tipo Persona</a>
 
 </div>
-							<right>     <form action="buscar_solicitud.php" method="get" class="form_search">
+                       <right>     <form action="buscar_usuario.php" method="get" class="form_search">
 			<input type="text" name="busqueda" id="busqueda" placeholder="Buscar">
 			<input type="submit" value="Buscar" class="btn_search">
 
@@ -188,99 +151,15 @@
 								<tbody>
                                     <thead>
 									
-<<<<<<< HEAD
-=======
-
->>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
-                                    <tr><td><label>Codigo</label></td>
-<td><label>Nombre Completo</label></td>
-	<td><label>Tipo de Solicitud </label></td>
-    <td><label>Estado </label></td>
-    <td><label>Nombre Proyecto</label></td>
-    <td><label>Motivo </label></td>
-    <td><label>Fecha Registro</label></td>
-    <td><label>Acciones</label></td>
-
-    
-	
-</tr>
-										<?php 
-		
-
-        $conexion=mysqli_connect("localhost","root","","bdd_fundacion_terra");	
-
-        $query = mysqli_query($conexion,"SELECT 
-        s.Id_Solicitud, 
-          
-        s.Id_Personas, 
-        s.Id_Tipo_Solicitud, 
-        s.Id_Estado,
-        s.Nombre_Proyecto, 
-        s.Motivo,
-        s.Fecha_Registro_Solicitud,
-        
-        p.Nombre_Completo,
-        t.Tipo_Solicitud,
-        e.Estado FROM tbl_solicitud s 
-        
-        INNER JOIN tbl_personas p
-        ON s.Id_Personas = p.Id_Personas
-        INNER JOIN tbl_tipo_solicitud t
-        ON s.Id_Tipo_Solicitud = t.Id_Tipo_Solicitud
-        INNER JOIN tbl_estado e
-        ON s.Id_Estado = e.Id_Estado
-                                    WHERE 
-                                    ( s.Id_Solicitud LIKE '%$busqueda%' OR 
-                                    s.Id_Personas LIKE '%$busqueda%' OR 
-                                    s.Id_Tipo_Solicitud LIKE '%$busqueda%' OR 
-                                    s.Id_Estado LIKE '%$busqueda%' OR 	
-                                    s.Nombre_Proyecto LIKE '%$busqueda%' OR 
-                                    s.Motivo LIKE '%$busqueda%' OR
-                                    s.Fecha_Registro_Solicitud LIKE '%$busqueda%' OR 	
-                                    p.Nombre_Completo LIKE '%$busqueda%' OR 	  
-                                    t.Tipo_Solicitud LIKE '%$busqueda%' OR
-                                    e.Estado   LIKE  '%$busqueda%') 
-                                   ORDER BY s.Id_Solicitud
-            ");
-<<<<<<< HEAD
-=======
-?>
-				
-                                    <tr>
-										<th>Id Solicitud </th>		                        
-                                        <th>Enlace</th>	    
-			                         	<th>Nombre Completo</th>
-				                        <th>Tipo de Solicitud</th>
-				                        <th>Estado</th>
-				                        <th>Nombre Proyecto</th>
-				                        <th>Motivo</th>
-				                        <th>Fecha de Registro </th>
-                                        <th>Acciones</th>
+                                        <tr>
+										<th>Id Tipo Persona</th>
+				                        <th>Tipo Persona</th>
+			                          	
+				                        <th>Acciones</th>
                                         </tr>
 										<?php 
 			//Paginador
-			$rol = '';
-			if($busqueda == 'administrador')
-			{
-				$rol = " OR rol LIKE '%1%' ";
-
-			}else if($busqueda == 'supervisor'){
-
-				$rol = " OR rol LIKE '%2%' ";
-
-			}else if($busqueda == 'vendedor'){
-
-				$rol = " OR rol LIKE '%3%' ";
-			}
-
-
-			$sql_registe = mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM tbl_solicitud 
-																WHERE ( Id_Solicitud LIKE '%$busqueda%' OR 
-																Nombre_Proyecto LIKE '%$busqueda%' OR 
-																Motivo LIKE '%$busqueda%' 
-																
-																		$rol  )");
-
+			$sql_registe = mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM tbl_tipo_persona ");
 			$result_register = mysqli_fetch_array($sql_registe);
 			$total_registro = $result_register['total_registro'];
 
@@ -296,96 +175,29 @@
 			$desde = ($pagina-1) * $por_pagina;
 			$total_paginas = ceil($total_registro / $por_pagina);
 
-			$query = mysqli_query($conexion,"SELECT s.Id_Solicitud, 
-            s.Id_Solicitud_Adjunto, 
-            s.Id_Personas, 
-            s.Id_Tipo_Solicitud, 
-            s.Id_Estado,
-            s.Nombre_Proyecto, 
-            s.Motivo,
-            s.Fecha_Registro_Solicitud,
-            a.enlace,
-            p.Nombre_Completo,
-            t.Tipo_Solicitud,
-            e.Estado FROM tbl_solicitud s 
-             INNER JOIN tbl_solicitud_adjunto a
-			ON s.Id_Solicitud_Adjunto = a.Id_Solicitud_Adjunto 
-            INNER JOIN tbl_personas p
-			ON s.Id_Personas = p.Id_Personas
-            INNER JOIN tbl_tipo_solicitud t
-			ON s.Id_Tipo_Solicitud = t.Id_Tipo_Solicitud
-            INNER JOIN tbl_estado e
-			ON s.Id_Estado = e.Id_Estado 
-										WHERE 
-										( s.Id_Solicitud LIKE '%$busqueda%' OR 
-                                        s.Id_Solicitud_Adjunto LIKE '%$busqueda%' OR 
-                                        s.Id_Personas LIKE '%$busqueda%' OR 
-                                        s.Id_Tipo_Solicitud LIKE '%$busqueda%' OR 	
-                                        s.Id_Estado LIKE '%$busqueda%' OR 
-                                        s.Nombre_Proyecto LIKE '%$busqueda%' OR
-                                        s.Motivo LIKE '%$busqueda%' OR 	
-                                        s.Fecha_Registro_Solicitud LIKE '%$busqueda%' OR 	
-                                        a.enlace LIKE '%$busqueda%' OR 	  
-                                        p.Nombre_Completo LIKE '%$busqueda%' OR
-                                        t.Tipo_Solicitud    LIKE  '%$busqueda%' OR 
-                                        e.Estado LIKE '%$busqueda%') 
-									
-										 ORDER BY s.Id_Solicitud ASC LIMIT $desde,$por_pagina 
-				");
+			$query = mysqli_query($conexion,"SELECT Id_Tipo_Persona, Tipo_Persona FROM tbl_tipo_persona ORDER BY Id_Tipo_Persona ASC LIMIT $desde,$por_pagina");
 
->>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
 			mysqli_close($conexion);
+
 			$result = mysqli_num_rows($query);
 			if($result > 0){
 
 				while ($data = mysqli_fetch_array($query)) {
 					
 			?>
-								
 				<tr>
-                <td><?php echo $data["Id_Solicitud"]; ?></td>
-<<<<<<< HEAD
+					<td><?php echo $data["Id_Tipo_Persona"]; ?></td>
+					<td><?php echo $data["Tipo_Persona"]; ?></td>
 					
-=======
-
-					
-
-					<td><?php echo $data["enlace"]; ?></td>
-                
-
->>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
-					<td><?php echo $data["Nombre_Completo"]; ?></td>
-					<td><?php echo $data["Tipo_Solicitud"]; ?></td>
-					<td><?php echo $data["Estado"]; ?></td>
-					<td><?php echo $data["Nombre_Proyecto"] ?></td>
-					<td><?php echo $data["Motivo"] ?></td>
-					<td><?php echo $data["Fecha_Registro_Solicitud"] ?></td>
-<<<<<<< HEAD
-=======
-
->>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
-                    <td>
-						<a class="link_edit" href="actualizar_solicitud.php?id=<?php echo $data["Id_Solicitud"]; ?>">Editar</a>
-
-				
-						|
-						<a class="link_delete" href="eliminar_solicitud.php?id=<?php echo $data["Id_Solicitud"]; ?>">Eliminar</a>
-					
-				
-<<<<<<< HEAD
-=======
-
 					
 
 					<td>
-						<a class="link_edit" href="editar_solicitud.php?id=<?php echo $data["Id_Solicitud"]; ?>">Editar</a>
+						<a class="link_edit" href="edit_tip_per.php?id=<?php echo $data["Id_Tipo_Persona"]; ?>">Editar</a> 
 
-					<?php if($data["Id_Solicitud"] != 1){ ?>
+					<?php if($data["Id_Tipo_Persona"] != 1){ ?>
 						|
-						<a class="link_delete" href="eliminar_confirmar_solicitudes.php?id=<?php echo $data["Id_Solicitud"]; ?>">Eliminar</a>
+						<a class="link_delete" href="eliminar_tip_per.php?id=<?php echo $data["Id_Tipo_Persona"]; ?>">Eliminar</a> 
 					<?php } ?>
-
->>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
 						
 					</td>
 				</tr>
@@ -396,28 +208,17 @@
 			}
 		 ?>
 										
-										</thead>
-                                    </tbody>
-                                </table>
-<<<<<<< HEAD
-								
-	
-	
-=======
-
-								<?php 
-	
-	if($total_registro != 0)
-	{
- ?>
-		<div class="paginador">
+							</thead>
+                            </tbody>
+                            </table>
+								<div class="paginador">
 			<ul>
 			<?php 
 				if($pagina != 1)
 				{
 			 ?>
-				<li><a href="?pagina=<?php echo 1; ?>&busqueda=<?php echo $busqueda; ?>">|<</a></li>
-				<li><a href="?pagina=<?php echo $pagina-1; ?>&busqueda=<?php echo $busqueda; ?>"><<</a></li>
+				<li><a href="?pagina=<?php echo 1; ?>">|<</a></li>
+				<li><a href="?pagina=<?php echo $pagina-1; ?>"><<</a></li>
 			<?php 
 				}
 				for ($i=1; $i <= $total_paginas; $i++) { 
@@ -426,31 +227,23 @@
 					{
 						echo '<li class="pageSelected">'.$i.'</li>';
 					}else{
-						echo '<li><a href="?pagina='.$i.'&busqueda='.$busqueda.'">'.$i.'</a></li>';
+						echo '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';
 					}
 				}
 
 				if($pagina != $total_paginas)
 				{
 			 ?>
-				<li><a href="?pagina=<?php echo $pagina + 1; ?>&busqueda=<?php echo $busqueda; ?>">>></a></li>
-				<li><a href="?pagina=<?php echo $total_paginas; ?>&busqueda=<?php echo $busqueda; ?> ">>|</a></li>
+				<li><a href="?pagina=<?php echo $pagina + 1; ?>">>></a></li>
+				<li><a href="?pagina=<?php echo $total_paginas; ?> ">>|</a></li>
 			<?php } ?>
 			</ul>
 		</div>
-             <?php } ?>
-
->>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
-
-			              </ul>
-		                  </div>
                             </div>
                         </div>
                     </div>
                 </main>
-                
-		</section>
-		<footer class="py-4 bg-light mt-auto">
+                <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; Your Website 2021</div>
@@ -468,6 +261,7 @@
         <script src="js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
+		</section>
     </body>
 
 </html>
