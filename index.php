@@ -93,75 +93,14 @@ if( isset($_SESSION['Usuario']))
                                     </a>
                                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-
                                             
                                             
                                             <a class="nav-link" href="mantenimiento_solicitudes.php">Mantenimiento Solicitudes</a>
                                         
-
-
-                                            
-                                            <a class="nav-link" href="solicitud_adjunto.php">Tipo de Solicitud</a>
-                                            <a class="nav-link" href="Solicitud.php">Solicitud</a>
-                                            <a class="nav-link" href="lista_solicitud.php">Lista de Solicitudes</a>
-
-                                        
-
-
                                            
                                         </nav>
                                     </div>
-
-                                
-
-
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Division Empresa
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="registro_div_empresa.php">Nueva Division</a>
-                                            <a class="nav-link" href="lista_div_empresa.php">Lista de divisiones</a>
-                                           
-                                        </nav>
-                                    </div>
-
-
-
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Personas
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="registro_personas.php">Nueva Persona</a>
-                                            <a class="nav-link" href="lista_personas.php">Lista Personas</a>
-                                           
-                                        </nav>
-                                    </div>
-
-
-
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Tipo Persona
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="registro_tipo_persona.php">Nuevo T. Persona</a>
-                                            <a class="nav-link" href="lista_tipo_persona.php">Lista T. Personas</a>
-                                           
-                                        </nav>
-                                    </div>
-
-
-
-
-                                    
-
-
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                         Autentificacion
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
@@ -172,8 +111,6 @@ if( isset($_SESSION['Usuario']))
                                             <a class="nav-link" href="password.php">Recuperar Contraseña</a>
                                         </nav>
                                     </div>
-
-
 
                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
                                         Error
