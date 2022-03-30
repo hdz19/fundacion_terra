@@ -93,17 +93,12 @@ if( isset($_SESSION['Usuario']))
                                     </a>
                                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
+
                                             
                                             
                                             <a class="nav-link" href="mantenimiento_solicitudes.php">Mantenimiento Solicitudes</a>
                                         
-<<<<<<< HEAD
-=======
-=======
+
 
                                             
                                             <a class="nav-link" href="solicitud_adjunto.php">Tipo de Solicitud</a>
@@ -112,8 +107,7 @@ if( isset($_SESSION['Usuario']))
 
                                         
 
->>>>>>> bb7b3f006c4d6be14f084e8daf2c5b36504059d0
->>>>>>> d6b6c5477a8a6fb9c5881884d1e23c2920028be4
+
                                            
                                         </nav>
                                     </div>
